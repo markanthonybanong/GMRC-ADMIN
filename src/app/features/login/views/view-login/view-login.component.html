@@ -1,0 +1,9 @@
+<div class="center-content">
+  <app-login-form
+   [userTypes]="userTypes"
+   (userType)="store.setUserType($event)"
+   [buttonName]="store.buttonName"
+   (login)="store.onLogin($event)"
+  >
+  </app-login-form>
+</div>

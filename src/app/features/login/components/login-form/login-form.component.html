@@ -1,0 +1,25 @@
+<mat-card class="form">
+  <mat-card-title id="form-title">GMRC</mat-card-title>
+  <mat-card-content [formGroup]="form">
+    <mat-form-field id="form-column-1">
+      <mat-select placeholder="Account Type" (selectionChange)="userTypeChange($event)" formControlName="userType">
+        <mat-option *ngFor="let type of userTypes;" [value]="type">
+          {{type}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field id="form-column-1">
+      <input matInput type="password" placeholder="Password"  formControlName="password">
+    </mat-form-field>
+  </mat-card-content>
+  <mat-card-actions>
+    <div class="action-buttons-container-flex-end">
+      <button mat-stroked-button>Create Admin Password</button>
+      <button
+       mat-stroked-button
+       (click)="onUserLogin()"
+       [disabled]="form.invalid"
+      >{{buttonName}}</button>
+    </div>
+  </mat-card-actions>
+</mat-card>
