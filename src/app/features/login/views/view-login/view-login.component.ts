@@ -15,6 +15,9 @@ export class ViewLoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.store.state.requests.login.success);
+
+    this.store.init();
   }
   get userTypes(): Array<string> {
     return enumsToArray(UserType);

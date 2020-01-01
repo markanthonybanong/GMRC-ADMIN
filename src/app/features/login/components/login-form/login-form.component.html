@@ -14,7 +14,9 @@
   </mat-card-content>
   <mat-card-actions>
     <div class="action-buttons-container-flex-end">
-      <button mat-stroked-button>Create Admin Password</button>
+      <button mat-stroked-button
+       *ngIf="state.requests.login.success === true && state.userType === UserType.SuperAdmin"
+       >Create Admin Password</button>
       <button
        mat-stroked-button
        (click)="onUserLogin()"

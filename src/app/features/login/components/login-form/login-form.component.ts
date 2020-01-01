@@ -3,6 +3,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { UserType} from '../../login.constants';
 import { MatSelectChange } from '@angular/material';
 import { Credential } from '../../types/credential';
+import { LoginStoreState } from '../../services/login-store-state';
+
 @Component({
   selector: 'app-login-form',
   templateUrl: './login-form.component.html',
@@ -18,6 +20,7 @@ export class LoginFormComponent{
   @Input() buttonName: string;
   @Output() userType = new EventEmitter<string>();
   @Output() login = new EventEmitter<Credential>();
+  @Input() state: LoginStoreState;
   constructor(
     private formBuilder: FormBuilder
   ) { }

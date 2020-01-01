@@ -1,6 +1,11 @@
-import { RequestState } from 'src/app/shared/types/request-state';
+import { Requests } from '../types/requests';
+
 
 export class LoginStoreState {
-  superAdminLogin: RequestState;
-  adminLogin: RequestState;
+  userType: string;
+  requests: Requests = {
+    login: {
+      success: false
+    }
+  };
 }
