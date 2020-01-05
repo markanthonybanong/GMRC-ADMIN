@@ -1,8 +1,16 @@
 export const LOGIN_CONFIG = {
   request: {
-    login: {
+    superAdminLogin: {
       name: 'login',
-      path: 'auth'
+      path: 'auth/superAdminLogin'
+    },
+    adminLogin: {
+      name: 'login',
+      path: 'auth/adminLogin'
+    },
+    createAdminAccount: {
+      name: 'createAdminAccount',
+      path: 'user/createAdmin'
     }
   }
 };

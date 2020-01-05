@@ -1,2 +1,4 @@
-export class Credential {
+export interface Credential {
+  type: string;
+  password: string;
 }

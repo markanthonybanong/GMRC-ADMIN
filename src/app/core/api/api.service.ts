@@ -1,12 +1,15 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { LocalStorage } from '../../local-storage/services/local-storage';
-import { API_CONFIG } from '../api-config';
+import { Injectable } from '@angular/core';
+import { LocalStorageService } from '../local-storage/local-storage.service';
+import { API_CONFIG } from './api-config';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export class Api {
-  constructor(private http: HttpClient, private localStorageService: LocalStorage) {
-    this.initHttpOptionsHeader();
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class ApiService {
+
+  constructor(private http: HttpClient, private localStorageService: LocalStorageService) { }
   initHttpOptionsHeader(): void {
     const token = this.localStorageService.getItem('token');
     API_CONFIG.httpOptions.headers = new HttpHeaders({

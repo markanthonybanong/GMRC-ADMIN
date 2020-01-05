@@ -2,10 +2,12 @@ import { Requests } from '../types/requests';
 
 
 export class LoginStoreState {
-  userType: string;
+  superAdminLogin = false;
+  adminLogin = false;
   requests: Requests = {
     login: {
-      success: false
+    },
+    createAdminAccount: {
     }
   };
 }

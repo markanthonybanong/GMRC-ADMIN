@@ -1,0 +1,11 @@
+<header>
+  <mat-toolbar color="primary">
+    <mat-icon
+      class="material-icons md-light"
+      (click)="toggleSideBar()"
+      *ngIf="isHandset$ | async"
+    >menu
+    </mat-icon>
+  </mat-toolbar>
+</header>
+

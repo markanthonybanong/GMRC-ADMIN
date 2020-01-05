@@ -1,0 +1,16 @@
+// A primary palette: colors most widely used across all screens and components.
+// An accent palette: colors used for the floating action button and interactive elements.
+// A warn palette: colors used to convey error state.
+// A foreground palette: colors for text and icons.
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+// Define the theme.
+$gmrc-theme-primary:  mat-palette($mat-blue-gray, 900);
+$gmrc-theme-accent:  mat-palette($mat-green, 900);
+$gmrc-theme-warn:   mat-palette($mat-red);
+
+$my-theme: mat-light-theme($gmrc-theme-primary, $gmrc-theme-accent, $gmrc-theme-warn);
+
+@include angular-material-theme($my-theme);

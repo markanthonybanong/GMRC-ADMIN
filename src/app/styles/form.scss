@@ -1,16 +1,14 @@
 .form{
-  #form-title{
-    text-align: center;
-  }
   #form-column-1{
     width: 100%;
   }
   #form-column-2{
-    display: flex;
-    justify-content: space-between;
     mat-form-field{
       width: 48%;
     }
+    display: flex;
+    justify-content: space-between;
+
   }
   .action-buttons-container-flex-end{
     display: flex;

@@ -1,0 +1,39 @@
+<mat-toolbar>
+  <div class="center-content">
+    <p>GMRC</p>
+  </div>
+</mat-toolbar>
+<mat-nav-list>
+  <a mat-list-item (click)="routeToInquiry()">
+    <mat-icon>list_alt</mat-icon>
+    <span class="nav-caption">INQUIRY</span>
+  </a>
+  <a mat-list-item (click)="routeToRoom()">
+    <mat-icon>account_balance</mat-icon>
+    <span class="nav-caption">ROOM</span>
+  </a>
+  <a mat-list-item (click)="routeToTenant()">
+    <mat-icon>people</mat-icon>
+    <span class="nav-caption">TENANT</span>
+  </a>
+  <a mat-list-item (click)="routeToPayment()">
+    <mat-icon>attach_money</mat-icon>
+    <span class="nav-caption">PAYMENT</span>
+  </a>
+  <a mat-list-item (click)="routeToPrint()">
+    <mat-icon>print</mat-icon>
+    <span class="nav-caption">PRINT</span>
+  </a>
+  <a mat-list-item (click)="routeToRoomAccount()">
+    <mat-icon>account_box</mat-icon>
+    <span class="nav-caption">ROOM ACCOUNT</span>
+  </a>
+  <a mat-list-item (click)="routeToPhoto()">
+    <mat-icon>linked_camera</mat-icon>
+    <span class="nav-caption">PHOTO</span>
+  </a>
+  <a mat-list-item (click)="routeToLogin()">
+    <mat-icon>exit_to_app</mat-icon>
+    <span class="nav-caption">LOG OUT</span>
+  </a>
+</mat-nav-list>

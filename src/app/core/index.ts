@@ -1,2 +1,3 @@
-export * from './api/services/api';
-export * from './local-storage/services/local-storage';
+export * from './api/api.service';
+export * from './local-storage/local-storage.service';
+export * from './number/number.service';

@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { LoginStore } from '../../services/login-store';
 import { enumsToArray } from '@gmrc-admin/shared/helpers';
 import { UserType } from '../../login.constants';
+import { LoginEndPoint } from '../../services/login-end-point';
 @Component({
   selector: 'app-view-login',
   templateUrl: './view-login.component.html',
   styleUrls: ['./view-login.component.scss'],
-  providers: [LoginStore]
+  providers: [LoginStore, LoginEndPoint]
 })
 export class ViewLoginComponent implements OnInit {
 
@@ -15,8 +16,6 @@ export class ViewLoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.store.state.requests.login.success);
-
     this.store.init();
   }
   get userTypes(): Array<string> {

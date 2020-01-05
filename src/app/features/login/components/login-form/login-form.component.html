@@ -1,26 +1,40 @@
-<mat-card class="form">
-  <mat-card-title id="form-title">GMRC</mat-card-title>
+<mat-card class="form" *ngIf="state$ | async as subs">
+  <mat-card-title id="center-text">GMRC</mat-card-title>
   <mat-card-content [formGroup]="form">
-    <mat-form-field id="form-column-1">
-      <mat-select placeholder="Account Type" (selectionChange)="userTypeChange($event)" formControlName="userType">
+    <mat-form-field id="form-column-1" appearance="outline">
+      <mat-label>User Type</mat-label>
+      <mat-select placeholder="Account Type" (selectionChange)="userTypeChange($event)" formControlName="type">
         <mat-option *ngFor="let type of userTypes;" [value]="type">
           {{type}}
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field id="form-column-1">
+    <mat-form-field id="form-column-1" appearance="outline">
+      <mat-label>Password</mat-label>
       <input matInput type="password" placeholder="Password"  formControlName="password">
     </mat-form-field>
   </mat-card-content>
+  <div class="error-field">
+    <p id="center-text" *ngIf="subs.requests.login.error">INVALID PASSWORD OR PASSWORD HAVE EXPIRED</p>
+    <p id="center-text" *ngIf="subs.requests.createAdminAccount.error">SOMETHING WENT WRONG</p>
+  </div>
+  <div class="message-field">
+    <p id="center-text" *ngIf="subs.requests.createAdminAccount.success">CREATED ADMIN PASSWORD <span id="bold">{{adminPassword}}</span></p>
+  </div>
   <mat-card-actions>
     <div class="action-buttons-container-flex-end">
-      <button mat-stroked-button
-       *ngIf="state.requests.login.success === true && state.userType === UserType.SuperAdmin"
+      <button
+       color="primary"
+       mat-raised-button
+       *ngIf="subs.superAdminLogin"
+       (click)="onCreateAdminPassword()"
+       [disabled]="subs.requests.createAdminAccount.inProgress"
        >Create Admin Password</button>
       <button
-       mat-stroked-button
+       color="primary"
+       mat-raised-button
        (click)="onUserLogin()"
-       [disabled]="form.invalid"
+       [disabled]="form.invalid || subs.requests.login.inProgress"
       >{{buttonName}}</button>
     </div>
   </mat-card-actions>
