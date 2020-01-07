@@ -12,6 +12,7 @@ import { NumberService, LocalStorageService } from '@gmrc-admin/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Injectable()
 export class LoginStore  extends Store<LoginStoreState> implements OnDestroy{
@@ -19,11 +20,16 @@ export class LoginStore  extends Store<LoginStoreState> implements OnDestroy{
   private createdAdminPassword: string = null;
   private storeRequestStateUpdater: StoreRequestStateUpdater;
   private destroy$: Subject<boolean> = new Subject<boolean>();
+  form = this.formBuilder.group({
+    type: [UserType.SuperAdmin, Validators.required],
+    password: [null, Validators.required]
+  });
+
   constructor(
     private endpoint: LoginEndPoint,
-    private localStorageService: LocalStorageService,
     private numberService: NumberService,
     private router: Router,
+    private formBuilder: FormBuilder
   ) {
     super(new  LoginStoreState());
   }
@@ -38,28 +44,18 @@ export class LoginStore  extends Store<LoginStoreState> implements OnDestroy{
            ? 'Next' : 'Log In';
   }
   onLogin(credential: Credential): void {
-    const loginSuperAdmin: boolean = this.userType === UserType.SuperAdmin && this.state.superAdminLogin === false;
-    const loginAdmin: boolean      = this.userType === UserType.Admin && this.state.adminLogin === false;
     if (this.state.superAdminLogin && this.userType === UserType.SuperAdmin ) {
       this.router.navigate(['/inquiry']);
-    } else if (loginSuperAdmin) {
-      this.endpoint.loginSuperAdmin(credential, this.storeRequestStateUpdater)
+    } else {
+      this.endpoint.login(credential, this.storeRequestStateUpdater)
         .pipe(
           tap(() => {
-             this.setState({...this.state, superAdminLogin: true});
-            },
-          ),
-         takeUntil(this.destroy$)
-        )
-        .subscribe();
-    } else if (loginAdmin) {
-      this.endpoint.loginAdmin(credential, this.storeRequestStateUpdater)
-        .pipe(
-          tap((response) => {
-            this.localStorageService.setItem('token', response.token);
-            this.localStorageService.setItem('tokenExp', response.tokenExp);
-            this.router.navigate(['/inquiry']);
+            if (credential.type === UserType.SuperAdmin) {
+              this.setState({...this.state, superAdminLogin: true});
+            } else {
+              this.router.navigate(['/inquiry']);
             }
+            },
           ),
          takeUntil(this.destroy$)
         )

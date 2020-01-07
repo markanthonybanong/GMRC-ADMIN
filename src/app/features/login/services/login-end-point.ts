@@ -3,41 +3,31 @@ import { Observable, throwError } from 'rxjs';
 import { Credential } from '../types/credential';
 import { StoreRequestStateUpdater } from '@gmrc-admin/shared/types';
 import { LOGIN_CONFIG } from '../login.configs';
-import { Token } from '../types/token';
-import {map, catchError, tap} from 'rxjs/operators';
+import { tap} from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ApiService } from '@gmrc-admin/core';
+import { ApiService, AuthService } from '@gmrc-admin/core';
+import { UserType } from '../login.constants';
+import { Token } from '@gmrc-admin/shared/types';
 @Injectable()
 export class LoginEndPoint {
-  constructor(private apiService: ApiService) {}
-  loginSuperAdmin(credential: Credential, requestStateUpdater: StoreRequestStateUpdater): Observable<Token> {
-    const request = LOGIN_CONFIG.request.superAdminLogin;
+  constructor(private apiService: ApiService, private authService: AuthService) {}
+  login(credential: Credential, requestStateUpdater: StoreRequestStateUpdater): Observable<Token> {
+    const request = credential.type === UserType.SuperAdmin
+                    ? LOGIN_CONFIG.request.superAdminLogin
+                    : LOGIN_CONFIG.request.adminLogin;
     requestStateUpdater(request.name, {inProgress: true});
-    return this.apiService.post<Token>(request.path, credential)
+    return this.authService.login(request.path, credential)
       .pipe(
-        tap(token => {
+        tap(
+          (response) => {
           requestStateUpdater(request.name, {inProgress: false, success: true});
-          return token;
-        }),
-        catchError( (error: HttpErrorResponse) => {
-          requestStateUpdater(request.name, {inProgress: false, error: true});
-          return throwError(error);
-        })
-      );
-  }
-  loginAdmin(credential: Credential, requestStateUpdater: StoreRequestStateUpdater): Observable<Token> {
-    const request = LOGIN_CONFIG.request.adminLogin;
-    requestStateUpdater(request.name, {inProgress: true});
-    return this.apiService.post<Token>(request.path, credential)
-      .pipe(
-        tap( token => {
-          requestStateUpdater(request.name, {inProgress: false, success: true});
-          return token;
-        }),
-        catchError( (error: HttpErrorResponse) => {
-          requestStateUpdater(request.name, {inProgress: false, error: true});
-          return throwError(error);
-        })
+          return response;
+          },
+          (error: HttpErrorResponse) => {
+            requestStateUpdater(request.name, {inProgress: false, error: true});
+            return throwError(error);
+          }
+        ),
       );
   }
   createAdminPassword(sixDigitNumber: string, requestStateUpdater: StoreRequestStateUpdater): Observable<Credential> {
@@ -45,14 +35,16 @@ export class LoginEndPoint {
     requestStateUpdater(request.name, {inProgress: true});
     return this.apiService.post<Credential>(request.path, {numberString: sixDigitNumber})
       .pipe(
-        map(credential => {
-          requestStateUpdater(request.name, {inProgress: false, success: true});
-          return credential;
-        }),
-        catchError( (error: HttpErrorResponse) => {
-          requestStateUpdater(request.name, {inProgress: false, error: true});
-          return throwError(error);
-        })
+        tap(
+          (credential) => {
+            requestStateUpdater(request.name, {inProgress: false, success: true});
+            return credential;
+          },
+          (error: HttpErrorResponse) => {
+            requestStateUpdater(request.name, {inProgress: false, error: true});
+            return throwError(error);
+          }
+        ),
       );
   }
 }

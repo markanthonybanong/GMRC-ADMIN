@@ -1,8 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { UserType} from '../../login.constants';
+import { FormGroup } from '@angular/forms';
 import { MatSelectChange } from '@angular/material';
-import { Credential } from '../../types/credential';
 import { LoginStoreState } from '../../services/login-store-state';
 
 @Component({
@@ -12,10 +10,7 @@ import { LoginStoreState } from '../../services/login-store-state';
 })
 export class LoginFormComponent{
 
-  form = this.formBuilder.group({
-    type: [UserType.SuperAdmin, Validators.required],
-    password: [null, Validators.required]
-  });
+  @Input() form: FormGroup;
   @Input() userTypes: Array<string>;
   @Input() buttonName: string;
   @Output() userType = new EventEmitter<string>();
@@ -23,9 +18,7 @@ export class LoginFormComponent{
   @Input() state$: LoginStoreState;
   @Output() createAdminPassword = new EventEmitter<FormGroup>();
   @Input() adminPassword: string;
-  constructor(
-    private formBuilder: FormBuilder
-  ) { }
+  constructor() { }
   userTypeChange($event: MatSelectChange): void {
     this.userType.emit($event.value);
   }

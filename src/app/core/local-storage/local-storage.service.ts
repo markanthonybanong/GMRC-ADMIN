@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LOCAL_STORAGE_CONFIG } from './local-storage-config';
+import { LOCAL_STORAGE_CONFIG } from './local-storage.config';
 
 @Injectable({
   providedIn: 'root'
