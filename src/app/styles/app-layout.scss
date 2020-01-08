@@ -1,0 +1,38 @@
+.app-content-header{
+  margin: 5px 5px 0 5px;
+  >.second-column{
+    button {
+      margin-top: 5px;
+      width: 100%;
+    }
+    button:first-child{
+      margin-top: 0px;
+    }
+  }
+}
+
+/*MEDIA QUERIES*/
+/*MAX-WIDTH*/
+@media (max-width: 768px) {
+}
+/*MIN-WIDTH*/
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+
+ }
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+  .app-content-header{
+    display: flex !important;
+    justify-content: space-between !important;
+    >.first-column, >.second-column{
+      width: 30%;
+    }
+  }
+}

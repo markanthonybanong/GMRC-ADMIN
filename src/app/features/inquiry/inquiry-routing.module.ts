@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { InquiryListComponent } from './views/inquiry-list/inquiry-list.component';
-import { InquiryFormComponent } from './views/inquiry-form/inquiry-form.component';
-
+import { InquiryFormComponent } from './components/inquiry-form/inquiry-form.component';
+import { ViewInquiryListComponent } from './views/view-inquiry-list/view-inquiry-list.component';
 
 const routes: Routes = [
-  { path: '', component: InquiryListComponent },
+  { path: '', component: ViewInquiryListComponent },
   { path: 'add', component: InquiryFormComponent },
-  { path: 'update/:id', component: InquiryFormComponent },
+  { path: 'update/:id', component: InquiryFormComponent},
 ];
 
 @NgModule({

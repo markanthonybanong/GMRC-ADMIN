@@ -8,7 +8,7 @@ import { StoreRequestStateUpdater } from '@gmrc-admin/shared/types';
 import { getStoreRequestStateUpdater } from '@gmrc-admin/shared/helpers';
 import { LoginEndPoint } from './login-end-point';
 import { tap } from 'rxjs/internal/operators/tap';
-import { NumberService, LocalStorageService } from '@gmrc-admin/core';
+import { NumberService } from '@gmrc-admin/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
