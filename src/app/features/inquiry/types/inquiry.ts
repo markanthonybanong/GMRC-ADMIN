@@ -3,7 +3,7 @@ export interface Inquiry {
   roomNumber: string;
   roomType: string;
   bedInfos: Array<{bedNumber: number, deckNumber: number}>;
-  willOccupyIn: Date;
+  willOccupyIn: string;
   phoneNumber: number;
   gender: string;
   howDidYouFindUs: string;

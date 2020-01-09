@@ -1,51 +1,76 @@
 import { Injectable } from '@angular/core';
 import { Store } from 'rxjs-observable-store';
 import { InquiryListStoreState } from './inquiry-list.store.state';
-import { StoreRequestStateUpdater, PageRequest } from '@gmrc-admin/shared/types';
+import { StoreRequestStateUpdater, PageRequest, PageData } from '@gmrc-admin/shared/types';
 import { getStoreRequestStateUpdater } from '@gmrc-admin/shared/helpers';
 import { Subject } from 'rxjs';
-import { switchMap, tap, takeUntil, catchError, retry } from 'rxjs/operators';
+import { switchMap, tap, takeUntil, retry, map } from 'rxjs/operators';
 import { InquiryListEndpoint } from './inquiry-list.endpoint';
 import { INQUIRY_CONFIG } from '../../inquiry.config';
+import { Inquiry } from '../../types/inquiry';
+import { DateService } from '@gmrc-admin/core';
 
 @Injectable()
 export class InquiryListStore extends Store<InquiryListStoreState> {
   private storeRequestStateUpdater: StoreRequestStateUpdater;
   private reloadList$: Subject<undefined> = new Subject();
-  private pageSizeOptions: number[] = [10, 20, 30, 40];
+  pageSizeOptions: number[] = [10, 20, 30, 40];
+  totalCount: number = null;
   private pageRequest = new PageRequest(1, this.pageSizeOptions[0]);
   private destroy$: Subject<boolean> = new Subject<boolean>();
+  displayedColumns: string[] = [
+    'name',
+    'roomType',
+    'roomNumber',
+    'willOccupyIn',
+    'foundGMRCthrough',
+    'actions',
+  ];
   constructor(
-    private endPoint: InquiryListEndpoint
+    private endPoint: InquiryListEndpoint,
+    private dateService: DateService
   ) {
     super(new InquiryListStoreState());
   }
   init(): void {
-    console.log('the motherfucking ',this.state);
-
+    this.storeRequestStateUpdater = getStoreRequestStateUpdater(this);
+    console.log('the initState ', this.state);
     this.pageRequest.filters.type = INQUIRY_CONFIG.filters.types.ALLINQUIRIES;
     this.initReloadList$();
-    this.storeRequestStateUpdater = getStoreRequestStateUpdater(this);
+    this.reloadLists();
+
+  }
+  reloadLists(): void {
+    this.reloadList$.next();
   }
   private initReloadList$(): void {
     this.reloadList$
       .pipe(
         switchMap(() => {
-          console.log('xxxxx');
           return this.endPoint.list(this.pageRequest, this.storeRequestStateUpdater);
+        }),
+        map((pageData) => {
+          pageData.data.forEach(inquiry => {
+            inquiry.willOccupyIn = this.dateService.dateToDateString(inquiry.willOccupyIn);
+          });
         }),
         tap(
           (pageData) => {
-          console.log('the page data ', pageData);
+            console.log('page data ', pageData);
+            this.updateInquiryListState(pageData);
           },
-          (err) => {
-            console.log('the error ', err);
-          }
         ),
-        retry(),
         takeUntil(this.destroy$)
       )
       .subscribe();
   }
+  private updateInquiryListState(pageData: PageData<Inquiry>): void {
+    this.setState({
+      ...this.state,
+      dataSource: pageData.data,
+      totalCount: pageData.totalCount
+    });
+  }
+  private changeInquiry
 
 }

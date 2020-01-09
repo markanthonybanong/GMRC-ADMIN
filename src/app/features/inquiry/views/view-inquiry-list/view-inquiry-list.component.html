@@ -1,7 +1,13 @@
-<app-inquiry-list-header>
-</app-inquiry-list-header>
-<app-inquiry-list
- [state$]="store.state$"
->
+<div class="app-content-container">
+  <app-inquiry-list-header
+   class="app-content-header-container">
+  </app-inquiry-list-header>
+  <app-inquiry-list-body
+   class="app-content-body-container"
+   [state$]="store.state$"
+   [displayedColumns]="store.displayedColumns"
+   [pageSizeOptions]="store.pageSizeOptions"
+  >
+  </app-inquiry-list-body>
+</div>
 
-</app-inquiry-list>

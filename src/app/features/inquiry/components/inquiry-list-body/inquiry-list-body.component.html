@@ -1,8 +1,11 @@
-<mat-card *ngIf="state$ | async as subs">
+<mat-card *ngIf="state$ | async as subs" class="app-content-body">
   <div class="center-content" *ngIf="subs.requests.list.inProgress">
     <mat-spinner></mat-spinner>
   </div>
-  <table *ngIf="subs.requets.list.success" mat-table [dataSource]="dataSource">
+  <div class="center-content" *ngIf="subs.requests.list.error">
+   <h1>Oops! Something went wrong</h1>
+  </div>
+  <table *ngIf="subs.requests.list.success" mat-table [dataSource]="subs.dataSource">
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef>Name</th>
       <td mat-cell *matCellDef="let element">{{element.name}}</td>
@@ -32,15 +35,15 @@
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let element" class="actions-container">
         <mat-icon  (click)="updateInquiry(element._id)">edit</mat-icon>
-        <mat-icon  (click)="deleteInquiry(element._id, element.name)">delete_forever</mat-icon>
+        <mat-icon  (click)="deleteInquiry(element._id, element.name)" color="warn">delete_forever</mat-icon>
       </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  <mat-card-actions>
+  <mat-card-actions *ngIf="subs.requests.list.success">
     <mat-paginator
-      [length]="totalCount"
+      [length]="subs.totalCount"
       [pageSizeOptions]="pageSizeOptions"
       showFirstLastButtons
       (page)="onPaginatorUpdate($event)">

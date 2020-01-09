@@ -1,15 +1,31 @@
-.app-content-header{
-  margin: 5px 5px 0 5px;
-  >.second-column{
-    button {
-      margin-top: 5px;
-      width: 100%;
+.app-content-container{
+   display: flex;
+   flex-flow: column;
+   height: 100%;
+  .app-content-header-container{
+    .app-content-header{
+      margin: 5px 5px 0 5px;
+      >.second-column{
+        button {
+          margin-top: 5px;
+          width: 100%;
+        }
+        button:first-child{
+          margin-top: 0px;
+        }
+      }
     }
-    button:first-child{
-      margin-top: 0px;
+  }
+  .app-content-body-container{
+    display: flex;
+    flex: 1 1 auto;
+    .app-content-body{
+      margin: 5px 5px 5px 5px;
+      flex: 1 1 auto;
     }
   }
 }
+
 
 /*MEDIA QUERIES*/
 /*MAX-WIDTH*/

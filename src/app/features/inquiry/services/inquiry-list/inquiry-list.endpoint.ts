@@ -17,7 +17,7 @@ export class InquiryListEndpoint {
       .pipe(
         tap(
           (pageData) => {
-            requestStateUpdater(request.name, {inProgress: false});
+            requestStateUpdater(request.name, {inProgress: false, success: true});
             return pageData;
           },
           (error: HttpErrorResponse) => {

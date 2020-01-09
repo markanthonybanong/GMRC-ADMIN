@@ -9,7 +9,9 @@ import { API_CONFIG } from './api.config';
 })
 export class ApiService {
 
-  constructor(private http: HttpClient, private localStorageService: LocalStorageService) { }
+  constructor(private http: HttpClient, private localStorageService: LocalStorageService) {
+    this.initHttpOptionsHeader();
+   }
   initHttpOptionsHeader(): void {
     const token = this.localStorageService.getItem('token');
     API_CONFIG.httpOptions.headers = new HttpHeaders({
