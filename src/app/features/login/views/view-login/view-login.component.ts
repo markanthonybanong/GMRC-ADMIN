@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginStore } from '../../services/login-store';
 import { enumsToArray } from '@gmrc-admin/shared/helpers';
 import { UserType } from '../../login.constants';
-import { LoginEndPoint } from '../../services/login-end-point';
+import { LoginStore } from '../../services/login.store';
+import { LoginEndPoint } from '../../services/login.endpoint';
+
 @Component({
   selector: 'app-view-login',
   templateUrl: './view-login.component.html',

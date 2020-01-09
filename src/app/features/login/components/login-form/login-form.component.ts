@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatSelectChange } from '@angular/material';
-import { LoginStoreState } from '../../services/login-store-state';
+import { LoginStoreState } from '../../services/login.store.state';
 
 @Component({
   selector: 'app-login-form',

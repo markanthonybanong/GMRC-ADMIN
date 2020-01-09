@@ -1,18 +1,18 @@
 
 import { Injectable, OnDestroy } from '@angular/core';
 import {Store} from 'rxjs-observable-store';
-import { LoginStoreState } from './login-store-state';
 import { UserType } from '../login.constants';
 import { Credential } from '../types/credential';
 import { StoreRequestStateUpdater } from '@gmrc-admin/shared/types';
 import { getStoreRequestStateUpdater } from '@gmrc-admin/shared/helpers';
-import { LoginEndPoint } from './login-end-point';
 import { tap } from 'rxjs/internal/operators/tap';
 import { NumberService } from '@gmrc-admin/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
+import { LoginStoreState } from './login.store.state';
+import { LoginEndPoint } from './login.endpoint';
 
 @Injectable()
 export class LoginStore  extends Store<LoginStoreState> implements OnDestroy{
