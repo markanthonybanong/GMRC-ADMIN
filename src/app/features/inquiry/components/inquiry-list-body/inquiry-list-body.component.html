@@ -25,6 +25,7 @@
     <ng-container matColumnDef="willOccupyIn">
       <th mat-header-cell *matHeaderCellDef>Will occupy in</th>
       <td mat-cell *matCellDef="let element">
+        {{element.willOccupyIn}}
         <!-- {{convertDateToDateString(element.willOccupyIn)}}
           <div *ngIf="isShowWillOccupyInWarningMsg(element.willOccupyIn) && element.status !== 'Settled'" id="willOccupyInWarningMsg">
             {{warningMessage(element.willOccupyIn, element.name)}}

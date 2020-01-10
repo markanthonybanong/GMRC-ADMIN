@@ -26,7 +26,7 @@ export class LoginStore  extends Store<LoginStoreState> implements OnDestroy{
   });
 
   constructor(
-    private endpoint: LoginEndPoint,
+    private endPoint: LoginEndPoint,
     private numberService: NumberService,
     private router: Router,
     private formBuilder: FormBuilder
@@ -47,7 +47,7 @@ export class LoginStore  extends Store<LoginStoreState> implements OnDestroy{
     if (this.state.superAdminLogin && this.userType === UserType.SuperAdmin ) {
       this.router.navigate(['/inquiry']);
     } else {
-      this.endpoint.login(credential, this.storeRequestStateUpdater)
+      this.endPoint.login(credential, this.storeRequestStateUpdater)
         .pipe(
           tap(() => {
             if (credential.type === UserType.SuperAdmin) {
@@ -57,14 +57,14 @@ export class LoginStore  extends Store<LoginStoreState> implements OnDestroy{
             }
             },
           ),
-         takeUntil(this.destroy$)
+          takeUntil(this.destroy$)
         )
         .subscribe();
     }
   }
   onCreateAdminPassword(): void {
     const password = this.numberService.generateSixDigitNumber.toString();
-    this.endpoint.createAdminPassword(
+    this.endPoint.createAdminPassword(
       password,
       this.storeRequestStateUpdater
     ).pipe(

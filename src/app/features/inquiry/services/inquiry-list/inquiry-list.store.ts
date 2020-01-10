@@ -3,7 +3,7 @@ import { Store } from 'rxjs-observable-store';
 import { InquiryListStoreState } from './inquiry-list.store.state';
 import { StoreRequestStateUpdater, PageRequest, PageData } from '@gmrc-admin/shared/types';
 import { getStoreRequestStateUpdater } from '@gmrc-admin/shared/helpers';
-import { Subject } from 'rxjs';
+import { Subject, pairs } from 'rxjs';
 import { switchMap, tap, takeUntil, retry, map } from 'rxjs/operators';
 import { InquiryListEndpoint } from './inquiry-list.endpoint';
 import { INQUIRY_CONFIG } from '../../inquiry.config';
@@ -50,16 +50,12 @@ export class InquiryListStore extends Store<InquiryListStoreState> {
           return this.endPoint.list(this.pageRequest, this.storeRequestStateUpdater);
         }),
         map((pageData) => {
-          pageData.data.forEach(inquiry => {
-            inquiry.willOccupyIn = this.dateService.dateToDateString(inquiry.willOccupyIn);
-          });
+           return this.modifyInquiryObject(pageData);
         }),
-        tap(
-          (pageData) => {
-            console.log('page data ', pageData);
-            this.updateInquiryListState(pageData);
-          },
-        ),
+        tap((pageData) => {
+          //console.log('the page data ', pageData);
+           this.updateInquiryListState(pageData);
+        }),
         takeUntil(this.destroy$)
       )
       .subscribe();
@@ -71,6 +67,15 @@ export class InquiryListStore extends Store<InquiryListStoreState> {
       totalCount: pageData.totalCount
     });
   }
-  private changeInquiry
+  private modifyInquiryObject(pageData: PageData<Inquiry>): PageData<Inquiry> {
+    return {
+      data: pageData.data.map((inquiry) => ({
+        ...inquiry, willOccupyIn: this.dateService.dateToDateString(inquiry.willOccupyIn)
+      })),
+      pageCount: pageData.pageCount,
+      totalCount: pageData.totalCount,
+    };
+  }
+
 
 }
