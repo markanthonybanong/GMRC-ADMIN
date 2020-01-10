@@ -7,7 +7,13 @@ import * as moment from 'moment';
 export class DateService {
 
   constructor() { }
-  dateToDateString(date: string): string {
+  dateToDateString(date: Date): string {
     return moment(date).format('dddd LL');
+  }
+  isDateAfter(date: Date): boolean {
+    return moment().isAfter(date, 'day');
+  }
+  dateDiff(date: Date): number {
+    return moment().diff(date, 'day');
   }
 }

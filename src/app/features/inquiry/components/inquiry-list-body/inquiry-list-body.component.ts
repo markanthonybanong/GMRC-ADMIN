@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { InquiryListStoreState } from '../../services/inquiry-list/inquiry-list.store.state';
+import { PageEvent } from '@angular/material';
 
 @Component({
   selector: 'app-inquiry-list-body',
@@ -11,10 +12,15 @@ export class InquiryListBodyComponent implements OnInit {
   @Input() displayedColumns: Array<string>;
   @Input() pageSizeOptions: Array<number>;
   @Input() totalCount: number;
+  @Output() paginatorUpdate = new EventEmitter<PageEvent>();
+
 
   constructor() { }
 
   ngOnInit() {
+  }
+  onPaginatorUpdate($event: PageEvent): void {
+    this.paginatorUpdate.emit($event);
   }
 
 }

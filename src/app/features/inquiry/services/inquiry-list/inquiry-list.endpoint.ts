@@ -11,6 +11,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class InquiryListEndpoint {
   constructor(private apiService: ApiService) {}
   list(pageRequest: PageRequest, requestStateUpdater: StoreRequestStateUpdater): Observable<PageData<Inquiry>> {
+    console.log('pageRequest here ', pageRequest);
+
     const request = INQUIRY_CONFIG.request.list;
     requestStateUpdater(request.name, {inProgress: true});
     return this.apiService.post<PageData<Inquiry>>(request.path, pageRequest)

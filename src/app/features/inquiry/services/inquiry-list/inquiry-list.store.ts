@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Store } from 'rxjs-observable-store';
 import { InquiryListStoreState } from './inquiry-list.store.state';
 import { StoreRequestStateUpdater, PageRequest, PageData } from '@gmrc-admin/shared/types';
@@ -9,9 +9,10 @@ import { InquiryListEndpoint } from './inquiry-list.endpoint';
 import { INQUIRY_CONFIG } from '../../inquiry.config';
 import { Inquiry } from '../../types/inquiry';
 import { DateService } from '@gmrc-admin/core';
+import { PageEvent } from '@angular/material';
 
 @Injectable()
-export class InquiryListStore extends Store<InquiryListStoreState> {
+export class InquiryListStore extends Store<InquiryListStoreState> implements OnDestroy {
   private storeRequestStateUpdater: StoreRequestStateUpdater;
   private reloadList$: Subject<undefined> = new Subject();
   pageSizeOptions: number[] = [10, 20, 30, 40];
@@ -23,7 +24,7 @@ export class InquiryListStore extends Store<InquiryListStoreState> {
     'roomType',
     'roomNumber',
     'willOccupyIn',
-    'foundGMRCthrough',
+    'phoneNumber',
     'actions',
   ];
   constructor(
@@ -53,8 +54,8 @@ export class InquiryListStore extends Store<InquiryListStoreState> {
            return this.modifyInquiryObject(pageData);
         }),
         tap((pageData) => {
-          //console.log('the page data ', pageData);
-           this.updateInquiryListState(pageData);
+          console.log('the page data ', pageData);
+          this.updateInquiryListState(pageData);
         }),
         takeUntil(this.destroy$)
       )
@@ -70,12 +71,27 @@ export class InquiryListStore extends Store<InquiryListStoreState> {
   private modifyInquiryObject(pageData: PageData<Inquiry>): PageData<Inquiry> {
     return {
       data: pageData.data.map((inquiry) => ({
-        ...inquiry, willOccupyIn: this.dateService.dateToDateString(inquiry.willOccupyIn)
+        ...inquiry,
+        willOccupyInWarningMsg: this.willOccupyInWarningMsg(inquiry.willOccupyIn),
+        willOccupyIn: this.dateService.dateToDateString(inquiry.willOccupyIn),
       })),
       pageCount: pageData.pageCount,
       totalCount: pageData.totalCount,
     };
   }
+  private willOccupyInWarningMsg(date: Date): string {
+    return this.dateService.isDateAfter(date)
+           ? `${this.dateService.dateDiff(date)} day/s over, since reservation date`
+           : null;
+  }
+  onPaginatorUpdate($event: PageEvent): void {
+    this.pageRequest.page = $event.pageIndex + 1;
+    this.pageRequest.limit = $event.pageSize;
+    this.reloadLists();
+  }
 
-
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
 }

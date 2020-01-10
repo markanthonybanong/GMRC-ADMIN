@@ -3,11 +3,12 @@ table{
   mat-icon:hover{
     cursor: pointer;
   }
-  .mat-header-cell{
+  .mat-header-cell, .mat-cell{
     text-align: center !important;
   }
-  .mat-cell{
-    text-align: center;
+  #warning-msg{
+    color: red;
+    font-size: 12px;
   }
   .actions-container{
     mat-icon:nth-child(1){
