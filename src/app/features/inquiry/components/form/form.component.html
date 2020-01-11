@@ -1,0 +1,41 @@
+<div class="center-content">
+  <mat-card class="form" *ngIf="state$ | async as subs">
+    <mat-card-title id="center-text">{{title}}</mat-card-title>
+    <mat-card-content [formGroup]="form">
+      <div id="form-column-2">
+        <mat-form-field>
+          <input matInput type="text" placeholder="Name"  formControlName="name">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput type="number" placeholder="Room number"  formControlName="roomNumber">
+        </mat-form-field>
+      </div>
+      <div id="form-column-2">
+        <mat-form-field>
+          <mat-select placeholder="How did you find us"  formControlName="howDidYouFindUs">
+            <mat-option *ngFor="let value of knownGMRCThrough;" [value]="value">
+              {{value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput [matDatepicker]="willOccupyIn" placeholder="Will occupy in" formControlName="willOccupyIn">
+          <mat-datepicker-toggle matSuffix [for]="willOccupyIn"></mat-datepicker-toggle>
+          <mat-datepicker #willOccupyIn></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div id="form-column-2">
+        <mat-form-field>
+          <input matInput type="number" placeholder="Phone number"  formControlName="phoneNumber">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Gender"  formControlName="gender">
+            <mat-option *ngFor="let gender of tenantEnumService.genders;" [value]="gender">
+              {{gender}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

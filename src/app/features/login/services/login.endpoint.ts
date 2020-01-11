@@ -5,8 +5,8 @@ import { StoreRequestStateUpdater } from '@gmrc-admin/shared/types';
 import { LOGIN_CONFIG } from '../login.configs';
 import { tap} from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ApiService, AuthService } from '@gmrc-admin/core';
-import { UserType } from '../login.constants';
+import { ApiService, AuthService } from '@gmrc-admin/shared/services';
+import { UserType } from '../login.enums';
 import { Token } from '@gmrc-admin/shared/types';
 @Injectable()
 export class LoginEndPoint {

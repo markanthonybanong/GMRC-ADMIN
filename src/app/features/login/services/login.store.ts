@@ -1,12 +1,12 @@
 
 import { Injectable, OnDestroy } from '@angular/core';
 import {Store} from 'rxjs-observable-store';
-import { UserType } from '../login.constants';
+import { UserType } from '../login.enums';
 import { Credential } from '../types/credential';
 import { StoreRequestStateUpdater } from '@gmrc-admin/shared/types';
 import { getStoreRequestStateUpdater } from '@gmrc-admin/shared/helpers';
 import { tap } from 'rxjs/internal/operators/tap';
-import { NumberService } from '@gmrc-admin/core';
+import { generateSixDigitNumber } from '@gmrc-admin/shared/helpers';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -27,7 +27,6 @@ export class LoginStore  extends Store<LoginStoreState> implements OnDestroy{
 
   constructor(
     private endPoint: LoginEndPoint,
-    private numberService: NumberService,
     private router: Router,
     private formBuilder: FormBuilder
   ) {
@@ -63,7 +62,7 @@ export class LoginStore  extends Store<LoginStoreState> implements OnDestroy{
     }
   }
   onCreateAdminPassword(): void {
-    const password = this.numberService.generateSixDigitNumber.toString();
+    const password = generateSixDigitNumber().toString();
     this.endPoint.createAdminPassword(
       password,
       this.storeRequestStateUpdater

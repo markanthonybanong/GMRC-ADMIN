@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '@gmrc-admin/core';
-
+import { AuthService } from '@gmrc-admin/shared/services';
 @Component({
   selector: 'app-side-nav',
   templateUrl: './side-nav.component.html',
@@ -35,7 +34,7 @@ export class SideNavComponent implements OnInit {
     this.router.navigate(['/photo']);
   }
   onLogOut(): void {
-    this.authService.logOut();
+    this.authService.onLogOut();
   }
 
 }

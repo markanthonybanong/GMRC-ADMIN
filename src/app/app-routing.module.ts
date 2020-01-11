@@ -4,7 +4,7 @@ import { PageNotFoundComponent } from './views/page-not-found/page-not-found.com
 import { LoginModule } from './features/login/login.module';
 import { InquiryModule } from './features/inquiry/inquiry.module';
 import { LayoutComponent } from './layout/layout/layout.component';
-import { AuthGuardService } from '@gmrc-admin/core';
+import { AuthGuardService } from '@gmrc-admin/shared/services';
 
 
 const routes: Routes = [

@@ -22,6 +22,8 @@
       "@gmrc-admin/shared": ["src/app/shared"],
       "@gmrc-admin/shared/helpers": ["src/app/shared/helpers"],
       "@gmrc-admin/shared/types": ["src/app/shared/types"],
+      "@gmrc-admin/shared/enums": ["src/app/shared/enums"],
+      "@gmrc-admin/shared/services": ["src/app/shared/services"],
       "@gmrc-admin/core": ["src/app/core"]
     }
   },

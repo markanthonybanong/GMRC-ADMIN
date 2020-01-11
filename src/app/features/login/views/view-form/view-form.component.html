@@ -1,0 +1,12 @@
+<app-form
+   [form]="store.form"
+   [userTypes]="userTypes"
+   (userType)="store.setUserType($event)"
+   [buttonName]="store.buttonName"
+   (login)="store.onLogin($event)"
+   [state$]="store.state$"
+   (createAdminPassword)="store.onCreateAdminPassword()"
+   [adminPassword]="store.createdAdminPassword"
+>
+</app-form>
+

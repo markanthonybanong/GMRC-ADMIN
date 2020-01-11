@@ -1,0 +1,15 @@
+ <div class="app-content-container">
+   <app-list-header
+    class="app-content-header-container"
+    (addInquiry)="store.onAddInquiry()"
+   >
+   </app-list-header>
+   <app-list-body
+    class="app-content-body-container"
+    [state$]="store.state$"
+    [displayedColumns]="store.displayedColumns"
+    [pageSizeOptions]="store.pageSizeOptions"
+    (paginatorUpdate)="store.onPaginatorUpdate($event)"
+   >
+   </app-list-body>
+ </div>

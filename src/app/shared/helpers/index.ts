@@ -1,2 +1,4 @@
-export * from './array-helpers';
-export * from './end-point-helpers';
+export * from './array';
+export * from './endpoint';
+export * from './date';
+export * from './number';
