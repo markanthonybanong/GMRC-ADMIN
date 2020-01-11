@@ -5,6 +5,8 @@ import { FormGroup } from '@angular/forms';
 export class FormStoreState {
   requests: FormRequests = {
     submit: {
+    },
+    inquiry: {
     }
   };
 

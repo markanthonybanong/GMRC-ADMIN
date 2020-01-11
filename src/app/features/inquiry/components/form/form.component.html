@@ -1,5 +1,8 @@
-<div class="center-content">
-  <mat-card class="form" *ngIf="state$ | async as subs">
+<div class="center-content" *ngIf="state$ | async as subs">
+  <mat-card *ngIf="subs.requests.inquiry.inProgress">
+    <mat-spinner></mat-spinner>
+  </mat-card>
+  <mat-card class="form" *ngIf="subs.requests.inquiry.success">
     <mat-card-title id="center-text">{{title}}</mat-card-title>
     <mat-card-content [formGroup]="form">
       <div id="form-column-2">
