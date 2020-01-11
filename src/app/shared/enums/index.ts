@@ -1,1 +1,2 @@
-export * from './genders';
+export * from './gender';
+export * from './room-type';

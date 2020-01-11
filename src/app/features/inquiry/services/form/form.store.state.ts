@@ -1,10 +1,11 @@
 import { Inquiry } from '../../types/inquiry';
 import { FormRequests } from '../../types/form-requests';
+import { FormGroup } from '@angular/forms';
 
 export class FormStoreState {
-  inquiry: Inquiry;
   requests: FormRequests = {
     submit: {
     }
   };
+
 }

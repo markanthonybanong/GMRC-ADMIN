@@ -30,12 +30,46 @@
         </mat-form-field>
         <mat-form-field>
           <mat-select placeholder="Gender"  formControlName="gender">
-            <mat-option *ngFor="let gender of tenantEnumService.genders;" [value]="gender">
+            <mat-option *ngFor="let gender of genders;" [value]="gender">
               {{gender}}
             </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
+      <mat-form-field id="form-column-1">
+        <mat-select placeholder="Room type"  (selectionChange)="onRoomChange($event)" formControlName="roomType">
+          <mat-option *ngFor="let roomType of roomTypes;" [value]="roomType">
+            {{roomType}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngFor="let bedInfo of form.get('bedInfos').controls; let i=index;" formArrayName="bedInfos">
+        <div [formGroupName]="i" id="form-column-2">
+          <mat-form-field>
+            <input matInput type="number" placeholder="Bed number"  formControlName="bedNumber">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput type="number" placeholder="Deck number"  formControlName="deckNumber">
+          </mat-form-field>
+        </div>
+      </div>
     </mat-card-content>
+    <mat-card-actions>
+      <div class="action-buttons-container-flex-end">
+        <button
+          color="primary"
+          mat-raised-button
+          (click)="onBack()"
+        >Back
+        </button>
+        <button
+          color="primary"
+          mat-raised-button
+          (click)="onSubmit()"
+          [disabled]="form.invalid || subs.requests.submit.inProgress"
+        >{{buttonName}}
+        </button>
+      </div>
+    </mat-card-actions>
   </mat-card>
 </div>
