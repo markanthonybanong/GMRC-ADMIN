@@ -28,15 +28,15 @@ export class FormEndpoint {
       )
     );
   }
-  add(body: Inquiry, requestStateUpdater): Observable<Inquiry> {
+  add(inquiry: Inquiry, requestStateUpdater): Observable<Inquiry> {
     const request = INQUIRY_CONFIG.request.submit;
     requestStateUpdater(request.name, {inProgress: true});
-    return this.apiService.post<Inquiry>(request.path, body)
+    return this.apiService.post<Inquiry>(request.path.add, inquiry)
       .pipe(
         tap(
-          (inquiry) => {
+          (createdInquiry) => {
             requestStateUpdater(request.name, {inProgress: false, success: true});
-            return inquiry;
+            return createdInquiry;
           },
           (error: HttpErrorResponse) => {
             requestStateUpdater(request.name, {inProgress: false, error: true});

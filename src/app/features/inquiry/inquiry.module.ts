@@ -8,14 +8,15 @@ import { ViewFormComponent } from './views/view-form/view-form.component';
 import { ListHeaderComponent } from './components/list-header/list-header.component';
 import { ListBodyComponent } from './components/list-body/list-body.component';
 import { FormComponent } from './components/form/form.component';
-
+import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
+import { ErrorResponseDirective } from '@gmrc-admin/shared/directives';
 @NgModule({
   declarations: [
     ViewListComponent,
     ViewFormComponent,
     ListHeaderComponent,
     ListBodyComponent,
-    FormComponent
+    FormComponent,
   ],
   imports: [
     CommonModule,
@@ -23,6 +24,9 @@ import { FormComponent } from './components/form/form.component';
     ReactiveFormsModule,
     FormsModule,
     SharedModule
+  ],
+  entryComponents: [
+     ActionResponseComponent
   ]
 })
 export class InquiryModule { }

@@ -54,7 +54,7 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy {
         tap((pageData) => {
           this.updateInquiryListState(pageData);
         }),
-     //   retry(1),
+        retry(1),
         takeUntil(this.destroy$)
       )
       .subscribe();
@@ -89,6 +89,9 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy {
   }
   onAddInquiry(): void {
     this.router.navigate(['inquiry/add']);
+  }
+  onInquiryUpdate(objectId: string): void {
+    this.router.navigate([`inquiry/update/${objectId}`]);
   }
 
   ngOnDestroy(): void {

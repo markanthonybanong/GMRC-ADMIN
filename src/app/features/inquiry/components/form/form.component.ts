@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormStoreState } from '../../services/form/form.store.state';
 import { FormGroup, FormArray } from '@angular/forms';
 import { MatSelectChange } from '@angular/material';
+import { Request } from '@gmrc-admin/shared/enums';
 
 @Component({
   selector: 'app-form',
@@ -16,7 +17,7 @@ export class FormComponent implements OnInit {
   @Input() genders: Array<string>;
   @Input() roomTypes: Array<string>;
   @Input() bedInfos: FormArray;
-  @Input() buttonName: string;
+  @Input() request: Request;
   @Output() formRoomChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() formBack: EventEmitter<null> = new EventEmitter<null>();
   @Output() formSubmit: EventEmitter<object> = new EventEmitter<object>();

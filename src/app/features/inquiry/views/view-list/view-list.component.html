@@ -9,7 +9,9 @@
     [state$]="store.state$"
     [displayedColumns]="store.displayedColumns"
     [pageSizeOptions]="store.pageSizeOptions"
-    (paginatorUpdate)="store.onPaginatorUpdate($event)"
+    [request]="request"
+    (listPaginatorUpdate)="store.onPaginatorUpdate($event)"
+    (listInquiryUpdate)="store.onInquiryUpdate($event)"
    >
    </app-list-body>
  </div>

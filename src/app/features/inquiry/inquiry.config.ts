@@ -22,5 +22,9 @@ export const INQUIRY_CONFIG = {
       ADVANCESEARCHINQUIRY: 'advanceSearchInquiry'
     },
     inquiryObjectId: 'inquiryObjectId',
+  },
+  actions: {
+    add: 'ADD INQUIRY',
+    update: 'UPDATE INQUIRY'
   }
 };

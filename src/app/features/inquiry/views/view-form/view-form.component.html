@@ -5,11 +5,10 @@
  [knownGMRCThrough]="store.knownGMRCThrough"
  [genders]="store.genders"
  [roomTypes]="store.roomTypes"
- (formRoomChange)="store.onRoomChange($event)"
  [bedInfos]="store.bedInfos"
+ [request]="request"
+ (formRoomChange)="store.onRoomChange($event)"
  (formBack)="store.onBack()"
- [buttonName]="store.buttonName"
  (formSubmit)="store.onSubmit($event)"
 >
-
 </app-form>

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormStore } from '../../services/form/form.store';
 import { FormEndpoint } from '../../services/form/form.endpoint';
+import { Request } from '@gmrc-admin/shared/enums';
 
 @Component({
   selector: 'app-view-form',
@@ -16,6 +17,9 @@ export class ViewFormComponent implements OnInit {
 
   ngOnInit() {
     this.store.init();
+  }
+  get request(): object {
+    return Request;
   }
 
 }

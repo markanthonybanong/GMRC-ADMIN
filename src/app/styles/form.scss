@@ -1,25 +1,29 @@
 .form-container{
   height: 100%;
   display: flex;
-  #form-error-msg{
+  .spinner-container{
+    flex:1 0 auto;
+  }
+  .form-error-msg{
     flex: 1 0 auto;
     margin: 5px;
   }
-  .form{
-    #form-column-1{
-      width: 100%;
+}
+
+.form{
+  #form-column-1{
+    width: 100%;
+  }
+  #form-column-2{
+    mat-form-field{
+      width: 48%;
     }
-    #form-column-2{
-      mat-form-field{
-        width: 48%;
-      }
-      display: flex;
-      justify-content: space-between;
-    }
-    .action-buttons-container-flex-end{
-      display: flex;
-      justify-content: flex-end;
-    }
+    display: flex;
+    justify-content: space-between;
+  }
+  .action-buttons-container-flex-end{
+    display: flex;
+    justify-content: flex-end;
   }
 }
 

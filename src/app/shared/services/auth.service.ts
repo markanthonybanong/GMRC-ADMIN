@@ -16,9 +16,16 @@ export class AuthService {
     private localStorageService: LocalStorageService,
     private apiService: ApiService,
     private router: Router
-    ) { }
+  ) { }
 
-  login(path: string, credential: object): Observable<Token> {
+  get isTokenExpired(): boolean {
+    return new JwtHelperService().isTokenExpired(this.localStorageService.getItem('token'));
+  }
+  onLogOut(): void {
+    this.localStorageService.clear();
+    this.router.navigate(['/login']);
+  }
+  onLogin(path: string, credential: object): Observable<Token> {
     return this.apiService.post<Token>(path, credential)
       .pipe(
         tap( (response) => {
@@ -30,12 +37,4 @@ export class AuthService {
     this.localStorageService.setItem('token', response.token);
     this.apiService.initHttpOptionsHeader();
   }
-  isTokenValid(): boolean {
-    return new JwtHelperService().isTokenExpired(this.localStorageService.getItem('token'));
-  }
-  onLogOut(): void {
-    this.localStorageService.clear();
-    this.router.navigate(['/login']);
-  }
-
 }

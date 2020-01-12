@@ -16,7 +16,7 @@ export class FormEndpoint {
                     ? LOGIN_CONFIG.request.superAdminLogin
                     : LOGIN_CONFIG.request.adminLogin;
     requestStateUpdater(request.name, {inProgress: true});
-    return this.authService.login(request.path, credential)
+    return this.authService.onLogin(request.path, credential)
       .pipe(
         tap(
           (response) => {

@@ -24,7 +24,11 @@
       "@gmrc-admin/shared/types": ["src/app/shared/types"],
       "@gmrc-admin/shared/enums": ["src/app/shared/enums"],
       "@gmrc-admin/shared/services": ["src/app/shared/services"],
-      "@gmrc-admin/core": ["src/app/core"]
+      "@gmrc-admin/shared/components": ["src/app/shared/components"],
+      "@gmrc-admin/shared/modals": ["src/app/shared/modals"],
+      "@gmrc-admin/shared/directives": ["src/app/shared/directives"],
+      "@gmrc-admin/core": ["src/app/core"],
+
     }
   },
   "angularCompilerOptions": {

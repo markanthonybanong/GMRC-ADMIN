@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class LocalStorageService {
-  private prependKey: 'gmrc-admin-';
+  private prependKey = 'gmrc-admin-';
 
   constructor() { }
   clear() {

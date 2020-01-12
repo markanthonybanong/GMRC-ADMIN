@@ -6,11 +6,13 @@ import { FormStoreState } from './form.store.state';
 import { Store } from 'rxjs-observable-store';
 import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
 import { enumsToArray, getStoreRequestStateUpdater, PageRequest } from '@gmrc-admin/shared/helpers';
-import { Gender, RoomType } from '@gmrc-admin/shared/enums';
+import { Gender, RoomType, Request } from '@gmrc-admin/shared/enums';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Inquiry } from '../../types/inquiry';
 import { switchMap, tap, takeUntil, filter } from 'rxjs/operators';
 import { INQUIRY_CONFIG } from '../../inquiry.config';
+import { MatDialog } from '@angular/material';
+import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
 
 @Injectable()
 export class FormStore extends Store<FormStoreState> implements OnDestroy {
@@ -20,11 +22,11 @@ export class FormStore extends Store<FormStoreState> implements OnDestroy {
   form = this.formBuilder.group({
     name: [null, Validators.required],
     roomNumber: [null, Validators.required],
-    howDidYouFindUs:  [null, Validators.required],
+    howDidYouFindUs: null,
     willOccupyIn:  [null, Validators.required],
-    phoneNumber: [null, Validators.required],
-    gender: [null, Validators.required],
-    roomType:  [null, Validators.required],
+    phoneNumber: null,
+    gender: null,
+    roomType:  null,
     bedInfos: this.formBuilder.array([]),
     _id: null,
   });
@@ -40,7 +42,8 @@ export class FormStore extends Store<FormStoreState> implements OnDestroy {
     private endpoint: FormEndpoint,
     private formBuilder: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dialog: MatDialog,
   ) {
     super(new FormStoreState());
   }
@@ -79,18 +82,11 @@ export class FormStore extends Store<FormStoreState> implements OnDestroy {
     this.router.navigate(['inquiry']);
   }
   onSubmit(inquiry: Inquiry): void {
-    this.state$
-      .pipe(
-        tap((state) => {
-          if (state.add) {
-            console.log('addd');
-          } else {
-
-          }
-        }),
-        takeUntil(this.destroy$)
-      )
-      .subscribe();
+    if (this.state.add) {
+      this.add(inquiry);
+    } else {
+      this.update(inquiry);
+    }
   }
   private pushBedInfoFormGroup(): void {
     this.bedInfos.push(this.bedInfoFormGroup);
@@ -106,6 +102,7 @@ export class FormStore extends Store<FormStoreState> implements OnDestroy {
       }),
       tap((pageData) => {
         this.updateState();
+
         //set form value
       }),
       takeUntil(this.destroy$)
@@ -117,5 +114,38 @@ export class FormStore extends Store<FormStoreState> implements OnDestroy {
       ...this.state,
       add: false,
     });
+  }
+  private add(inquiry: Inquiry): void {
+    this.endpoint.add(inquiry, this.storeRequestStateUpdater)
+      .pipe(
+        tap(
+          (createdInquiry) => {
+            this.dialog.open(
+              ActionResponseComponent, {
+                data: {
+                  title: INQUIRY_CONFIG.actions.add,
+                  content: `Added inquiry for ${createdInquiry.name}`
+                }
+              }
+            );
+          },
+          (error) => {
+            this.dialog.open(
+              ActionResponseComponent, {
+                data: {
+                  title: INQUIRY_CONFIG.actions.add,
+                  content: Request.Error,
+                }
+              }
+            );
+          }
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+
+  }
+  private update(inquiry: Inquiry): void {
+
   }
 }
