@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { enumsToArray } from '@gmrc-admin/shared/helpers';
 import { UserType } from '../../login.enums';
-import { LoginStore } from '../../services/login.store';
-import { LoginEndPoint } from '../../services/login.endpoint';
+import { FormStore } from '../../services/form.store';
+import { FormEndpoint } from '../../services/form.endpoint';
 
 @Component({
   selector: 'app-view-form',
   templateUrl: './view-form.component.html',
   styleUrls: ['./view-form.component.scss'],
-  providers: [LoginStore, LoginEndPoint]
+  providers: [FormStore, FormEndpoint]
 })
 export class ViewFormComponent implements OnInit {
 
   constructor(
-    private store: LoginStore
+    private store: FormStore
   ) { }
 
   ngOnInit() {

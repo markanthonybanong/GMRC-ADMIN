@@ -3,6 +3,16 @@ export const INQUIRY_CONFIG = {
     list: {
       name: 'list',
       path: 'inquiry/page',
+    },
+    inquiry: {
+      name: 'inquiry',
+      path: 'inquiry/page',
+    },
+    submit: {
+      name: 'submit',
+      path: {
+        add: 'inquiry/',
+      }
     }
   },
   filters: {
@@ -11,5 +21,6 @@ export const INQUIRY_CONFIG = {
       INQUIRYBYOBJECTID: 'inquiryByObjectId',
       ADVANCESEARCHINQUIRY: 'advanceSearchInquiry'
     },
+    inquiryObjectId: 'inquiryObjectId',
   }
 };

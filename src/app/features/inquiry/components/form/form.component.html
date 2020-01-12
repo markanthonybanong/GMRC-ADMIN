@@ -1,78 +1,85 @@
-<div class="center-content" *ngIf="state$ | async as subs">
-  <mat-card *ngIf="subs.requests.inquiry.inProgress">
+<div *ngIf="state$ | async as subs" class="form-container">
+  <div *ngIf="subs.requests.inquiry.inProgress">
     <mat-spinner></mat-spinner>
+  </div>
+  <mat-card id="form-error-msg" *ngIf="subs.requests.inquiry.error">
+    <div class="center-content">
+      <h1>Oops! Something went wrong</h1>
+    </div>
   </mat-card>
-  <mat-card class="form" *ngIf="subs.requests.inquiry.success">
-    <mat-card-title id="center-text">{{title}}</mat-card-title>
-    <mat-card-content [formGroup]="form">
-      <div id="form-column-2">
-        <mat-form-field>
-          <input matInput type="text" placeholder="Name"  formControlName="name">
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput type="number" placeholder="Room number"  formControlName="roomNumber">
-        </mat-form-field>
-      </div>
-      <div id="form-column-2">
-        <mat-form-field>
-          <mat-select placeholder="How did you find us"  formControlName="howDidYouFindUs">
-            <mat-option *ngFor="let value of knownGMRCThrough;" [value]="value">
-              {{value}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput [matDatepicker]="willOccupyIn" placeholder="Will occupy in" formControlName="willOccupyIn">
-          <mat-datepicker-toggle matSuffix [for]="willOccupyIn"></mat-datepicker-toggle>
-          <mat-datepicker #willOccupyIn></mat-datepicker>
-        </mat-form-field>
-      </div>
-      <div id="form-column-2">
-        <mat-form-field>
-          <input matInput type="number" placeholder="Phone number"  formControlName="phoneNumber">
-        </mat-form-field>
-        <mat-form-field>
-          <mat-select placeholder="Gender"  formControlName="gender">
-            <mat-option *ngFor="let gender of genders;" [value]="gender">
-              {{gender}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <mat-form-field id="form-column-1">
-        <mat-select placeholder="Room type"  (selectionChange)="onRoomChange($event)" formControlName="roomType">
-          <mat-option *ngFor="let roomType of roomTypes;" [value]="roomType">
-            {{roomType}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <div *ngFor="let bedInfo of form.get('bedInfos').controls; let i=index;" formArrayName="bedInfos">
-        <div [formGroupName]="i" id="form-column-2">
+  <div class="center-content">
+    <mat-card class="form" *ngIf="subs.requests.inquiry.inProgress === false">
+      <mat-card-title id="center-text">{{title}}</mat-card-title>
+      <mat-card-content [formGroup]="form">
+        <div id="form-column-2">
           <mat-form-field>
-            <input matInput type="number" placeholder="Bed number"  formControlName="bedNumber">
+            <input matInput type="text" placeholder="Name"  formControlName="name">
           </mat-form-field>
           <mat-form-field>
-            <input matInput type="number" placeholder="Deck number"  formControlName="deckNumber">
+            <input matInput type="number" placeholder="Room number"  formControlName="roomNumber">
           </mat-form-field>
         </div>
-      </div>
-    </mat-card-content>
-    <mat-card-actions>
-      <div class="action-buttons-container-flex-end">
-        <button
-          color="primary"
-          mat-raised-button
-          (click)="onBack()"
-        >Back
-        </button>
-        <button
-          color="primary"
-          mat-raised-button
-          (click)="onSubmit()"
-          [disabled]="form.invalid || subs.requests.submit.inProgress"
-        >{{buttonName}}
-        </button>
-      </div>
-    </mat-card-actions>
-  </mat-card>
+        <div id="form-column-2">
+          <mat-form-field>
+            <mat-select placeholder="How did you find us"  formControlName="howDidYouFindUs">
+              <mat-option *ngFor="let value of knownGMRCThrough;" [value]="value">
+                {{value}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput [matDatepicker]="willOccupyIn" placeholder="Will occupy in" formControlName="willOccupyIn">
+            <mat-datepicker-toggle matSuffix [for]="willOccupyIn"></mat-datepicker-toggle>
+            <mat-datepicker #willOccupyIn></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div id="form-column-2">
+          <mat-form-field>
+            <input matInput type="number" placeholder="Phone number"  formControlName="phoneNumber">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-select placeholder="Gender"  formControlName="gender">
+              <mat-option *ngFor="let gender of genders;" [value]="gender">
+                {{gender}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <mat-form-field id="form-column-1">
+          <mat-select placeholder="Room type"  (selectionChange)="onRoomChange($event)" formControlName="roomType">
+            <mat-option *ngFor="let roomType of roomTypes;" [value]="roomType">
+              {{roomType}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div *ngFor="let bedInfo of form.get('bedInfos').controls; let i=index;" formArrayName="bedInfos">
+          <div [formGroupName]="i" id="form-column-2">
+            <mat-form-field>
+              <input matInput type="number" placeholder="Bed number"  formControlName="bedNumber">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="number" placeholder="Deck number"  formControlName="deckNumber">
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <div class="action-buttons-container-flex-end">
+          <button
+            color="primary"
+            mat-raised-button
+            (click)="onBack()"
+          >Back
+          </button>
+          <button
+            color="primary"
+            mat-raised-button
+            (click)="onSubmit()"
+            [disabled]="form.invalid || subs.requests.submit.inProgress"
+          >{{buttonName}}
+          </button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
 </div>

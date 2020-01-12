@@ -28,7 +28,7 @@ export class AuthService {
   }
   private setSession(response: Token): void {
     this.localStorageService.setItem('token', response.token);
-   // this.apiService.initHttpOptionsHeader();
+    this.apiService.initHttpOptionsHeader();
   }
   isTokenValid(): boolean {
     return new JwtHelperService().isTokenExpired(this.localStorageService.getItem('token'));

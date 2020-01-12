@@ -11,11 +11,11 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
-import { LoginStoreState } from './login.store.state';
-import { LoginEndPoint } from './login.endpoint';
+import { FormStoreState } from './form.store.state';
+import { FormEndpoint } from './form.endpoint';
 
 @Injectable()
-export class LoginStore  extends Store<LoginStoreState> implements OnDestroy{
+export class FormStore  extends Store<FormStoreState> implements OnDestroy{
   private userType: string = UserType.SuperAdmin;
   private createdAdminPassword: string = null;
   private storeRequestStateUpdater: StoreRequestStateUpdater;
@@ -26,11 +26,11 @@ export class LoginStore  extends Store<LoginStoreState> implements OnDestroy{
   });
 
   constructor(
-    private endPoint: LoginEndPoint,
+    private endpoint: FormEndpoint,
     private router: Router,
     private formBuilder: FormBuilder
   ) {
-    super(new  LoginStoreState());
+    super(new  FormStoreState());
   }
   init(): void {
     this.storeRequestStateUpdater = getStoreRequestStateUpdater(this);
@@ -46,7 +46,7 @@ export class LoginStore  extends Store<LoginStoreState> implements OnDestroy{
     if (this.state.superAdminLogin && this.userType === UserType.SuperAdmin ) {
       this.router.navigate(['/inquiry']);
     } else {
-      this.endPoint.login(credential, this.storeRequestStateUpdater)
+      this.endpoint.login(credential, this.storeRequestStateUpdater)
         .pipe(
           tap(() => {
             if (credential.type === UserType.SuperAdmin) {
@@ -63,7 +63,7 @@ export class LoginStore  extends Store<LoginStoreState> implements OnDestroy{
   }
   onCreateAdminPassword(): void {
     const password = generateSixDigitNumber().toString();
-    this.endPoint.createAdminPassword(
+    this.endpoint.createAdminPassword(
       password,
       this.storeRequestStateUpdater
     ).pipe(

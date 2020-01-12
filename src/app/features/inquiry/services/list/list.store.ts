@@ -2,12 +2,12 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { ListStoreState } from './list.store.state';
 import { Store } from 'rxjs-observable-store';
 import { PageEvent } from '@angular/material';
-import { StoreRequestStateUpdater, PageRequest, PageData } from '@gmrc-admin/shared/types';
+import { StoreRequestStateUpdater, PageData } from '@gmrc-admin/shared/types';
 import { Subject } from 'rxjs';
-import { getStoreRequestStateUpdater } from '@gmrc-admin/shared/helpers';
+import { getStoreRequestStateUpdater, PageRequest } from '@gmrc-admin/shared/helpers';
 import { INQUIRY_CONFIG } from '../../inquiry.config';
 import { Router } from '@angular/router';
-import { switchMap, map, tap, takeUntil } from 'rxjs/operators';
+import { switchMap, map, tap, takeUntil, retry } from 'rxjs/operators';
 import { Inquiry } from '../../types/inquiry';
 import { ListEndpoint } from './list.endpoint';
 import { toDateString, isDateAfter, dateDiff} from '@gmrc-admin/shared/helpers';
@@ -28,7 +28,7 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy {
     'actions',
   ];
   constructor(
-    private endPoint: ListEndpoint,
+    private endpoint: ListEndpoint,
     private router: Router
   ) {
     super(new ListStoreState());
@@ -46,7 +46,7 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy {
     this.reloadList$
       .pipe(
         switchMap(() => {
-          return this.endPoint.list(this.pageRequest, this.storeRequestStateUpdater);
+          return this.endpoint.list(this.pageRequest, this.storeRequestStateUpdater);
         }),
         map((pageData) => {
            return this.modifyInquiryObject(pageData);
@@ -54,6 +54,7 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy {
         tap((pageData) => {
           this.updateInquiryListState(pageData);
         }),
+     //   retry(1),
         takeUntil(this.destroy$)
       )
       .subscribe();

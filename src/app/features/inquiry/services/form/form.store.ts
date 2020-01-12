@@ -5,10 +5,12 @@ import { Subject } from 'rxjs';
 import { FormStoreState } from './form.store.state';
 import { Store } from 'rxjs-observable-store';
 import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
-import { enumsToArray } from '@gmrc-admin/shared/helpers';
+import { enumsToArray, getStoreRequestStateUpdater, PageRequest } from '@gmrc-admin/shared/helpers';
 import { Gender, RoomType } from '@gmrc-admin/shared/enums';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Inquiry } from '../../types/inquiry';
+import { switchMap, tap, takeUntil, filter } from 'rxjs/operators';
+import { INQUIRY_CONFIG } from '../../inquiry.config';
 
 @Injectable()
 export class FormStore extends Store<FormStoreState> implements OnDestroy {
@@ -33,21 +35,38 @@ export class FormStore extends Store<FormStoreState> implements OnDestroy {
     'Flyers',
     'etc'
   ];
+  private pageRequest = new PageRequest(null, null);
   constructor(
-    private endPoint: FormEndpoint,
+    private endpoint: FormEndpoint,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     super(new FormStoreState());
   }
   init(): void {
-
+    this.storeRequestStateUpdater = getStoreRequestStateUpdater(this);
+    this.subscribeToRouteParamater();
   }
   get genders(): Array<string> {
     return enumsToArray(Gender);
   }
   get roomTypes(): Array<string> {
     return enumsToArray(RoomType);
+  }
+  get bedInfos(): FormArray {
+    return this.form.get('bedInfos') as FormArray;
+  }
+  get bedInfoFormGroup(): FormGroup {
+    return this.formBuilder.group({
+      bedNumber: [null, Validators.required],
+      deckNumber: [null, Validators.required]
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
   onRoomChange(roomType: string): void {
     if (roomType === RoomType.BEDSPACE && this.bedInfos.length === 0) {
@@ -56,27 +75,32 @@ export class FormStore extends Store<FormStoreState> implements OnDestroy {
       this.bedInfos.removeAt(0);
     }
   }
-  get bedInfos(): FormArray {
-    return this.form.get('bedInfos') as FormArray;
-  }
-  private pushBedInfoFormGroup(): void {
-    this.bedInfos.push(this.bedInfoFormGroup);
-  }
-  get bedInfoFormGroup(): FormGroup {
-    return this.formBuilder.group({
-      bedNumber: [null, Validators.required],
-      deckNumber: [null, Validators.required]
-    });
-  }
   onBack(): void {
     this.router.navigate(['inquiry']);
   }
   onSubmit(inquiry: Inquiry): void {
     console.log('the inquiry ', inquiry);
   }
+  private pushBedInfoFormGroup(): void {
+    this.bedInfos.push(this.bedInfoFormGroup);
+  }
+  private subscribeToRouteParamater(): void {
+    this.route.paramMap
+    .pipe(
+      filter( (params) =>  params.get('id') !== null),
+      switchMap((params) => {
 
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
+        this.pageRequest.filters.type = INQUIRY_CONFIG.filters.types.INQUIRYBYOBJECTID;
+        this.pageRequest.filters[INQUIRY_CONFIG.filters.inquiryObjectId] = params.get('id');
+        return this.endpoint.inquiry(this.pageRequest, this.storeRequestStateUpdater);
+      }),
+      tap((pageData) => {
+        console.log('the page data ', pageData);
+
+        //set form value
+      }),
+      takeUntil(this.destroy$)
+    )
+    .subscribe((data) => console.log('here data'));
   }
 }

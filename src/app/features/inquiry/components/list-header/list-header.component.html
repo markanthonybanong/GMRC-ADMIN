@@ -11,7 +11,12 @@
     <button mat-raised-button color="primary" (click)='displayAllInquiries()'>
       <span>Display All Inquiry</span>
     </button>
-    <button mat-raised-button color="primary" (click)='onAddInquiry()'>
+    <button
+    routerLinkActive="active"
+     mat-raised-button
+     color="primary"
+     (click)='onAddInquiry()'
+     >
       <span>Add Inquiry</span>
     </button>
   </div>
