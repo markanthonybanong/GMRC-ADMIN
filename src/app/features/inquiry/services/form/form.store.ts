@@ -79,7 +79,18 @@ export class FormStore extends Store<FormStoreState> implements OnDestroy {
     this.router.navigate(['inquiry']);
   }
   onSubmit(inquiry: Inquiry): void {
-    console.log('the inquiry ', inquiry);
+    this.state$
+      .pipe(
+        tap((state) => {
+          if (state.add) {
+            console.log('addd');
+          } else {
+
+          }
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
   private pushBedInfoFormGroup(): void {
     this.bedInfos.push(this.bedInfoFormGroup);
@@ -89,18 +100,22 @@ export class FormStore extends Store<FormStoreState> implements OnDestroy {
     .pipe(
       filter( (params) =>  params.get('id') !== null),
       switchMap((params) => {
-
         this.pageRequest.filters.type = INQUIRY_CONFIG.filters.types.INQUIRYBYOBJECTID;
         this.pageRequest.filters[INQUIRY_CONFIG.filters.inquiryObjectId] = params.get('id');
         return this.endpoint.inquiry(this.pageRequest, this.storeRequestStateUpdater);
       }),
       tap((pageData) => {
-        console.log('the page data ', pageData);
-
+        this.updateState();
         //set form value
       }),
       takeUntil(this.destroy$)
     )
-    .subscribe((data) => console.log('here data'));
+    .subscribe();
+  }
+  private updateState(): void {
+    this.setState({
+      ...this.state,
+      add: false,
+    });
   }
 }
