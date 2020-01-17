@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { FormStoreState } from './form.store.state';
 import { Store } from 'rxjs-observable-store';
 import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
-import { enumsToArray, getStoreRequestStateUpdater, PageRequest } from '@gmrc-admin/shared/helpers';
+import { enumsToArray, getStoreRequestStateUpdater } from '@gmrc-admin/shared/helpers';
 import { Gender, RoomType, Request } from '@gmrc-admin/shared/enums';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Inquiry } from '../../types/inquiry';
@@ -30,14 +30,13 @@ export class FormStore extends Store<FormStoreState> implements OnDestroy {
     bedInfos: this.formBuilder.array([]),
     _id: null,
   });
-  buttonName = 'Add';
   knownGMRCThrough: Array<string> = [
     'Through social platforms',
     'Someone suggested',
     'Flyers',
     'etc'
   ];
-  private pageRequest = new PageRequest(null, null);
+
   constructor(
     private endpoint: FormEndpoint,
     private formBuilder: FormBuilder,
@@ -96,9 +95,17 @@ export class FormStore extends Store<FormStoreState> implements OnDestroy {
     .pipe(
       filter( (params) =>  params.get('id') !== null),
       switchMap((params) => {
-        this.pageRequest.filters.type = INQUIRY_CONFIG.filters.types.INQUIRYBYOBJECTID;
-        this.pageRequest.filters[INQUIRY_CONFIG.filters.inquiryObjectId] = params.get('id');
-        return this.endpoint.inquiry(this.pageRequest, this.storeRequestStateUpdater);
+        this.setState({
+          ...this.state,
+          pageRequest: {
+            ...this.state.pageRequest,
+            filters: {
+              ...this.state.pageRequest.filters,
+              [INQUIRY_CONFIG.filters.inquiryObjectId]: params.get('id'),
+            }
+          }
+        });
+        return this.endpoint.inquiry(this.state.pageRequest, this.storeRequestStateUpdater);
       }),
       tap((pageData) => {
         this.updateState();

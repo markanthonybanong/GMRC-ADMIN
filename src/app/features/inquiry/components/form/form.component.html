@@ -78,7 +78,7 @@
             mat-raised-button
             (click)="onSubmit()"
             [disabled]="form.invalid || subs.requests.submit.inProgress"
-          >{{subs.add === true ? 'Add' : 'Update'}}
+          >{{subs.add ? 'Add' : 'Update'}}
           </button>
         </div>
       </mat-card-actions>

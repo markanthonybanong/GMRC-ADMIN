@@ -1,6 +1,6 @@
 <div class="center-content">
   <mat-card class="form" *ngIf="state$ | async as subs">
-    <mat-card-title id="center-text">GMRC ADMIN</mat-card-title>
+    <mat-card-title class="center-text">GMRC ADMIN</mat-card-title>
     <mat-card-content [formGroup]="form">
       <mat-form-field id="form-column-1" appearance="outline">
         <mat-label>User Type</mat-label>
@@ -15,15 +15,15 @@
         <input matInput type="password" placeholder="Password"  formControlName="password">
       </mat-form-field>
     </mat-card-content>
-    <div class="error-field">
-      <p id="center-text" *ngIf="subs.requests.login.error">INVALID PASSWORD OR PASSWORD HAVE EXPIRED</p>
-      <p id="center-text" *ngIf="subs.requests.createAdminAccount.error">SOMETHING WENT WRONG</p>
+    <div class="login-error-msg">
+      <p class="center-text error" *ngIf="subs.requests.login.error">INVALID PASSWORD OR PASSWORD HAVE EXPIRED</p>
+      <p class="center-text error" *ngIf="subs.requests.createAdminAccount.error">SOMETHING WENT WRONG</p>
     </div>
-    <div class="message-field">
-      <p id="center-text" *ngIf="subs.requests.createAdminAccount.success">CREATED ADMIN PASSWORD <span id="bold">{{adminPassword}}</span></p>
+    <div class="login-msg">
+      <p class="center-text" *ngIf="subs.requests.createAdminAccount.success">CREATED ADMIN PASSWORD <span id="bold">{{adminPassword}}</span></p>
     </div>
     <mat-card-actions>
-      <div class="action-buttons-container-flex-end">
+      <div class="action-buttons-container">
         <button
          color="primary"
          mat-raised-button

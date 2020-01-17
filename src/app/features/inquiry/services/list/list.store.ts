@@ -1,90 +1,69 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, ViewChild } from '@angular/core';
 import { ListStoreState } from './list.store.state';
 import { Store } from 'rxjs-observable-store';
-import { PageEvent } from '@angular/material';
-import { StoreRequestStateUpdater, PageData } from '@gmrc-admin/shared/types';
+import { PageEvent, MatTableDataSource, MatPaginator } from '@angular/material';
+import { StoreRequestStateUpdater, PageData, PageRequest } from '@gmrc-admin/shared/types';
 import { Subject } from 'rxjs';
-import { getStoreRequestStateUpdater, PageRequest } from '@gmrc-admin/shared/helpers';
-import { INQUIRY_CONFIG } from '../../inquiry.config';
+import { getStoreRequestStateUpdater } from '@gmrc-admin/shared/helpers';
 import { Router } from '@angular/router';
-import { switchMap, map, tap, takeUntil, retry } from 'rxjs/operators';
+import { switchMap, map, tap, takeUntil, retry, startWith } from 'rxjs/operators';
 import { Inquiry } from '../../types/inquiry';
 import { ListEndpoint } from './list.endpoint';
 import { toDateString, isDateAfter, dateDiff} from '@gmrc-admin/shared/helpers';
+import { StateVariableService, DataTableService } from '@gmrc-admin/shared/services';
+import { SubjectVariableService } from 'src/app/shared/services/subject-variable.service';
+import { Request} from '@gmrc-admin/shared/enums';
+import { DataSource } from '@angular/cdk/table';
+import * as inquiryHelpers from '../../helpers/inquiry.helpers';
 @Injectable()
-export class ListStore  extends Store<ListStoreState> implements OnDestroy {
-  private storeRequestStateUpdater: StoreRequestStateUpdater;
+export class ListStore  extends Store<ListStoreState> implements OnDestroy{
+  // private storeRequestStateUpdater: StoreRequestStateUpdater;
   private reloadList$: Subject<undefined> = new Subject();
-  pageSizeOptions: number[] = [10, 20, 30, 40];
-  totalCount: number = null;
-  private pageRequest = new PageRequest(1, this.pageSizeOptions[0]);
+
   private destroy$: Subject<boolean> = new Subject<boolean>();
-  displayedColumns: string[] = [
-    'name',
-    'roomType',
-    'roomNumber',
-    'willOccupyIn',
-    'phoneNumber',
-    'actions',
-  ];
+
   constructor(
     private endpoint: ListEndpoint,
-    private router: Router
+    private router: Router,
+    private stateVarService: StateVariableService,
+    private subjectVarService: SubjectVariableService,
+    private dataTableService: DataTableService
   ) {
     super(new ListStoreState());
   }
+  get request(): object {
+    return Request;
+  }
+  get displayedColumns(): Array<string> {
+    return [
+      'name',
+      'roomType',
+      'roomNumber',
+      'willOccupyIn',
+      'phoneNumber',
+      'actions',
+    ];
+  }
+  get pageSizeOptions(): Array<number> {
+    return this.dataTableService.pageSizeOptions;
+  }
   init(): void {
-    this.storeRequestStateUpdater = getStoreRequestStateUpdater(this);
-    this.pageRequest.filters.type = INQUIRY_CONFIG.filters.types.ALLINQUIRIES;
+    this.stateVarService.storeRequestStateUpdater = getStoreRequestStateUpdater(this);
     this.initReloadList$();
     this.reloadLists();
   }
-  reloadLists(): void {
-    this.reloadList$.next();
-  }
-  private initReloadList$(): void {
-    this.reloadList$
-      .pipe(
-        switchMap(() => {
-          return this.endpoint.list(this.pageRequest, this.storeRequestStateUpdater);
-        }),
-        map((pageData) => {
-           return this.modifyInquiryObject(pageData);
-        }),
-        tap((pageData) => {
-          this.updateInquiryListState(pageData);
-        }),
-        retry(1),
-        takeUntil(this.destroy$)
-      )
-      .subscribe();
-  }
-  private updateInquiryListState(pageData: PageData<Inquiry>): void {
+  onPaginatorUpdate($event: PageEvent): void {
     this.setState({
       ...this.state,
-      dataSource: pageData.data,
-      totalCount: pageData.totalCount
+      table: {
+        ...this.state.table,
+        pageRequest: {
+          ...this.state.table.pageRequest,
+          page: $event.pageIndex + 1,
+          limit: $event.pageSize
+        }
+      }
     });
-  }
-  private modifyInquiryObject(pageData: PageData<Inquiry>): PageData<Inquiry> {
-    return {
-      data: pageData.data.map((inquiry) => ({
-        ...inquiry,
-        willOccupyInWarningMsg: this.willOccupyInWarningMsg(inquiry.willOccupyIn),
-        willOccupyIn: toDateString(inquiry.willOccupyIn),
-      })),
-      pageCount: pageData.pageCount,
-      totalCount: pageData.totalCount,
-    };
-  }
-  private willOccupyInWarningMsg(date: Date): string {
-    return isDateAfter(date)
-           ? `${dateDiff(date)} day/s over, since reservation date`
-           : null;
-  }
-  onPaginatorUpdate($event: PageEvent): void {
-    this.pageRequest.page = $event.pageIndex + 1;
-    this.pageRequest.limit = $event.pageSize;
     this.reloadLists();
   }
   onAddInquiry(): void {
@@ -98,4 +77,35 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
+  private reloadLists(): void {
+    this.reloadList$.next();
+  }
+  private initReloadList$(): void {
+    this.reloadList$
+      .pipe(
+        switchMap(() => {
+          return this.endpoint.list(this.state.table.pageRequest, this.stateVarService.storeRequestStateUpdater);
+        }),
+        map((pageData) => {
+          return inquiryHelpers.modifyInquiryObject(pageData);
+        }),
+        tap((pageData) => {
+         this.updateState(pageData);
+        }),
+        retry(1),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+  private updateState(pageData: PageData<Inquiry>): void {
+    this.setState({
+      ...this.state,
+      table: {
+        ...this.state.table,
+        totalCount: pageData.totalCount,
+        dataSource: pageData.data,
+      }
+    });
+  }
+
 }

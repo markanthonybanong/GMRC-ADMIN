@@ -1,1 +1,1 @@
-export * from './error-response.directive';
+export * from './action-response-error.directive';

@@ -9,7 +9,7 @@
     [state$]="store.state$"
     [displayedColumns]="store.displayedColumns"
     [pageSizeOptions]="store.pageSizeOptions"
-    [request]="request"
+    [request]="store.request"
     (listPaginatorUpdate)="store.onPaginatorUpdate($event)"
     (listInquiryUpdate)="store.onInquiryUpdate($event)"
    >

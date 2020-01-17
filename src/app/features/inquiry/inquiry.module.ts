@@ -9,7 +9,6 @@ import { ListHeaderComponent } from './components/list-header/list-header.compon
 import { ListBodyComponent } from './components/list-body/list-body.component';
 import { FormComponent } from './components/form/form.component';
 import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
-import { ErrorResponseDirective } from '@gmrc-admin/shared/directives';
 @NgModule({
   declarations: [
     ViewListComponent,

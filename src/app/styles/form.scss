@@ -2,10 +2,10 @@
   height: 100%;
   display: flex;
   .spinner-container{
-    flex:1 0 auto;
+    flex:1;
   }
   .form-error-msg{
-    flex: 1 0 auto;
+    flex:1;
     margin: 5px;
   }
 }
@@ -21,10 +21,11 @@
     display: flex;
     justify-content: space-between;
   }
-  .action-buttons-container-flex-end{
+  .action-buttons-container{
     display: flex;
     justify-content: flex-end;
   }
+
 }
 
 

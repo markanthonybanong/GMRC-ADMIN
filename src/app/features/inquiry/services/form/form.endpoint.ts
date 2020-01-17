@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '@gmrc-admin/shared/services';
-import { PageRequest } from '@gmrc-admin/shared/helpers';
-import { StoreRequestStateUpdater, PageData } from '@gmrc-admin/shared/types';
+import { StoreRequestStateUpdater, PageData, PageRequest } from '@gmrc-admin/shared/types';
 import { Observable, throwError } from 'rxjs';
 import { Inquiry } from '../../types/inquiry';
 import { INQUIRY_CONFIG } from '../../inquiry.config';

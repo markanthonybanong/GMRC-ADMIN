@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AngularMaterialModule } from './modules/angular-material.module';
 import { ActionResponseComponent } from './modals/action-response/action-response.component';
-import { ErrorResponseDirective } from './directives/error-response.directive';
+import { ActionResponseErrorDirective } from './directives/action-response-error.directive';
 
 @NgModule({
-  declarations: [ActionResponseComponent, ErrorResponseDirective],
+  declarations: [ActionResponseComponent, ActionResponseErrorDirective],
   imports: [
     CommonModule,
     AngularMaterialModule

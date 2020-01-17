@@ -1,5 +1,5 @@
 export interface PageData<T> {
-  data: T[];
+  data: Array<T>;
   pageCount: number;
   totalCount: number;
 }

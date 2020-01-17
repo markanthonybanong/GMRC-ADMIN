@@ -3,9 +3,9 @@
     <mat-spinner></mat-spinner>
   </div>
   <div class="center-content" *ngIf="subs.requests.list.error">
-   <h1 id="error">{{request.Error}}</h1>
+   <h1 class="error">{{request.Error}}</h1>
   </div>
-  <table *ngIf="subs.requests.list.success" mat-table [dataSource]="subs.dataSource">
+  <table *ngIf="subs.requests.list.success" mat-table [dataSource]="subs.table.dataSource">
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef>Name</th>
       <td mat-cell *matCellDef="let element">{{element.name}}</td>
@@ -41,10 +41,10 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  <mat-card-actions *ngIf="subs.requests.list.success">
+  <mat-card-actions>
     <mat-paginator
-      [length]="subs.totalCount"
-      [pageSizeOptions]="pageSizeOptions"
+      [pageSizeOptions]="[2, 5, 10]"
+      [length]="subs.table.totalCount"
       showFirstLastButtons
       (page)="onPaginatorUpdate($event)">
     </mat-paginator>
