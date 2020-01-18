@@ -16,7 +16,7 @@ export class ListBodyComponent{
   @Input() request: Request;
   @Output() listPaginatorUpdate: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
   @Output() listInquiryUpdate: EventEmitter<string> = new EventEmitter<string>();
-
+  @Output() listInquiryDelete: EventEmitter<object> = new EventEmitter<object>();
   constructor() { }
 
   onPaginatorUpdate($event: PageEvent): void {
@@ -25,5 +25,10 @@ export class ListBodyComponent{
   onUpdateInquiry(objectId: string): void {
     this.listInquiryUpdate.emit(objectId);
   }
-
+  onDeleteInquiry(tenantObjectId: string, tenantName: string): void {
+    this.listInquiryDelete.emit({
+      objectId: tenantObjectId,
+      name: tenantName
+    });
+  }
 }

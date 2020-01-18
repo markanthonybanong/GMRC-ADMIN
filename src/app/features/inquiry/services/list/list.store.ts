@@ -1,38 +1,36 @@
 import { Injectable, OnDestroy, ViewChild } from '@angular/core';
 import { ListStoreState } from './list.store.state';
 import { Store } from 'rxjs-observable-store';
-import { PageEvent, MatTableDataSource, MatPaginator } from '@angular/material';
-import { StoreRequestStateUpdater, PageData, PageRequest } from '@gmrc-admin/shared/types';
+import { PageEvent, MatDialog } from '@angular/material';
+import { PageData } from '@gmrc-admin/shared/types';
 import { Subject } from 'rxjs';
 import { getStoreRequestStateUpdater } from '@gmrc-admin/shared/helpers';
+import { Request } from '@gmrc-admin/shared/enums';
 import { Router } from '@angular/router';
-import { switchMap, map, tap, takeUntil, retry, startWith } from 'rxjs/operators';
+import { switchMap, map, tap, takeUntil, retry } from 'rxjs/operators';
 import { Inquiry } from '../../types/inquiry';
 import { ListEndpoint } from './list.endpoint';
-import { toDateString, isDateAfter, dateDiff} from '@gmrc-admin/shared/helpers';
-import { StateVariableService, DataTableService } from '@gmrc-admin/shared/services';
-import { SubjectVariableService } from 'src/app/shared/services/subject-variable.service';
-import { Request} from '@gmrc-admin/shared/enums';
-import { DataSource } from '@angular/cdk/table';
-import * as inquiryHelpers from '../../helpers/inquiry.helpers';
+import { DataStoreService } from '@gmrc-admin/shared/services';
+import { ToDelete } from '../../types/to-delete';
+import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
+import { INQUIRY_CONFIG } from '../../inquiry.config';
+import { modifyInquiryObject } from '../../helpers/list/modify-inquiry-object';
 @Injectable()
 export class ListStore  extends Store<ListStoreState> implements OnDestroy{
-  // private storeRequestStateUpdater: StoreRequestStateUpdater;
-  private reloadList$: Subject<undefined> = new Subject();
-
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private endpoint: ListEndpoint,
     private router: Router,
-    private stateVarService: StateVariableService,
-    private subjectVarService: SubjectVariableService,
-    private dataTableService: DataTableService
+    private dataStoreService: DataStoreService,
+    private dialog: MatDialog
   ) {
     super(new ListStoreState());
   }
-  get request(): object {
-    return Request;
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
   get displayedColumns(): Array<string> {
     return [
@@ -44,11 +42,8 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy{
       'actions',
     ];
   }
-  get pageSizeOptions(): Array<number> {
-    return this.dataTableService.pageSizeOptions;
-  }
   init(): void {
-    this.stateVarService.storeRequestStateUpdater = getStoreRequestStateUpdater(this);
+    this.dataStoreService.storeRequestStateUpdater = getStoreRequestStateUpdater(this);
     this.initReloadList$();
     this.reloadLists();
   }
@@ -72,22 +67,33 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy{
   onInquiryUpdate(objectId: string): void {
     this.router.navigate([`inquiry/update/${objectId}`]);
   }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
+  onInquiryDelete(toDelete: ToDelete): void {
+    const dialogRef = this.dialog.open(
+      ActionResponseComponent,{
+        data: {
+          title: INQUIRY_CONFIG.actions.delete,
+          content: `Are you sure you want to delete ${toDelete.name}'s inquiry?`
+        }
+      }
+    );
+    dialogRef.afterClosed().subscribe(deleteInquiry => {
+       if (deleteInquiry) {
+        this.deleteInquiry(toDelete.objectId);
+       }
+    });
   }
+
   private reloadLists(): void {
-    this.reloadList$.next();
+    this.dataStoreService.reloadList$.next();
   }
   private initReloadList$(): void {
-    this.reloadList$
+    this.dataStoreService.reloadList$
       .pipe(
         switchMap(() => {
-          return this.endpoint.list(this.state.table.pageRequest, this.stateVarService.storeRequestStateUpdater);
+          return this.endpoint.list(this.state.table.pageRequest, this.dataStoreService.storeRequestStateUpdater);
         }),
         map((pageData) => {
-          return inquiryHelpers.modifyInquiryObject(pageData);
+          return modifyInquiryObject(pageData);
         }),
         tap((pageData) => {
          this.updateState(pageData);
@@ -107,5 +113,30 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy{
       }
     });
   }
-
+  private deleteInquiry(objectId: string): void {
+    this.endpoint.delete(objectId, this.dataStoreService.storeRequestStateUpdater)
+      .pipe(
+        tap(
+          (inquiry) => {
+            this.dialog.open(ActionResponseComponent, {
+              data: {
+                title: INQUIRY_CONFIG.actions.delete,
+                content: `Deleted ${inquiry.name}'s inquiry`
+              }
+            });
+            this.reloadLists();
+          },
+          () => {
+            this.dialog.open(ActionResponseComponent, {
+              data: {
+                title: INQUIRY_CONFIG.actions.delete,
+                content: Request.Error,
+              }
+            });
+          }
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
 }

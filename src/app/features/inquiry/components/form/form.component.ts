@@ -11,12 +11,10 @@ import { Request } from '@gmrc-admin/shared/enums';
 })
 export class FormComponent implements OnInit {
   @Input() state$: FormStoreState;
-  @Input() title: string;
   @Input() form: FormGroup;
   @Input() knownGMRCThrough: Array<string>;
   @Input() genders: Array<string>;
   @Input() roomTypes: Array<string>;
-  @Input() bedInfos: FormArray;
   @Input() request: Request;
   @Output() formRoomChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() formBack: EventEmitter<null> = new EventEmitter<null>();

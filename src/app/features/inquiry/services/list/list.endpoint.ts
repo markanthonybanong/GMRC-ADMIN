@@ -16,7 +16,7 @@ export class ListEndpoint {
       .pipe(
         tap(
           (pageData) => {
-            requestStateUpdater(request.name, {inProgress: false, error: true});
+            requestStateUpdater(request.name, {inProgress: false, success: true});
             return pageData;
           },
           (error: HttpErrorResponse) => {
@@ -25,5 +25,22 @@ export class ListEndpoint {
           }
         )
       );
+  }
+  delete(objectId: string, requestStateUpdater): Observable<Inquiry> {
+    const request = INQUIRY_CONFIG.request.delete;
+    requestStateUpdater(request.name, {inProgress: true});
+    return this.apiService.delete<Inquiry>(`${request.path}${objectId}`)
+      .pipe(
+        tap(
+          (pageData) => {
+            requestStateUpdater(request.name, {inProgress: false, success: true});
+            return pageData;
+          },
+          (error: HttpErrorResponse) => {
+            requestStateUpdater(request.name, {inProgress: false, error: true});
+            return throwError(error);
+          }
+        )
+    );
   }
 }

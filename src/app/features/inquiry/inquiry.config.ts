@@ -4,15 +4,17 @@ export const INQUIRY_CONFIG = {
       name: 'list',
       path: 'inquiry/page',
     },
+    delete: {
+      name: 'delete',
+      path: 'inquiry/remove/'
+    },
     inquiry: {
       name: 'inquiry',
       path: 'inquiry/page',
     },
     submit: {
       name: 'submit',
-      path: {
-        add: 'inquiry/',
-      }
+      path: 'inquiry/',
     }
   },
   filters: {
@@ -25,6 +27,7 @@ export const INQUIRY_CONFIG = {
   },
   actions: {
     add: 'ADD INQUIRY',
-    update: 'UPDATE INQUIRY'
+    update: 'UPDATE INQUIRY',
+    delete: 'DELETE INQUIRY'
   }
 };

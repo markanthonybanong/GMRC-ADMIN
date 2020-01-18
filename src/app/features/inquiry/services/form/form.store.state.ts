@@ -7,11 +7,11 @@ export class FormStoreState {
     page: null,
     limit: null,
     filters: {
-      type: INQUIRY_CONFIG.filters.types.INQUIRYBYOBJECTID,
+      type: null,
+      inquiryObjectId: null,
     }
-
-  }
-  add = true;
+  };
+  update = false;
   requests: FormRequests = {
     submit: {
     },

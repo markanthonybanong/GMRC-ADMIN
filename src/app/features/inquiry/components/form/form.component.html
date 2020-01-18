@@ -6,12 +6,12 @@
   </div>
   <mat-card class="form-error-msg" *ngIf="subs.requests.inquiry.error">
     <div class="center-content">
-      <h1 id="error">{{request.Error}}</h1>
+      <h1 class="error">{{request.Error}}</h1>
     </div>
   </mat-card>
   <div class="center-content" *ngIf="subs.requests.inquiry.success">
     <mat-card class="form">
-      <mat-card-title id="center-text">{{title}}</mat-card-title>
+      <mat-card-title class="center-text">{{subs.update ? 'UPDATE INQUIRY' : 'ADD INQUIRY'}}</mat-card-title>
       <mat-card-content [formGroup]="form">
         <div id="form-column-2">
           <mat-form-field>
@@ -66,7 +66,7 @@
         </div>
       </mat-card-content>
       <mat-card-actions>
-        <div class="action-buttons-container-flex-end">
+        <div class="action-buttons-container">
           <button
             color="primary"
             mat-raised-button
@@ -78,7 +78,7 @@
             mat-raised-button
             (click)="onSubmit()"
             [disabled]="form.invalid || subs.requests.submit.inProgress"
-          >{{subs.add ? 'Add' : 'Update'}}
+          >{{subs.update ? 'Update' : 'Add'}}
           </button>
         </div>
       </mat-card-actions>

@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { FormEndpoint } from './form.endpoint';
 import { StoreRequestStateUpdater } from '@gmrc-admin/shared/types';
-import { Subject } from 'rxjs';
+import { Subject, pipe, of, Observable, observable } from 'rxjs';
 import { FormStoreState } from './form.store.state';
 import { Store } from 'rxjs-observable-store';
 import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
@@ -13,13 +13,15 @@ import { switchMap, tap, takeUntil, filter } from 'rxjs/operators';
 import { INQUIRY_CONFIG } from '../../inquiry.config';
 import { MatDialog } from '@angular/material';
 import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
+import { setFormValues } from '../../helpers/form/set-form-values';
+import { createBedInfo } from '../../helpers/form/create-bed-info';
+import { getBedInfos } from '../../helpers/form/get-bed-info';
+import { DataStoreService } from '@gmrc-admin/shared/services';
 
 @Injectable()
 export class FormStore extends Store<FormStoreState> implements OnDestroy {
-  private storeRequestStateUpdater: StoreRequestStateUpdater;
   private destroy$: Subject<boolean> = new Subject<boolean>();
-  title = 'ADD INQUIRY';
-  form = this.formBuilder.group({
+  private form = this.formBuilder.group({
     name: [null, Validators.required],
     roomNumber: [null, Validators.required],
     howDidYouFindUs: null,
@@ -30,117 +32,70 @@ export class FormStore extends Store<FormStoreState> implements OnDestroy {
     bedInfos: this.formBuilder.array([]),
     _id: null,
   });
-  knownGMRCThrough: Array<string> = [
-    'Through social platforms',
-    'Someone suggested',
-    'Flyers',
-    'etc'
-  ];
 
   constructor(
     private endpoint: FormEndpoint,
     private formBuilder: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute,
     private dialog: MatDialog,
+    private dataStoreService: DataStoreService
   ) {
     super(new FormStoreState());
-  }
-  init(): void {
-    this.storeRequestStateUpdater = getStoreRequestStateUpdater(this);
-    this.subscribeToRouteParamater();
-  }
-  get genders(): Array<string> {
-    return enumsToArray(Gender);
-  }
-  get roomTypes(): Array<string> {
-    return enumsToArray(RoomType);
-  }
-  get bedInfos(): FormArray {
-    return this.form.get('bedInfos') as FormArray;
-  }
-  get bedInfoFormGroup(): FormGroup {
-    return this.formBuilder.group({
-      bedNumber: [null, Validators.required],
-      deckNumber: [null, Validators.required]
-    });
   }
 
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
+  get knownGMRCThrough(): Array<string> {
+    return [
+      'Through social platforms',
+      'Someone suggested',
+      'Flyers',
+      'etc'
+    ];
+  }
+  init(): void {
+    this.dataStoreService.storeRequestStateUpdater = getStoreRequestStateUpdater(this);
+    if (this.state.update) {
+      this.getInquiry();
+    }
+  }
   onRoomChange(roomType: string): void {
-    if (roomType === RoomType.BEDSPACE && this.bedInfos.length === 0) {
-      this.pushBedInfoFormGroup();
-    } else if (roomType !== RoomType.BEDSPACE && this.bedInfos.length) {
-      this.bedInfos.removeAt(0);
+    if (roomType === RoomType.BEDSPACE && getBedInfos(this.form).length === 0) {
+      getBedInfos(this.form).push(createBedInfo());
+    } else if (roomType !== RoomType.BEDSPACE && getBedInfos(this.form).length) {
+      getBedInfos(this.form).removeAt(0);
     }
   }
   onBack(): void {
     this.router.navigate(['inquiry']);
   }
-  onSubmit(inquiry: Inquiry): void {
-    if (this.state.add) {
-      this.add(inquiry);
-    } else {
-      this.update(inquiry);
-    }
-  }
-  private pushBedInfoFormGroup(): void {
-    this.bedInfos.push(this.bedInfoFormGroup);
-  }
-  private subscribeToRouteParamater(): void {
-    this.route.paramMap
-    .pipe(
-      filter( (params) =>  params.get('id') !== null),
-      switchMap((params) => {
-        this.setState({
-          ...this.state,
-          pageRequest: {
-            ...this.state.pageRequest,
-            filters: {
-              ...this.state.pageRequest.filters,
-              [INQUIRY_CONFIG.filters.inquiryObjectId]: params.get('id'),
-            }
-          }
-        });
-        return this.endpoint.inquiry(this.state.pageRequest, this.storeRequestStateUpdater);
-      }),
-      tap((pageData) => {
-        this.updateState();
+  onSubmit(inputInquiry: Inquiry): void {
+    const observableInquiry: Observable<Inquiry> = this.state.update
+    ? this.endpoint.update(inputInquiry, this.dataStoreService.storeRequestStateUpdater)
+    : this.endpoint.add(inputInquiry, this.dataStoreService.storeRequestStateUpdater);
 
-        //set form value
-      }),
-      takeUntil(this.destroy$)
-    )
-    .subscribe();
-  }
-  private updateState(): void {
-    this.setState({
-      ...this.state,
-      add: false,
-    });
-  }
-  private add(inquiry: Inquiry): void {
-    this.endpoint.add(inquiry, this.storeRequestStateUpdater)
+    observableInquiry
       .pipe(
         tap(
-          (createdInquiry) => {
+          (inquiry) => {
             this.dialog.open(
               ActionResponseComponent, {
                 data: {
-                  title: INQUIRY_CONFIG.actions.add,
-                  content: `Added inquiry for ${createdInquiry.name}`
+                  title: this.state.update ? INQUIRY_CONFIG.actions.update : INQUIRY_CONFIG.actions.add,
+                  content: this.state.update
+                  ? `Updated ${inquiry.name}'s inquiry`
+                  : `Added inquiry for ${inquiry.name}`,
                 }
               }
             );
           },
-          (error) => {
+          () => {
             this.dialog.open(
               ActionResponseComponent, {
                 data: {
-                  title: INQUIRY_CONFIG.actions.add,
+                  title: this.state.update ? INQUIRY_CONFIG.actions.update : INQUIRY_CONFIG.actions.add,
                   content: Request.Error,
                 }
               }
@@ -150,9 +105,15 @@ export class FormStore extends Store<FormStoreState> implements OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
-
   }
-  private update(inquiry: Inquiry): void {
-
+  private getInquiry(): void {
+    this.endpoint.inquiry(this.state.pageRequest, this.dataStoreService.storeRequestStateUpdater)
+      .pipe(
+        tap((pageData) => {
+          setFormValues(this.form, pageData.data[0]);
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 }

@@ -3,5 +3,5 @@
   {{data.content}}
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-raised-button color="primary" (click)="onOk()">Ok</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="true">Ok</button>
 </mat-dialog-actions>

@@ -22,6 +22,25 @@
     .app-content-body{
       margin: 5px 5px 5px 5px;
       flex: 1 1 auto;
+      .table-container{
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .request-status{
+          .in-progress-request{
+            position: absolute;
+            left: 45%;
+            top: 42%;
+          }
+          .error-request{
+            position: absolute;
+            left: 35%;
+            top: 42%;
+          }
+        }
+
+      }
     }
   }
 }

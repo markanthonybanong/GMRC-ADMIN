@@ -8,10 +8,11 @@
     class="app-content-body-container"
     [state$]="store.state$"
     [displayedColumns]="store.displayedColumns"
-    [pageSizeOptions]="store.pageSizeOptions"
-    [request]="store.request"
+    [pageSizeOptions]="dataTableService.pageSizeOptions"
+    [request]="dataStoreService.request"
     (listPaginatorUpdate)="store.onPaginatorUpdate($event)"
     (listInquiryUpdate)="store.onInquiryUpdate($event)"
-   >
+    (listInquiryDelete)="store.onInquiryDelete($event)"
+    >
    </app-list-body>
  </div>
