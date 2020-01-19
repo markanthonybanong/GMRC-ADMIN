@@ -5,4 +5,4 @@ export * from './token';
 export * from './page-data';
 export * from './action-response-modal';
 export * from './page-request';
-export * from './table';
+export * from './list';

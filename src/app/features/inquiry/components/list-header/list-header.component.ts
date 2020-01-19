@@ -1,4 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { SearchComponent } from '../../modals/search/search.component';
+import { INQUIRY_CONFIG } from '../../inquiry.config';
 
 @Component({
   selector: 'app-list-header',
@@ -6,13 +9,33 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./list-header.component.scss']
 })
 export class ListHeaderComponent implements OnInit {
-  @Output() addInquiry = new EventEmitter();
-  constructor() { }
+  @Output() listAddInquiry: EventEmitter<null> = new EventEmitter<null>();
+  @Output() listSearch: EventEmitter<object> = new EventEmitter<object>();
+  @Output() listDisplayAllInquiry: EventEmitter<null> = new EventEmitter<null>();
+  constructor(
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit() {
   }
   onAddInquiry(): void {
-    this.addInquiry.emit();
+    this.listAddInquiry.emit();
   }
+  onSearch(): void {
+    const dialogRef = this.dialog.open(SearchComponent, {
+      data: {
+        title: INQUIRY_CONFIG.actions.search,
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+       this.listSearch.emit(result);
+      }
+    });
+  }
+  onDisplayAllInquiry(): void {
+    this.listDisplayAllInquiry.emit();
+  }
+
 
 }

@@ -23,11 +23,11 @@ export const INQUIRY_CONFIG = {
       INQUIRYBYOBJECTID: 'inquiryByObjectId',
       ADVANCESEARCHINQUIRY: 'advanceSearchInquiry'
     },
-    inquiryObjectId: 'inquiryObjectId',
   },
   actions: {
     add: 'ADD INQUIRY',
     update: 'UPDATE INQUIRY',
-    delete: 'DELETE INQUIRY'
+    delete: 'DELETE INQUIRY',
+    search: 'SEARCH INQUIRY'
   }
 };

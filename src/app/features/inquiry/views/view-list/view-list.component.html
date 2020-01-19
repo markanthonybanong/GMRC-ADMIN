@@ -1,7 +1,9 @@
  <div class="app-content-container">
    <app-list-header
     class="app-content-header-container"
-    (addInquiry)="store.onAddInquiry()"
+    (listAddInquiry)="store.onAddInquiry()"
+    (listSearch)="store.onSearch($event)"
+    (listDisplayAllInquiry)="store.onDisplayAllInquiry()"
    >
    </app-list-header>
    <app-list-body

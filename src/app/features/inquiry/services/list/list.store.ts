@@ -4,7 +4,7 @@ import { Store } from 'rxjs-observable-store';
 import { PageEvent, MatDialog } from '@angular/material';
 import { PageData } from '@gmrc-admin/shared/types';
 import { Subject } from 'rxjs';
-import { getStoreRequestStateUpdater } from '@gmrc-admin/shared/helpers';
+import { getStoreRequestStateUpdater, removeEmptyKeys } from '@gmrc-admin/shared/helpers';
 import { Request } from '@gmrc-admin/shared/enums';
 import { Router } from '@angular/router';
 import { switchMap, map, tap, takeUntil, retry } from 'rxjs/operators';
@@ -50,10 +50,10 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy{
   onPaginatorUpdate($event: PageEvent): void {
     this.setState({
       ...this.state,
-      table: {
-        ...this.state.table,
+      list: {
+        ...this.state.list,
         pageRequest: {
-          ...this.state.table.pageRequest,
+          ...this.state.list.pageRequest,
           page: $event.pageIndex + 1,
           limit: $event.pageSize
         }
@@ -69,7 +69,7 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy{
   }
   onInquiryDelete(toDelete: ToDelete): void {
     const dialogRef = this.dialog.open(
-      ActionResponseComponent,{
+      ActionResponseComponent, {
         data: {
           title: INQUIRY_CONFIG.actions.delete,
           content: `Are you sure you want to delete ${toDelete.name}'s inquiry?`
@@ -82,6 +82,39 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy{
        }
     });
   }
+  onSearch(search: object): void {
+    this.setState({
+      ...this.state,
+      list: {
+        ...this.state.list,
+        pageRequest: {
+          page: null,
+          limit: null,
+          filters: {
+            type: INQUIRY_CONFIG.filters.types.ADVANCESEARCHINQUIRY,
+            inquiryFilter: removeEmptyKeys(search),
+          }
+        }
+      }
+    });
+    this.reloadLists();
+  }
+  onDisplayAllInquiry(): void {
+    this.setState({
+      ...this.state,
+      list: {
+        ...this.state.list,
+        pageRequest: {
+          page: 1,
+          limit: 10,
+          filters: {
+            type: INQUIRY_CONFIG.filters.types.ALLINQUIRIES,
+          }
+        }
+      }
+    });
+    this.reloadLists();
+  }
 
   private reloadLists(): void {
     this.dataStoreService.reloadList$.next();
@@ -90,7 +123,7 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy{
     this.dataStoreService.reloadList$
       .pipe(
         switchMap(() => {
-          return this.endpoint.list(this.state.table.pageRequest, this.dataStoreService.storeRequestStateUpdater);
+          return this.endpoint.list(this.state.list.pageRequest, this.dataStoreService.storeRequestStateUpdater);
         }),
         map((pageData) => {
           return modifyInquiryObject(pageData);
@@ -100,14 +133,13 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy{
         }),
         retry(1),
         takeUntil(this.destroy$)
-      )
-      .subscribe();
+      ).subscribe();
   }
   private updateState(pageData: PageData<Inquiry>): void {
     this.setState({
       ...this.state,
-      table: {
-        ...this.state.table,
+      list: {
+        ...this.state.list,
         totalCount: pageData.totalCount,
         dataSource: pageData.data,
       }

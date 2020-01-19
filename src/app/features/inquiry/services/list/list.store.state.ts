@@ -1,10 +1,10 @@
 import { Inquiry } from '../../types/inquiry';
 import { ListRequests } from '../../types/list-requests';
 import { INQUIRY_CONFIG } from '../../inquiry.config';
-import { Table } from '@gmrc-admin/shared/types';
+import { List } from '@gmrc-admin/shared/types';
 
 export class ListStoreState {
-  table: Table<Inquiry> = {
+  list: List<Inquiry> = {
     pageRequest: {
       page: 1,
       limit: 10,

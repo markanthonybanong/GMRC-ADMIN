@@ -9,6 +9,7 @@ import { ListHeaderComponent } from './components/list-header/list-header.compon
 import { ListBodyComponent } from './components/list-body/list-body.component';
 import { FormComponent } from './components/form/form.component';
 import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
+import { SearchComponent } from './modals/search/search.component';
 @NgModule({
   declarations: [
     ViewListComponent,
@@ -16,6 +17,7 @@ import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
     ListHeaderComponent,
     ListBodyComponent,
     FormComponent,
+    SearchComponent,
   ],
   imports: [
     CommonModule,
@@ -25,7 +27,8 @@ import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
     SharedModule
   ],
   entryComponents: [
-     ActionResponseComponent
+     ActionResponseComponent,
+     SearchComponent
   ]
 })
 export class InquiryModule { }

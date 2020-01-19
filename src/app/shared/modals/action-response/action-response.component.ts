@@ -8,15 +8,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 })
 export class ActionResponseComponent implements OnInit {
 
-  constructor(
-    public dialogRef: MatDialogRef<ActionResponseComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
   }
-  onOk(): void {
-    this.dialogRef.close();
-  }
+
 
 }
