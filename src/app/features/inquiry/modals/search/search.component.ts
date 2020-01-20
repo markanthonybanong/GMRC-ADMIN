@@ -22,7 +22,7 @@ export class SearchComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.dataRoomService.onInit();
+    this.dataRoomService.init();
   }
 
 }

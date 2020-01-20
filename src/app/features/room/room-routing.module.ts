@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ViewRoomComponent } from './views/view-room/view-room.component';
 import { ViewTransientPrivateRoomComponent } from './views/view-transient-private-room/view-transient-private-room.component';
+import { ViewRoomFormComponent } from './views/view-room-form/view-room-form.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,11 @@ const routes: Routes = [
       // { path: 'unsettle-bill', component: UnsettleBillComponent}
     ]
   },
+  { path: 'add', component: ViewRoomFormComponent },
+  // { path: 'update-private-transient/:id', component: TransientPrivateFormComponent },
+  // { path: 'update-bedspace/:id', component: BedspaceFormComponent },
+  // { path: 'unsettle-bill/add', component: UnsettleBillFormComponent },
+  // { path: 'update-unsettle-bill/:id', component: UnsettleBillFormComponent },
 ];
 
 @NgModule({

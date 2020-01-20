@@ -1,0 +1,67 @@
+<div class="center-content">
+  <mat-card class="form" *ngIf="state$ | async as subs">
+    <mat-card-title class="center-text">{{subs.update ? 'UPDATE ROOM' : 'ADD ROOM'}}</mat-card-title>
+    <mat-card-content [formGroup]="form">
+      <div id="form-column-2">
+        <mat-form-field>
+            <input matInput type="number" placeholder="Room number" formControlName="number">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="number" placeholder="Floor number" formControlName="floor">
+        </mat-form-field>
+      </div>
+      <div id="form-column-2">
+        <mat-form-field>
+          <mat-select placeholder="Room type"  formControlName="type" (selectionChange)="onRoomTypeChange($event)">
+            <mat-option *ngFor="let type of roomTypes;" [value]="type">
+              {{type}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Aircon" formControlName="aircon">
+            <mat-option *ngFor="let status of airconStatuses;" [value]="status">
+              {{status}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div *ngFor="let property of form.get('roomProperties').controls; let i=index;" formArrayName="roomProperties">
+        <div [formGroupName]="i">
+          <div id="form-column-2">
+            <mat-form-field>
+              <mat-select placeholder="Room status" formControlName="status">
+                <mat-option *ngFor="let status of roomStatuses;" [value]="status">
+                  {{status}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="number" placeholder="Due rent date" formControlName="dueRentDate">
+            </mat-form-field>
+          </div>
+          <mat-form-field id="form-column-1">
+              <input matInput type="number" placeholder="Monthly rent" formControlName="monthlyRent">
+            </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <div class="action-buttons-container">
+          <button
+            color="primary"
+            mat-raised-button
+            (click)="onBack()"
+          >Back
+          </button>
+          <button
+            color="primary"
+            mat-raised-button
+            (click)="onSubmit()"
+            [disabled]="form.invalid || subs.requests.submit.inProgress"
+          >{{subs.update ? 'Update' : 'Add'}}
+          </button>
+        </div>
+    </mat-card-actions>
+  </mat-card>
+</div>

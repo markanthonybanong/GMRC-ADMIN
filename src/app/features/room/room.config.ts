@@ -8,13 +8,15 @@ export const ROOM_CONFIG = {
       name: 'delete',
       path: 'room/remove/'
     },
-    inquiry: {
-      name: 'inquiry',
-      path: 'room/page',
-    },
     submit: {
-      name: 'submit',
-      path: 'room/',
+      addRoom: {
+        name: 'submit',
+        path: 'room/createRoom',
+      },
+      updateRoom: {
+        name: 'submit',
+        path: 'room/updateRoom',
+      }
     }
   },
   filters: {

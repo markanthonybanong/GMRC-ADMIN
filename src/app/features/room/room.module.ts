@@ -11,6 +11,8 @@ import { SearchTransientPrivateRoomComponent } from './modals/search-transient-p
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { PaginatorComponent } from './components/paginator/paginator.component';
 import { ViewRoomFormComponent } from './views/view-room-form/view-room-form.component';
+import { RoomFormComponent } from './components/room-form/room-form.component';
+import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,7 @@ import { ViewRoomFormComponent } from './views/view-room-form/view-room-form.com
     SearchTransientPrivateRoomComponent,
     PaginatorComponent,
     ViewRoomFormComponent,
+    RoomFormComponent,
   ],
   imports: [
     CommonModule,
@@ -31,7 +34,8 @@ import { ViewRoomFormComponent } from './views/view-room-form/view-room-form.com
     SharedModule
   ],
   entryComponents: [
-    SearchTransientPrivateRoomComponent
+    SearchTransientPrivateRoomComponent,
+    ActionResponseComponent
   ]
 })
 export class RoomModule { }

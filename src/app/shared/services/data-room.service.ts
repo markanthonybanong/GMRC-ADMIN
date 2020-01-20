@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { enumsToArray } from '../helpers';
-import { RoomType, RoomStatus, AirconStatus } from '../enums';
 import { ApiService } from './api.service';
 import { PageData, PageRequest } from '../types';
 import { ROOM_CONFIG } from 'src/app/features/room/room.config';
 import { tap, switchMap, retry } from 'rxjs/operators';
 import { DataStoreService } from './data-store.service';
 import { Room } from 'src/app/features/room/types/room';
+import { RoomStatus, AirconStatus } from 'src/app/features/room/room.enums';
+import { RoomType } from '../enums';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class DataRoomService {
  public roomNumbers: Array<number> = [];
  public floorNumbers: Array<number> = [];
  constructor(private apiService: ApiService, private dataStoreService: DataStoreService) {}
- onInit(): void {
+ init(): void {
    this.initReloadTable$();
    this.reloadTable();
  }

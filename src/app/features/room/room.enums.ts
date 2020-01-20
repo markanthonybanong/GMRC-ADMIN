@@ -3,3 +3,8 @@ export enum RoomStatus {
   OCCUPIED = 'Occupied',
   RESERVED = 'Reserved'
 }
+
+export enum AirconStatus {
+  WITH = 'With',
+  WITHOUT = 'Without',
+}

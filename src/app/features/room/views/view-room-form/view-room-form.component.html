@@ -1,1 +1,12 @@
-<p>view-room-form works!</p>
+<app-room-form
+ [state$]="store.state$"
+ [form]="store.form"
+ [roomTypes]="dataRoomService.roomTypes"
+ [airconStatuses]="dataRoomService.airconStatuses"
+ [roomStatuses]="dataRoomService.roomStatuses"
+ (roomRoomType)="store.onRoomTypeChange($event)"
+ (roomBack)="store.onBack()"
+ (roomSubmit)="store.onSubmit($event)"
+>
+
+</app-room-form>
