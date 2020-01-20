@@ -1,4 +1,7 @@
-export class Room {
+import { Tenant } from '../../tenant/types/tenant';
+import { Bedspace } from './bedspace';
+
+export interface Room {
   number: number;
   floor: number;
   type: string;
@@ -8,9 +11,9 @@ export class Room {
     dueRentDate: number,
     monthlyRent: number,
     riceCookerBill: number,
-    tenants: Array<any>;
+    tenants: Array<Tenant>;
   }];
-  bedspaces: any[];
-  tenantsArr: any[];
+  bedspaces: Bedspace[];
+  tenantsArr: Tenant[];
   _id: string;
 }

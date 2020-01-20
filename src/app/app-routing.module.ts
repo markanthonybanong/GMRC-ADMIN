@@ -5,6 +5,7 @@ import { LoginModule } from './features/login/login.module';
 import { InquiryModule } from './features/inquiry/inquiry.module';
 import { LayoutComponent } from './layout/layout/layout.component';
 import { AuthGuardService } from '@gmrc-admin/shared/services';
+import { RoomModule } from './features/room/room.module';
 
 
 const routes: Routes = [
@@ -14,7 +15,8 @@ const routes: Routes = [
     path: '',
     component: LayoutComponent,
     children: [
-      { path: 'inquiry', loadChildren: () => InquiryModule, canActivate: [AuthGuardService] }
+      { path: 'inquiry', loadChildren: () => InquiryModule, canActivate: [AuthGuardService] },
+      { path: 'room', loadChildren: () => RoomModule, canActivate: [AuthGuardService] }
     ]
   },
   { path: '**', component: PageNotFoundComponent }

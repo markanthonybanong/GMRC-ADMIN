@@ -8,5 +8,5 @@ import { Subject } from 'rxjs';
 export class DataStoreService {
   public storeRequestStateUpdater: StoreRequestStateUpdater;
   public request: object = Request;
-  public reloadList$: Subject<undefined> = new Subject();
+  public reloadTable$: Subject<undefined> = new Subject();
 }

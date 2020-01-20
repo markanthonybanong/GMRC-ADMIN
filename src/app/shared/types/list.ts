@@ -1,6 +1,5 @@
 import { PageRequest } from './page-request';
-
-export interface List<T> {
+export interface Table<T> {
   pageRequest: PageRequest;
   totalCount: number;
   dataSource: Array<T>;

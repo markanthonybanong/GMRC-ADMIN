@@ -2,48 +2,67 @@
    display: flex;
    flex-flow: column;
    height: 100%;
-  .app-content-header-container{
-    .app-content-header{
-      margin: 5px 5px 0 5px;
-      >.second-column{
-        button {
-          margin-top: 5px;
-          width: 100%;
-        }
-        button:first-child{
-          margin-top: 0px;
-        }
+   .app-content-header{
+    margin: 5px 5px 0 5px;
+    >.second-column{
+      button {
+        margin-top: 5px;
+        width: 100%;
+      }
+      button:first-child{
+        margin-top: 0px;
       }
     }
   }
   .app-content-body-container{
     display: flex;
-    flex: 1 1 auto;
+    flex: 1 0 auto;
     .app-content-body{
       margin: 5px 5px 5px 5px;
-      flex: 1 1 auto;
-      .table-container{
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        .request-status{
-          .in-progress-request{
-            position: absolute;
-            left: 45%;
-            top: 42%;
-          }
-          .error-request{
-            position: absolute;
-            left: 35%;
-            top: 42%;
-          }
+      flex: 1 0 auto;
+      .request-status{
+        .in-progress-request{
+          position: absolute;
+          left: 45%;
+          top: 42%;
         }
-
+        .error-request{
+          position: absolute;
+          left: 33%;
+          top: 46%;
+        }
       }
     }
   }
 }
+/*push the paginator below in screen*/
+.table-container{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.app-content-routed-body-container{
+  height: 100%;
+  .app-content-routed-body{
+    height: inherit;
+    margin: 5px 5px 5px 5px;
+    .request-status{
+      .in-progress-request{
+        position: absolute;
+        left: 45%;
+        top: 55%;
+      }
+      .error-request{
+        position: absolute;
+        left: 33%;
+        top: 56%;
+      }
+    }
+  }
+}
+
 /*MEDIA QUERIES*/
 /*MAX-WIDTH*/
 @media (max-width: 768px) {

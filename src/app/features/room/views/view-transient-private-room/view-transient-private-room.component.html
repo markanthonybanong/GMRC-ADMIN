@@ -1,0 +1,33 @@
+ <div appSetParentElHeight class="app-content-routed-body-container">
+    <mat-card class="app-content-routed-body">
+      <div class="table-container">
+          <mat-card-content>
+              <app-transient-private-room-header
+              (roomSearch)="store.onSearch($event)"
+              (roomDisplayAllRooms)="store.onDisplayAllRooms()"
+              >
+              </app-transient-private-room-header>
+              <app-transient-private-room-body
+                [request]="store.request"
+                [displayedColumns]="store.displayedColumns"
+                [state$]="store.state$"
+              >
+              </app-transient-private-room-body>
+            </mat-card-content>
+            <mat-card-footer>
+              <app-paginator
+               [pageSizeOptions]="dataTableService.pageSizeOptions"
+               [totalCount]="store.totalCount"
+               (paginatorUpdate)="store.onPaginatorUpdate($event)"
+              ></app-paginator>
+            </mat-card-footer>
+      </div>
+    </mat-card>
+
+
+
+ </div>
+
+
+
+

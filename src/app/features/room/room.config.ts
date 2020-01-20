@@ -1,7 +1,7 @@
 export const ROOM_CONFIG = {
   request: {
-    list: {
-      name: 'list',
+    rooms: {
+      name: 'rooms',
       path: 'room/page',
     },
     delete: {
@@ -20,14 +20,16 @@ export const ROOM_CONFIG = {
   filters: {
     types: {
       ALLROOMS: 'allRooms',
-      ROOMBYOBJECTID: 'roomByObjectId',
-      ADVANCESEARCHROOM: 'advanceSearchRoom'
+      TRANSIENTPRIVATEROOMS: 'transientPrivateRooms',
+      TRANSIENTPRIVATEROOMBYOBJECTID: 'transientPrivateRoomByObjectId',
+      ADVANCESEARCHTRANSIENTPRIVATEROOMS: 'advanceSearchTransientPrivateRooms',
     },
     roomObjectId: 'roomObjectId',
   },
   actions: {
     add: 'ADD ROOM',
     update: 'UPDATE ROOM',
-    delete: 'DELETE ROOM'
+    delete: 'DELETE ROOM',
+    searchTransientPrivateRoom: 'SEARCH TRANSIENT/PRIVATE ROOM'
   }
 };

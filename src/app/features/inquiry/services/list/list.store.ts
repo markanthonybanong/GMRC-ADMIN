@@ -50,10 +50,10 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy{
   onPaginatorUpdate($event: PageEvent): void {
     this.setState({
       ...this.state,
-      list: {
-        ...this.state.list,
+      table: {
+        ...this.state.table,
         pageRequest: {
-          ...this.state.list.pageRequest,
+          ...this.state.table.pageRequest,
           page: $event.pageIndex + 1,
           limit: $event.pageSize
         }
@@ -85,8 +85,8 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy{
   onSearch(search: object): void {
     this.setState({
       ...this.state,
-      list: {
-        ...this.state.list,
+      table: {
+        ...this.state.table,
         pageRequest: {
           page: null,
           limit: null,
@@ -102,8 +102,8 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy{
   onDisplayAllInquiry(): void {
     this.setState({
       ...this.state,
-      list: {
-        ...this.state.list,
+      table: {
+        ...this.state.table,
         pageRequest: {
           page: 1,
           limit: 10,
@@ -117,13 +117,13 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy{
   }
 
   private reloadLists(): void {
-    this.dataStoreService.reloadList$.next();
+    this.dataStoreService.reloadTable$.next();
   }
   private initReloadList$(): void {
-    this.dataStoreService.reloadList$
+    this.dataStoreService.reloadTable$
       .pipe(
         switchMap(() => {
-          return this.endpoint.list(this.state.list.pageRequest, this.dataStoreService.storeRequestStateUpdater);
+          return this.endpoint.list(this.state.table.pageRequest, this.dataStoreService.storeRequestStateUpdater);
         }),
         map((pageData) => {
           return modifyInquiryObject(pageData);
@@ -138,8 +138,8 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy{
   private updateState(pageData: PageData<Inquiry>): void {
     this.setState({
       ...this.state,
-      list: {
-        ...this.state.list,
+      table: {
+        ...this.state.table,
         totalCount: pageData.totalCount,
         dataSource: pageData.data,
       }

@@ -1,0 +1,16 @@
+<div class="app-content-container">
+  <app-room-header
+   class="app-content-header-container"
+   [roomTableName]="store.roomTableName"
+   (listPrivateTransientRooms)="store.onPrivateTransientRooms()"
+   (listBedspaceRooms)="store.onBedspaceRooms()"
+   (listSemiPrivateRooms)="store.onSemiPrivateRooms()"
+   (listUnsettleBill)="store.onUnsettleBill()"
+   (listAddRoom)="store.onAddRoom()"
+  >
+  </app-room-header>
+  <router-outlet
+  class="xxx"
+  ></router-outlet>
+</div>
+

@@ -1,0 +1,50 @@
+<h3 mat-dialog-title class="center-text">{{data.title}}</h3>
+<mat-dialog-content [formGroup]="form" class="form">
+  <div id="form-column-2">
+    <mat-form-field>
+      <mat-select placeholder="Room number" formControlName="number">
+        <mat-option *ngFor="let number of dataRoomService.roomNumbers;" [value]="number">
+            {{number}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Floor number" formControlName="floor">
+        <mat-option *ngFor="let floor of dataRoomService.floorNumbers;" [value]="floor">
+            {{floor}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div id="form-column-2">
+    <mat-form-field>
+        <mat-select placeholder="Room type" formControlName="type">
+          <mat-option *ngFor="let type of dataRoomService.roomTypes;" [value]="type">
+              {{type}}
+          </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Room status" formControlName="status">
+        <mat-option *ngFor="let status of dataRoomService.roomStatuses;" [value]="status">
+            {{status}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div id="form-column-2">
+    <mat-form-field>
+      <mat-select placeholder="Aircon status" formControlName="aircon">
+        <mat-option *ngFor="let status of dataRoomService.airconStatuses;" [value]="status">
+            {{status}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="number" placeholder="Due rent date" formControlName="dueRent">
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions class="action-buttons-container">
+  <button mat-raised-button color="primary" [matDialogClose]='form.value'>Ok</button>
+</mat-dialog-actions>
