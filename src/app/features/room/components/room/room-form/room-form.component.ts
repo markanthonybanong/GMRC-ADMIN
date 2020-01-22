@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatSelect } from '@angular/material';
 import { Observable } from 'rxjs';
-import { RoomFormStoreState } from '../../services/room-form/room-form.store.state';
+import { RoomFormStoreState } from '../../../services/room-form/room-form.store.state';
 
 @Component({
   selector: 'app-room-form',

@@ -1,0 +1,11 @@
+<app-container-transient-private-room-form
+ [state$]="store.state$"
+ [form]="store.form"
+ [roomStatuses]="dataRoomService.roomStatuses"
+ [tenantForm]="store.tenantForm"
+ [airconStatuses]="dataRoomService.airconStatuses"
+ (transientPrivateFormAddTenant)="store.onAddTenant()"
+ (transientPrivateFormBack)="store.onBack()"
+ (transienPrivateRoomTenantFormOnSearchTenant)="store.onSearchTenant($event)"
+>
+</app-container-transient-private-room-form>

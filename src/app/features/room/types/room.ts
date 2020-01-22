@@ -6,7 +6,7 @@ export interface Room {
   floor: number;
   type: string;
   aircon: string;
-  transientPrivateRoomProperties: [{
+  roomProperties: [{
     status: string,
     dueRentDate: number,
     monthlyRent: number,

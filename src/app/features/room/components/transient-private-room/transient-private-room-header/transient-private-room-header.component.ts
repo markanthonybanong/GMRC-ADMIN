@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { SearchTransientPrivateRoomComponent } from '../../modals/search-transient-private-room/search-transient-private-room.component';
-import { ROOM_CONFIG } from '../../room.config';
+import { SearchTransientPrivateRoomComponent } from '../../../modals/search-transient-private-room/search-transient-private-room.component';
+import { ROOM_CONFIG } from '../../../room.config';
 
 
 @Component({

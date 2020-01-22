@@ -1,0 +1,30 @@
+<div [formGroup]="form" class="form-grid-container-4-col">
+  <mat-card class="form" formArrayName="tenants" *ngFor="let tenant of form.get('tenants').controls; let i = index;" >
+    <mat-card-title class="form-title">
+      Tenant {{i + 1}}
+      <div class="icon-container">
+        <mat-icon class="material-icons" color="warn" (click)="onRemoveTenant(i, tenant)">
+            cancel
+        </mat-icon>
+      </div>
+    </mat-card-title>
+    <mat-card-content [formGroupName]="i">
+      <mat-form-field id="form-column-1">
+        <input matInput type="text" placeholder="Tenant name"  formControlName="name" (click)="onSetTenantOldObjectId(i)"  (input)="onSearch(tenant.get('name').value)" [matAutocomplete]="auto">
+      </mat-form-field>
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let tenant of tenants" (click)="patchTenantObjectId(tenant._id, i)" [value]="tenant.firstname+' '+tenant.middlename+' '+tenant.lastname">
+          {{ tenant.firstname+" "+tenant.middlename+" "+tenant.lastname }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-card-content>
+    <mat-card-actions>
+      <div class="action-buttons-container">
+        <button mat-raised-button color="primary">
+          <span id="button-text-white">Update</span>
+        </button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</div>
+

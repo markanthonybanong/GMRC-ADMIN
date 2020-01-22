@@ -17,21 +17,22 @@
   .app-content-body-container{
     display: flex;
     flex: 1 0 auto;
-    .app-content-body{
-      margin: 5px 5px 5px 5px;
-      flex: 1 0 auto;
-      .request-status{
-        .in-progress-request{
-          position: absolute;
-          left: 45%;
-          top: 42%;
-        }
-        .error-request{
-          position: absolute;
-          left: 33%;
-          top: 46%;
-        }
-      }
+  }
+}
+
+.app-content-body{
+  margin: 5px 5px 5px 5px;
+  flex: 1 0 auto;
+  .request-status{
+    .in-progress-request{
+      position: absolute;
+      left: 45%;
+      top: 42%;
+    }
+    .error-request{
+      position: absolute;
+      left: 33%;
+      top: 46%;
     }
   }
 }
@@ -45,20 +46,18 @@
 
 .app-content-routed-body-container{
   height: 100%;
-  .app-content-routed-body{
-    height: inherit;
-    margin: 5px 5px 5px 5px;
-    .request-status{
-      .in-progress-request{
-        position: absolute;
-        left: 45%;
-        top: 55%;
-      }
-      .error-request{
-        position: absolute;
-        left: 33%;
-        top: 56%;
-      }
+  display: flex;
+  flex-flow: column;
+  .request-status{
+    .in-progress-request{
+      position: absolute;
+      left: 45%;
+      top: 55%;
+    }
+    .error-request{
+      position: absolute;
+      left: 33%;
+      top: 56%;
     }
   }
 }

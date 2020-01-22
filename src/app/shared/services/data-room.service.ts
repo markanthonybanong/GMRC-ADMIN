@@ -21,7 +21,7 @@ export class DataRoomService {
  constructor(private apiService: ApiService, private dataStoreService: DataStoreService) {}
  init(): void {
    this.initReloadTable$();
-   this.reloadTable();
+   this.dataStoreService.reloadTable$.next();
  }
  private initReloadTable$(): void {
   const pageRequest: PageRequest = {
@@ -43,9 +43,6 @@ export class DataRoomService {
      }),
      retry(1),
    ).subscribe();
- }
- private reloadTable(): void {
-  this.dataStoreService.reloadTable$.next();
  }
  private setRoomNumbers(rooms: Array<Room>): void {
     rooms.forEach(room => {

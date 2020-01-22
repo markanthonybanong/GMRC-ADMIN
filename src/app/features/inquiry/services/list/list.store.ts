@@ -2,9 +2,8 @@ import { Injectable, OnDestroy, ViewChild } from '@angular/core';
 import { ListStoreState } from './list.store.state';
 import { Store } from 'rxjs-observable-store';
 import { PageEvent, MatDialog } from '@angular/material';
-import { PageData } from '@gmrc-admin/shared/types';
 import { Subject } from 'rxjs';
-import { getStoreRequestStateUpdater, removeEmptyKeys } from '@gmrc-admin/shared/helpers';
+import { getStoreRequestStateUpdater, removeEmptyKeys, updateState } from '@gmrc-admin/shared/helpers';
 import { Request } from '@gmrc-admin/shared/enums';
 import { Router } from '@angular/router';
 import { switchMap, map, tap, takeUntil, retry } from 'rxjs/operators';
@@ -16,7 +15,7 @@ import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
 import { INQUIRY_CONFIG } from '../../inquiry.config';
 import { modifyInquiryObject } from '../../helpers/list/modify-inquiry-object';
 @Injectable()
-export class ListStore  extends Store<ListStoreState> implements OnDestroy{
+export class ListStore  extends Store<ListStoreState> implements OnDestroy {
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
@@ -45,7 +44,7 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy{
   init(): void {
     this.dataStoreService.storeRequestStateUpdater = getStoreRequestStateUpdater(this);
     this.initReloadList$();
-    this.reloadLists();
+    this.dataStoreService.reloadTable$.next();
   }
   onPaginatorUpdate($event: PageEvent): void {
     this.setState({
@@ -59,7 +58,7 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy{
         }
       }
     });
-    this.reloadLists();
+    this.dataStoreService.reloadTable$.next();
   }
   onAddInquiry(): void {
     this.router.navigate(['inquiry/add']);
@@ -97,7 +96,7 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy{
         }
       }
     });
-    this.reloadLists();
+    this.dataStoreService.reloadTable$.next();
   }
   onDisplayAllInquiry(): void {
     this.setState({
@@ -113,12 +112,9 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy{
         }
       }
     });
-    this.reloadLists();
-  }
-
-  private reloadLists(): void {
     this.dataStoreService.reloadTable$.next();
   }
+
   private initReloadList$(): void {
     this.dataStoreService.reloadTable$
       .pipe(
@@ -129,21 +125,11 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy{
           return modifyInquiryObject(pageData);
         }),
         tap((pageData) => {
-         this.updateState(pageData);
+         updateState(this, pageData);
         }),
         retry(1),
         takeUntil(this.destroy$)
       ).subscribe();
-  }
-  private updateState(pageData: PageData<Inquiry>): void {
-    this.setState({
-      ...this.state,
-      table: {
-        ...this.state.table,
-        totalCount: pageData.totalCount,
-        dataSource: pageData.data,
-      }
-    });
   }
   private deleteInquiry(objectId: string): void {
     this.endpoint.delete(objectId, this.dataStoreService.storeRequestStateUpdater)
@@ -156,7 +142,7 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy{
                 content: `Deleted ${inquiry.name}'s inquiry`
               }
             });
-            this.reloadLists();
+            this.dataStoreService.reloadTable$.next();
           },
           () => {
             this.dialog.open(ActionResponseComponent, {

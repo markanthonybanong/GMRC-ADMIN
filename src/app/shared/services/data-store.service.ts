@@ -7,6 +7,8 @@ import { Subject } from 'rxjs';
 })
 export class DataStoreService {
   public storeRequestStateUpdater: StoreRequestStateUpdater;
-  public request: object = Request;
+  public request: {
+    Error: string
+  } = Request;
   public reloadTable$: Subject<undefined> = new Subject();
 }

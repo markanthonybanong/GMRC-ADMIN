@@ -25,21 +25,4 @@ export class RoomFormEndpoint {
         )
       );
   }
-  update(inquiry: Room, requestStateUpdater): Observable<Room> {
-    const request = ROOM_CONFIG.request.submit.updateRoom;
-    requestStateUpdater(request.name, {inProgress: true});
-    return this.apiService.put<Room>(`${request.path}${inquiry._id}`, inquiry)
-      .pipe(
-        tap(
-          (updatedInquiry) => {
-            requestStateUpdater(request.name, {inProgress: false, success: true});
-            return updatedInquiry;
-          },
-          (error: HttpErrorResponse) => {
-            requestStateUpdater(request.name, {inProgress: false, error: true});
-            return throwError(error);
-          }
-        )
-      );
-  }
 }

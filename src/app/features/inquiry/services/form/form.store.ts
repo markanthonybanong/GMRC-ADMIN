@@ -13,7 +13,7 @@ import { switchMap, tap, takeUntil, filter } from 'rxjs/operators';
 import { INQUIRY_CONFIG } from '../../inquiry.config';
 import { MatDialog } from '@angular/material';
 import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
-import { setFormValues } from '../../helpers/form/set-form-values';
+import { setInquiryFormValues } from '../../helpers/form/set-form-values';
 import { createBedInfo } from '../../helpers/form/create-bed-info';
 import { getBedInfos } from '../../helpers/form/get-bed-info';
 import { DataStoreService } from '@gmrc-admin/shared/services';
@@ -75,7 +75,6 @@ export class FormStore extends Store<FormStoreState> implements OnDestroy {
     const observableInquiry: Observable<Inquiry> = this.state.update
     ? this.endpoint.update(inputInquiry, this.dataStoreService.storeRequestStateUpdater)
     : this.endpoint.add(inputInquiry, this.dataStoreService.storeRequestStateUpdater);
-
     observableInquiry
       .pipe(
         tap(
@@ -90,13 +89,18 @@ export class FormStore extends Store<FormStoreState> implements OnDestroy {
                 }
               }
             );
+            setInquiryFormValues(this.form, inquiry);
+            this.setState({
+              ...this.state,
+              update: true,
+            });
           },
           () => {
             this.dialog.open(
               ActionResponseComponent, {
                 data: {
                   title: this.state.update ? INQUIRY_CONFIG.actions.update : INQUIRY_CONFIG.actions.add,
-                  content: Request.Error,
+                  content: this.dataStoreService.request.Error,
                 }
               }
             );
@@ -110,7 +114,7 @@ export class FormStore extends Store<FormStoreState> implements OnDestroy {
     this.endpoint.inquiry(this.state.pageRequest, this.dataStoreService.storeRequestStateUpdater)
       .pipe(
         tap((pageData) => {
-          setFormValues(this.form, pageData.data[0]);
+          setInquiryFormValues(this.form, pageData.data[0]);
         }),
         takeUntil(this.destroy$)
       )

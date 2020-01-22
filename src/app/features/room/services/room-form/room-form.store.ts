@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { getRoomProperties } from '../../helpers/room-form/get-room-properties';
 import { createRoomProperties } from '../../helpers/room-form/create-room-properties';
-import { RoomType } from '@gmrc-admin/shared/enums';
+import { RoomType, Request } from '@gmrc-admin/shared/enums';
 import { Store } from 'rxjs-observable-store';
 import { RoomFormStoreState } from './room-form.store.state';
 import { Router } from '@angular/router';
@@ -21,9 +21,9 @@ export class RoomFormStore extends Store<RoomFormStoreState> implements OnDestro
   private destroy$: Subject<boolean> = new Subject<boolean>();
   public form = this.formBuilder.group({
     number: [null, Validators.required],
-    floor: [null, Validators.required],
+    floor: null,
     type: [null, Validators.required],
-    aircon: [null, Validators.required],
+    aircon: null,
     roomProperties: this.formBuilder.array([]),
     _id: ['']
   });
@@ -32,7 +32,7 @@ export class RoomFormStore extends Store<RoomFormStoreState> implements OnDestro
     private router: Router,
     private endpoint: RoomFormEndpoint,
     private dataStoreService: DataStoreService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
     ) {
     super(new RoomFormStoreState());
   }
@@ -54,33 +54,27 @@ export class RoomFormStore extends Store<RoomFormStoreState> implements OnDestro
   onBack(): void {
     this.router.navigate(['room/private-transient']);
   }
-  /**TODO: route back to transient after addd */
   onSubmit(inputRoom: Room): void {
-    const observableInquiry: Observable<Room> = this.state.update
-    ? this.endpoint.update(inputRoom, this.dataStoreService.storeRequestStateUpdater)
-    : this.endpoint.add(inputRoom, this.dataStoreService.storeRequestStateUpdater);
-
-    observableInquiry
+    this.endpoint.add(inputRoom, this.dataStoreService.storeRequestStateUpdater)
       .pipe(
         tap(
           (room) => {
             this.dialog.open(
               ActionResponseComponent, {
                 data: {
-                  title: this.state.update ? ROOM_CONFIG.actions.update : ROOM_CONFIG.actions.add,
-                  content: this.state.update
-                  ? `Updated room number ${room.number}`
-                  : `Added room number ${room.number}`,
+                  title: ROOM_CONFIG.actions.add,
+                  content: `Added room number ${room.number}`,
                 }
               }
             );
+            this.router.navigate(['room/private-transient']);
           },
           () => {
             this.dialog.open(
               ActionResponseComponent, {
                 data: {
-                  title: this.state.update ? ROOM_CONFIG.actions.update : ROOM_CONFIG.actions.add,
-                  content: this.dataStoreService.request,
+                  title: ROOM_CONFIG.actions.add,
+                  content: this.dataStoreService.request.Error,
                 }
               }
             );

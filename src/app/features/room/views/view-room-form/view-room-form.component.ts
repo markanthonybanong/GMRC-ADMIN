@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { RoomFormStore } from '../../services/room-form/room-form.store';
 import { RoomFormEndpoint } from '../../services/room-form/room-form.endpoint';
 import { DataRoomService } from '@gmrc-admin/shared/services';
-
-
 @Component({
   selector: 'app-view-room-form',
   templateUrl: './view-room-form.component.html',

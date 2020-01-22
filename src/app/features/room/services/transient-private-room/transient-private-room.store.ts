@@ -6,10 +6,11 @@ import { PageEvent } from '@angular/material';
 import { Subject } from 'rxjs';
 import { DataStoreService } from '@gmrc-admin/shared/services';
 import { switchMap } from 'rxjs/internal/operators/switchMap';
-import { getStoreRequestStateUpdater, updateState, reloadTable, removeEmptyKeys } from '@gmrc-admin/shared/helpers';
+import { getStoreRequestStateUpdater, updateState,  removeEmptyKeys } from '@gmrc-admin/shared/helpers';
 import { tap, retry, takeUntil } from 'rxjs/operators';
 import { ROOM_CONFIG } from '../../room.config';
 import { Request } from '@gmrc-admin/shared/enums';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class TransientPrivateRoomStore extends Store<TransientPrivateRoomStoreState> implements OnDestroy {
@@ -17,7 +18,8 @@ export class TransientPrivateRoomStore extends Store<TransientPrivateRoomStoreSt
 
   constructor(
     private endpoint: TransientPrivateRoomEndpoint,
-    private dataStoreService: DataStoreService
+    private dataStoreService: DataStoreService,
+    private router: Router
   ) {
     super(new TransientPrivateRoomStoreState());
   }
@@ -47,7 +49,7 @@ export class TransientPrivateRoomStore extends Store<TransientPrivateRoomStoreSt
   init(): void {
     this.dataStoreService.storeRequestStateUpdater = getStoreRequestStateUpdater(this);
     this.initReloadTable$();
-    reloadTable(this.dataStoreService.reloadTable$);
+    this.dataStoreService.reloadTable$.next();
   }
   onSearch(search: object): void {
     this.setState({
@@ -64,7 +66,7 @@ export class TransientPrivateRoomStore extends Store<TransientPrivateRoomStoreSt
         }
       }
     });
-    reloadTable(this.dataStoreService.reloadTable$);
+    this.dataStoreService.reloadTable$.next();
   }
   onDisplayAllRooms(): void {
     this.setState({
@@ -80,7 +82,7 @@ export class TransientPrivateRoomStore extends Store<TransientPrivateRoomStoreSt
         }
       }
     });
-    reloadTable(this.dataStoreService.reloadTable$);
+    this.dataStoreService.reloadTable$.next();
   }
   onPaginatorUpdate($event: PageEvent): void {
     this.setState({
@@ -94,7 +96,10 @@ export class TransientPrivateRoomStore extends Store<TransientPrivateRoomStoreSt
         }
       }
     });
-    reloadTable(this.dataStoreService.reloadTable$);
+    this.dataStoreService.reloadTable$.next();
+  }
+  onRoomUpdate(roomObjectId: string): void {
+    this.router.navigate([`room/update-private-transient/${roomObjectId}`]);
   }
   private initReloadTable$(): void {
     this.dataStoreService.reloadTable$

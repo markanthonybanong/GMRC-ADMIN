@@ -1,6 +1,6 @@
 <div class="center-content">
   <mat-card class="form" *ngIf="state$ | async as subs">
-    <mat-card-title class="center-text">{{subs.update ? 'UPDATE ROOM' : 'ADD ROOM'}}</mat-card-title>
+    <mat-card-title class="center-text">ADD ROOM</mat-card-title>
     <mat-card-content [formGroup]="form">
       <div id="form-column-2">
         <mat-form-field>
@@ -59,7 +59,7 @@
             mat-raised-button
             (click)="onSubmit()"
             [disabled]="form.invalid || subs.requests.submit.inProgress"
-          >{{subs.update ? 'Update' : 'Add'}}
+          >Add
           </button>
         </div>
     </mat-card-actions>
