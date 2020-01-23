@@ -1,4 +1,4 @@
-import { Room } from '../../types/room';
+import { Room } from '../../types/room/room';
 import { Observable, throwError } from 'rxjs';
 import { ROOM_CONFIG } from '../../room.config';
 import { Injectable } from '@angular/core';
@@ -8,10 +8,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Injectable()
 export class RoomFormEndpoint {
   constructor(private apiService: ApiService) {}
-  add(inquiry: Room, requestStateUpdater): Observable<Room> {
+  add(room: Room, requestStateUpdater): Observable<Room> {
     const request = ROOM_CONFIG.request.submit.addRoom;
     requestStateUpdater(request.name, {inProgress: true});
-    return this.apiService.post<Room>(request.path, inquiry)
+    return this.apiService.post<Room>(request.path, room)
       .pipe(
         tap(
           (createdRoom) => {

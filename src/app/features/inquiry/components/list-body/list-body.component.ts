@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ListStoreState } from '../../services/list/list.store.state';
-import { Request } from '@gmrc-admin/shared/enums';
+import { RequestResponse } from '@gmrc-admin/shared/enums';
 import { PageEvent  } from '@angular/material';
 import { Observable } from 'rxjs/internal/Observable';
 
@@ -13,7 +13,7 @@ export class ListBodyComponent{
   @Input() state$: Observable<ListStoreState>;
   @Input() displayedColumns: Array<string>;
   @Input() pageSizeOptions: Array<number>;
-  @Input() request: Request;
+  @Input() request: RequestResponse;
   @Output() listPaginatorUpdate: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
   @Output() listInquiryUpdate: EventEmitter<string> = new EventEmitter<string>();
   @Output() listInquiryDelete: EventEmitter<object> = new EventEmitter<object>();

@@ -4,7 +4,7 @@ import { Store } from 'rxjs-observable-store';
 import { PageEvent, MatDialog } from '@angular/material';
 import { Subject } from 'rxjs';
 import { getStoreRequestStateUpdater, removeEmptyKeys, updateState } from '@gmrc-admin/shared/helpers';
-import { Request } from '@gmrc-admin/shared/enums';
+import { RequestResponse } from '@gmrc-admin/shared/enums';
 import { Router } from '@angular/router';
 import { switchMap, map, tap, takeUntil, retry } from 'rxjs/operators';
 import { Inquiry } from '../../types/inquiry';
@@ -148,7 +148,7 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy {
             this.dialog.open(ActionResponseComponent, {
               data: {
                 title: INQUIRY_CONFIG.actions.delete,
-                content: Request.Error,
+                content: RequestResponse.Error,
               }
             });
           }

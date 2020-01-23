@@ -9,7 +9,7 @@ import { switchMap } from 'rxjs/internal/operators/switchMap';
 import { getStoreRequestStateUpdater, updateState,  removeEmptyKeys } from '@gmrc-admin/shared/helpers';
 import { tap, retry, takeUntil } from 'rxjs/operators';
 import { ROOM_CONFIG } from '../../room.config';
-import { Request } from '@gmrc-admin/shared/enums';
+import { RequestResponse } from '@gmrc-admin/shared/enums';
 import { Router } from '@angular/router';
 
 @Injectable()
@@ -44,7 +44,7 @@ export class TransientPrivateRoomStore extends Store<TransientPrivateRoomStoreSt
     return this.state.table.totalCount;
   }
   get request(): object {
-    return Request;
+    return RequestResponse;
   }
   init(): void {
     this.dataStoreService.storeRequestStateUpdater = getStoreRequestStateUpdater(this);

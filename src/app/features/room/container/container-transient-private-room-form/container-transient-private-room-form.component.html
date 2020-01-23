@@ -6,22 +6,27 @@
   </div>
   <mat-card class="form-error-msg" *ngIf="subs.requests.room.error">
     <div class="center-content">
-      <h1 class="error">{{request.Error}}</h1>
+      <h1 class="error">{{requestResponse.Error}}</h1>
     </div>
   </mat-card>
   <div *ngIf="subs.requests.room.success" class="full-width">
     <app-transient-private-room-tenant-form
      [form]="tenantForm"
+     [tenants]="tenants"
      (transienPrivateRoomTenantFormOnSearchTenant)="onSearchTenant($event)"
+     (transienPrivateRoomTenantFormOnRemoveTenant)="onRemoveTenant($event)"
+     (transienPrivateRoomTenantFormOnSubmit)="tenantFormOnSubmit($event)"
+     (transienPrivateRoomTenantFormOnTenantClick)="onTenantClick($event)"
+     (transientPrivateFormOnSubmit)="roomFormOnSubmit()"
     >
     </app-transient-private-room-tenant-form>
     <app-transient-private-room-form
-    appSetParentElHeight
     [form]="form"
     [roomStatuses]="roomStatuses"
     [airconStatuses]="airconStatuses"
     (transientPrivateFormAddTenant)="onAddTenant()"
     (transientPrivateFormBack)="onBack()"
+    (transientPrivateFormOnSubmit)="roomFormOnSubmit()"
     >
     </app-transient-private-room-form>
   </div>

@@ -1,5 +1,5 @@
-import { Tenant } from '../../tenant/types/tenant';
 import { Away } from './away';
+import { Tenant } from 'src/app/features/tenant/types/tenant';
 
 export interface Deck {
   number?: number;

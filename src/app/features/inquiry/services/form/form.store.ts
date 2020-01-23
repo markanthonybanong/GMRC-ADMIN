@@ -6,7 +6,7 @@ import { FormStoreState } from './form.store.state';
 import { Store } from 'rxjs-observable-store';
 import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
 import { enumsToArray, getStoreRequestStateUpdater } from '@gmrc-admin/shared/helpers';
-import { Gender, RoomType, Request } from '@gmrc-admin/shared/enums';
+import {  RequestResponse } from '@gmrc-admin/shared/enums';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Inquiry } from '../../types/inquiry';
 import { switchMap, tap, takeUntil, filter } from 'rxjs/operators';
@@ -17,6 +17,7 @@ import { setInquiryFormValues } from '../../helpers/form/set-form-values';
 import { createBedInfo } from '../../helpers/form/create-bed-info';
 import { getBedInfos } from '../../helpers/form/get-bed-info';
 import { DataStoreService } from '@gmrc-admin/shared/services';
+import { RoomType } from 'src/app/features/room/room.enums';
 
 @Injectable()
 export class FormStore extends Store<FormStoreState> implements OnDestroy {
@@ -100,7 +101,7 @@ export class FormStore extends Store<FormStoreState> implements OnDestroy {
               ActionResponseComponent, {
                 data: {
                   title: this.state.update ? INQUIRY_CONFIG.actions.update : INQUIRY_CONFIG.actions.add,
-                  content: this.dataStoreService.request.Error,
+                  content: RequestResponse.Error,
                 }
               }
             );

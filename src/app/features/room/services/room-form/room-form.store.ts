@@ -2,11 +2,11 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { getRoomProperties } from '../../helpers/room-form/get-room-properties';
 import { createRoomProperties } from '../../helpers/room-form/create-room-properties';
-import { RoomType, Request } from '@gmrc-admin/shared/enums';
+import { RequestResponse } from '@gmrc-admin/shared/enums';
 import { Store } from 'rxjs-observable-store';
 import { RoomFormStoreState } from './room-form.store.state';
 import { Router } from '@angular/router';
-import { Room } from '../../types/room';
+import { Room } from '../../types/room/room';
 import { Observable, Subject } from 'rxjs';
 import { RoomFormEndpoint } from './room-form.endpoint';
 import { tap, takeUntil } from 'rxjs/operators';
@@ -15,6 +15,7 @@ import { getStoreRequestStateUpdater } from '@gmrc-admin/shared/helpers';
 import { MatDialog } from '@angular/material';
 import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
 import { ROOM_CONFIG } from '../../room.config';
+import { RoomType } from '../../room.enums';
 
 @Injectable()
 export class RoomFormStore extends Store<RoomFormStoreState> implements OnDestroy {
@@ -74,7 +75,7 @@ export class RoomFormStore extends Store<RoomFormStoreState> implements OnDestro
               ActionResponseComponent, {
                 data: {
                   title: ROOM_CONFIG.actions.add,
-                  content: this.dataStoreService.request.Error,
+                  content: RequestResponse.Error,
                 }
               }
             );

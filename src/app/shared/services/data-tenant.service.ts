@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { enumsToArray } from '../helpers';
-import { Gender } from '../enums';
+import { Gender } from 'src/app/features/tenant/tenant.enums';
 
 @Injectable({
   providedIn: 'root'

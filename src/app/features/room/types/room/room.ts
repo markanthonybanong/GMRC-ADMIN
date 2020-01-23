@@ -1,5 +1,5 @@
-import { Tenant } from '../../tenant/types/tenant';
 import { Bedspace } from './bedspace';
+import { Tenant } from 'src/app/features/tenant/types/tenant';
 
 export interface Room {
   number: number;

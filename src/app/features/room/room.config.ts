@@ -8,9 +8,13 @@ export const ROOM_CONFIG = {
       name: 'room',
       path: 'room/page',
     },
-    delete: {
-      name: 'delete',
-      path: 'room/remove/'
+    tenantByKeyStroke: {
+      name: 'tenants',
+      path: 'tenant/page'
+    },
+    removeTenantInTransientPrivateRoom: {
+      name: 'removeTenant',
+      path: 'room/removeTenantInTransientPrivateRoom'
     },
     submit: {
       addRoom: {
@@ -20,6 +24,10 @@ export const ROOM_CONFIG = {
       updateRoom: {
         name: 'submit',
         path: 'room/updateRoom',
+      },
+      addTenantInTransientPrivateRoom: {
+        name: 'submit',
+        path: 'room/addTenantInTransientPrivateRoom'
       }
     }
   },
@@ -29,6 +37,7 @@ export const ROOM_CONFIG = {
       TRANSIENTPRIVATEROOMS: 'transientPrivateRooms',
       TRANSIENTPRIVATEROOMBYOBJECTID: 'transientPrivateRoomByObjectId',
       ADVANCESEARCHTRANSIENTPRIVATEROOMS: 'advanceSearchTransientPrivateRooms',
+      TENANTBYKEYSTROKE: 'tenantByKeyStroke',
     },
     roomObjectId: 'roomObjectId',
   },
@@ -36,6 +45,8 @@ export const ROOM_CONFIG = {
     add: 'ADD ROOM',
     update: 'UPDATE ROOM',
     delete: 'DELETE ROOM',
-    searchTransientPrivateRoom: 'SEARCH TRANSIENT/PRIVATE ROOM'
+    searchTransientPrivateRoom: 'SEARCH TRANSIENT/PRIVATE ROOM',
+    addTenant: 'ADD TENANT',
+    removeTenant: 'REMOVE TENANT',
   }
 };

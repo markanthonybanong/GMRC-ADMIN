@@ -8,3 +8,10 @@ export enum AirconStatus {
   WITH = 'With',
   WITHOUT = 'Without',
 }
+
+export enum RoomType {
+  BEDSPACE    = 'Bedspace',
+  TRANSIENT   = 'Transient',
+  PRIVATE     = 'Private',
+  SEMIPRIVATE = 'Semi Private'
+}

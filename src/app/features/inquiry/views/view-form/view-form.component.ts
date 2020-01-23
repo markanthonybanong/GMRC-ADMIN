@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { FormStore } from '../../services/form/form.store';
 import { FormEndpoint } from '../../services/form/form.endpoint';
-import { Request } from '@gmrc-admin/shared/enums';
+import { RequestResponse } from '@gmrc-admin/shared/enums';
 import { ActivatedRoute } from '@angular/router';
 import { filter, tap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';

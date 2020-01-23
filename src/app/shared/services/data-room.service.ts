@@ -5,9 +5,8 @@ import { PageData, PageRequest } from '../types';
 import { ROOM_CONFIG } from 'src/app/features/room/room.config';
 import { tap, switchMap, retry } from 'rxjs/operators';
 import { DataStoreService } from './data-store.service';
-import { Room } from 'src/app/features/room/types/room';
-import { RoomStatus, AirconStatus } from 'src/app/features/room/room.enums';
-import { RoomType } from '../enums';
+import { Room } from 'src/app/features/room/types/room/room';
+import { RoomStatus, AirconStatus, RoomType } from 'src/app/features/room/room.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -18,31 +17,39 @@ export class DataRoomService {
  public airconStatuses: Array<string> = enumsToArray(AirconStatus);
  public roomNumbers: Array<number> = [];
  public floorNumbers: Array<number> = [];
+ public addedTenantsObjectIds: Array<string> = [];
  constructor(private apiService: ApiService, private dataStoreService: DataStoreService) {}
  init(): void {
-   this.initReloadTable$();
-   this.dataStoreService.reloadTable$.next();
+   this.initReloadRoom$();
+   this.reloadRoom();
  }
- private initReloadTable$(): void {
-  const pageRequest: PageRequest = {
-    page: null,
-    limit: null,
-    filters: {
-      type: ROOM_CONFIG.filters.types.ALLROOMS,
-    }
-  };
+ public reloadRoom(): void {
+  this.dataStoreService.reloadTable$.next();
+ }
+ private initReloadRoom$(): void {
 
-  this.dataStoreService.reloadTable$
-   .pipe(
-     switchMap(() => {
-       return this.apiService.post<PageData<Room>>(ROOM_CONFIG.request.rooms.path, pageRequest);
-     }),
-     tap((pageData) => {
-       this.setRoomNumbers(pageData.data);
-       this.setFloorNumbers(pageData.data);
-     }),
-     retry(1),
-   ).subscribe();
+   const pageRequest: PageRequest = {
+     page: null,
+     limit: null,
+     filters: {
+       type: ROOM_CONFIG.filters.types.ALLROOMS,
+     }
+   };
+
+   this.dataStoreService.reloadTable$
+    .pipe(
+      switchMap(() => {
+        return this.apiService.post<PageData<Room>>(ROOM_CONFIG.request.rooms.path, pageRequest);
+      }),
+      tap((pageData) => {
+        console.log('page data', pageData);
+
+        this.setRoomNumbers(pageData.data);
+        this.setFloorNumbers(pageData.data);
+        this.setAddedTenantsObjectIds(pageData.data);
+      }),
+      retry(1),
+    ).subscribe();
  }
  private setRoomNumbers(rooms: Array<Room>): void {
     rooms.forEach(room => {
@@ -55,5 +62,19 @@ export class DataRoomService {
       this.floorNumbers.push(room.floor);
     }
    });
+
  }
+ private setAddedTenantsObjectIds(rooms: Array<Room>): void {
+  console.log('passed room ', rooms);
+
+  const objectIds: Array<string> = [];
+  rooms.forEach(room => {
+    if (room.type === RoomType.TRANSIENT || room.type === RoomType.PRIVATE) {
+      room.roomProperties[0].tenants.forEach(tenant => objectIds.push(tenant._id));
+    }
+  });
+  this.addedTenantsObjectIds = objectIds;
+  console.log('value  set', this.addedTenantsObjectIds);
+ }
+
 }

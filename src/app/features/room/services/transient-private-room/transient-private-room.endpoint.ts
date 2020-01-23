@@ -3,7 +3,7 @@ import { ApiService } from '@gmrc-admin/shared/services';
 import { ROOM_CONFIG } from '../../room.config';
 import { StoreRequestStateUpdater, PageData } from '@gmrc-admin/shared/types';
 import { Observable, throwError } from 'rxjs';
-import { Room } from '../../types/room';
+import { Room } from '../../types/room/room';
 import { tap } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 

@@ -1,3 +1,3 @@
-export enum Request {
+export enum RequestResponse {
   Error = 'Oops! Something went wrong'
 }

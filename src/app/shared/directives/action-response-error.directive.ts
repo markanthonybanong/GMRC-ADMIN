@@ -1,5 +1,5 @@
 import { Directive, Renderer2, ElementRef, AfterViewInit } from '@angular/core';
-import { Request } from '@gmrc-admin/shared/enums';
+import { RequestResponse } from '@gmrc-admin/shared/enums';
 @Directive({
   selector: '[appActionResponseError]'
 })
@@ -8,7 +8,7 @@ export class ActionResponseErrorDirective implements AfterViewInit {
 
   ngAfterViewInit(): void {
     const response = this.elRef.nativeElement.textContent;
-    if (response.trim() === Request.Error) {
+    if (response.trim() === RequestResponse.Error) {
       this.renderer.setStyle(this.elRef.nativeElement, 'color', 'red');
     }
   }

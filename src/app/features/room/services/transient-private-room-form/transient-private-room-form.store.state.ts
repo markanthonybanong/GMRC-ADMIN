@@ -1,5 +1,5 @@
 import { PageRequest } from '@gmrc-admin/shared/types';
-import { Requests } from '../../types/requests';
+
 
 export class TransientPrivateRoomFormStoreState {
   pageRequest: PageRequest = {
@@ -10,8 +10,9 @@ export class TransientPrivateRoomFormStoreState {
       roomObjectId: null,
     }
   };
-  requests: Requests  = {
-    room: {
+  addedTenantsObjectIds: Array<string>;
+  requests: object  = {
+    submit: {
     }
   };
 }

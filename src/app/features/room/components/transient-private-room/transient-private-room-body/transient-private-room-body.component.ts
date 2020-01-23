@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { TransientPrivateRoomStoreState } from '../../../services/transient-private-room/transient-private-room.store.state';
 import { Observable } from 'rxjs';
-import { Request } from '@gmrc-admin/shared/enums';
+import { RequestResponse } from '@gmrc-admin/shared/enums';
 
 @Component({
   selector: 'app-transient-private-room-body',
@@ -11,7 +11,7 @@ import { Request } from '@gmrc-admin/shared/enums';
 export class TransientPrivateRoomBodyComponent implements OnInit {
   @Input() displayedColumns: Array<string>;
   @Input() state$: Observable<TransientPrivateRoomStoreState>;
-  @Input() request: Request;
+  @Input() request: RequestResponse;
   @Output() roomUpdate: EventEmitter<string> = new EventEmitter<string>();
   constructor() { }
 

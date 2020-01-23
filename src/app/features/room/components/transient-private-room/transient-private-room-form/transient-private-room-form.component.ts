@@ -1,8 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MatSelect } from '@angular/material';
-import { RoomType } from '@gmrc-admin/shared/enums';
-
+import { RoomType } from '../../../room.enums';
 
 @Component({
   selector: 'app-transient-private-room-form',
@@ -15,6 +13,7 @@ export class TransientPrivateRoomFormComponent implements OnInit {
   @Input() roomStatuses: Array<string>;
   @Output() transientPrivateFormAddTenant: EventEmitter<null> = new EventEmitter<null>();
   @Output() transientPrivateFormBack: EventEmitter<null> = new EventEmitter<null>();
+  @Output() transientPrivateFormOnSubmit: EventEmitter<null> = new EventEmitter<null>();
   public roomTypes: Array<string> = [RoomType.PRIVATE, RoomType.TRANSIENT];
   constructor() { }
 
@@ -26,6 +25,9 @@ export class TransientPrivateRoomFormComponent implements OnInit {
   }
   onBack(): void {
     this.transientPrivateFormBack.emit();
+  }
+  onSubmit(): void {
+    this.transientPrivateFormOnSubmit.emit();
   }
 
 
