@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { TransientPrivateRoomFormStore } from '../../services/transient-private-room-form/transient-private-room-form.store';
 import { ActivatedRoute } from '@angular/router';
@@ -24,8 +24,8 @@ export class ViewTransientPrivateRoomFormComponent implements OnInit, OnDestroy 
   ngOnInit() {
     this.subscribeToRouteParamater();
     this.store.init();
-    this.dataRoomService.init();
   }
+
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();

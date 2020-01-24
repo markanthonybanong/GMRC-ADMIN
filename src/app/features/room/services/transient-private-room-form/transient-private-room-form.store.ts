@@ -1,11 +1,11 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { Store } from 'rxjs-observable-store';
 import { TransientPrivateRoomFormStoreState } from './transient-private-room-form.store.state';
-import { Subject } from 'rxjs';
+import { Subject, fromEvent, from, of } from 'rxjs';
 import { DataStoreService, DataRoomService } from '@gmrc-admin/shared/services';
 import { getStoreRequestStateUpdater } from '@gmrc-admin/shared/helpers';
 import { TransientPrivateRoomFormEndpoint } from './transient-private-room-form.endpoint';
-import {  tap, takeUntil, switchMap, debounceTime } from 'rxjs/operators';
+import {  tap, takeUntil, switchMap, debounceTime, map, distinctUntilChanged } from 'rxjs/operators';
 import { Validators, FormBuilder } from '@angular/forms';
 import { setTransientPrivateFormValues } from '../../helpers/transient-private-room-form/set-transient-private-form-values';
 import { Router } from '@angular/router';
@@ -20,10 +20,11 @@ import { SetTenantObjectId } from '../../types/transient-private-room-tenant-for
 import { RequestResponse } from '@gmrc-admin/shared/enums';
 import { setTenantFormValues } from '../../helpers/transient-private-room-form/set-tenant-form-values';
 @Injectable()
-export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFormStoreState> implements OnDestroy {
+export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFormStoreState> implements OnDestroy{
   private destroy$: Subject<boolean> = new Subject<boolean>();
-  private searchTenantByName: Subject<string> = new Subject<string>();
+  private searchTenantByName$: Subject<string> = new Subject<string>();
   public tenants: Array<Tenant> = [];
+  @ViewChild('searchTenant', {static: false}) searchTenant: ElementRef;
   public form = this.formBuilder.group({
     number: [{value: null, disabled: true}, Validators.required],
     floor: null,
@@ -46,6 +47,7 @@ export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFor
   ) {
     super (new TransientPrivateRoomFormStoreState());
   }
+
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
@@ -54,6 +56,9 @@ export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFor
     this.dataStoreService.storeRequestStateUpdater = getStoreRequestStateUpdater(this);
     this.getRoom();
     this.searchTenants$();
+    this.dataRoomService.rooms.subscribe((pageData) => {
+      console.log('page data in store ', pageData);
+    });
   }
   onAddTenant(): void {
     getTenantsInTenantForm(this.tenantForm).push(createTransientPrivateTenant());
@@ -104,7 +109,7 @@ export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFor
       roomObjectId: this.form.get('_id').value,
       tenantObjectId: getTenantFormGroupInTenantForm(this.tenantForm, tenantIndex).get('tenantObjectId').value
     };
-    console.log('value submit', this.dataRoomService.addedTenantsObjectIds);
+
     if (tenant.tenantObjectId === null || this.dataRoomService.addedTenantsObjectIds.includes(tenant.tenantObjectId)) {
       this.dialog.open(ActionResponseComponent, {
         data: {
@@ -152,7 +157,7 @@ export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFor
         }
       }
     });
-    this.searchTenantByName.next();
+    this.searchTenantByName$.next();
   }
   onRoomFormSubmit(): void {
     this.endpoint.updateRoom(this.form.value, this.dataStoreService.storeRequestStateUpdater)
@@ -182,7 +187,6 @@ export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFor
     this.endpoint.getRooms(this.state.pageRequest, this.dataStoreService.storeRequestStateUpdater)
       .pipe(
         tap((pageData) => {
-          console.log('value get room', this.dataRoomService.addedTenantsObjectIds);
           setTransientPrivateFormValues(this.form, pageData.data[0]);
           setTenantFormValues(this.tenantForm, pageData.data[0].roomProperties[0].tenants);
         }),
@@ -191,7 +195,7 @@ export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFor
       .subscribe();
   }
   private searchTenants$(): void {
-    this.searchTenantByName
+    this.searchTenantByName$
       .pipe(
         switchMap(() => this.endpoint.getTenants(this.state.pageRequest, this.dataStoreService.storeRequestStateUpdater)),
         debounceTime(800),
