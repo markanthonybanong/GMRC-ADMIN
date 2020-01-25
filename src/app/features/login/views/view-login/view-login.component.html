@@ -1,4 +1,4 @@
-<app-form
+<app-login
    [form]="store.form"
    [userTypes]="userTypes"
    (userType)="store.setUserType($event)"
@@ -8,5 +8,5 @@
    (createAdminPassword)="store.onCreateAdminPassword()"
    [adminPassword]="store.createdAdminPassword"
 >
-</app-form>
+</app-login>
 

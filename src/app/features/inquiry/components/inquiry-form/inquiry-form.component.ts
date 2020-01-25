@@ -1,16 +1,16 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormStoreState } from '../../services/form/form.store.state';
-import { FormGroup, FormArray } from '@angular/forms';
+import { InquiryFormStoreState } from '../../services/inquiry-form/inquiry-form.store.state';
+import { FormGroup } from '@angular/forms';
 import { MatSelectChange } from '@angular/material';
 import { RequestResponse } from '@gmrc-admin/shared/enums';
 
 @Component({
-  selector: 'app-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss']
+  selector: 'app-inquiry-form',
+  templateUrl: './inquiry-form.component.html',
+  styleUrls: ['./inquiry-form.component.scss']
 })
-export class FormComponent implements OnInit {
-  @Input() state$: FormStoreState;
+export class InquiryFormComponent implements OnInit {
+  @Input() state$: InquiryFormStoreState;
   @Input() form: FormGroup;
   @Input() knownGMRCThrough: Array<string>;
   @Input() genders: Array<string>;

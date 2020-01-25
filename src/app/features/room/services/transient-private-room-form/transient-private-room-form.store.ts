@@ -19,12 +19,13 @@ import { getTenantFormGroupInTenantForm } from '../../helpers/transient-private-
 import { SetTenantObjectId } from '../../types/transient-private-room-tenant-form/set-tenant-object-id';
 import { RequestResponse } from '@gmrc-admin/shared/enums';
 import { setTenantFormValues } from '../../helpers/transient-private-room-form/set-tenant-form-values';
+import { updateTransientPrivateRoomFormState } from '../../helpers/transient-private-room-form/update-transient-private-room-form-state';
+import { getAddedTenantObjectdIds } from '../../helpers/get-added-tenant-objectd-ids';
 @Injectable()
 export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFormStoreState> implements OnDestroy{
   private destroy$: Subject<boolean> = new Subject<boolean>();
   private searchTenantByName$: Subject<string> = new Subject<string>();
   public tenants: Array<Tenant> = [];
-  @ViewChild('searchTenant', {static: false}) searchTenant: ElementRef;
   public form = this.formBuilder.group({
     number: [{value: null, disabled: true}, Validators.required],
     floor: null,
@@ -54,11 +55,9 @@ export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFor
   }
   init(): void {
     this.dataStoreService.storeRequestStateUpdater = getStoreRequestStateUpdater(this);
-    this.getRoom();
     this.searchTenants$();
-    this.dataRoomService.rooms.subscribe((pageData) => {
-      console.log('page data in store ', pageData);
-    });
+    this.getRoom();
+
   }
   onAddTenant(): void {
     getTenantsInTenantForm(this.tenantForm).push(createTransientPrivateTenant());
@@ -109,39 +108,47 @@ export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFor
       roomObjectId: this.form.get('_id').value,
       tenantObjectId: getTenantFormGroupInTenantForm(this.tenantForm, tenantIndex).get('tenantObjectId').value
     };
-
-    if (tenant.tenantObjectId === null || this.dataRoomService.addedTenantsObjectIds.includes(tenant.tenantObjectId)) {
-      this.dialog.open(ActionResponseComponent, {
-        data: {
-          title: ROOM_CONFIG.actions.addTenant,
-          content: RequestResponse.Error
-        }
-      });
-    } else {
-      this.endpoint.addTenant(tenant, this.dataStoreService.storeRequestStateUpdater)
-        .pipe(
-          tap(
-            () => {
-              getTenantFormGroupInTenantForm(this.tenantForm, tenantIndex).get('isAdded').setValue(true);
-              this.dialog.open(ActionResponseComponent, {
-                data: {
-                  title: ROOM_CONFIG.actions.addTenant,
-                  content: `Added ${getTenantFormGroupInTenantForm(this.tenantForm, tenantIndex).get('name').value}`
-                }
-              });
-            },
-            () => {
-              this.dialog.open(ActionResponseComponent, {
-                data: {
-                  title: ROOM_CONFIG.actions.addTenant,
-                  content: RequestResponse.Error
-                }
-              });
-            }
-          ),
-          takeUntil(this.destroy$)
-        ).subscribe();
-    }
+    this.dataRoomService.getAllRooms
+      .pipe(
+        tap((pageData) => {
+          if (tenant.tenantObjectId === null || getAddedTenantObjectdIds(pageData.data).includes(tenant.tenantObjectId)) {
+            const msg = tenant.tenantObjectId === null
+                            ? `Select tenant`
+                            : `${getTenantFormGroupInTenantForm(this.tenantForm, tenantIndex).get('name').value} already added`
+            this.dialog.open(ActionResponseComponent, {
+              data: {
+                title: ROOM_CONFIG.actions.addTenant,
+                content: msg,
+              },
+            });
+          } else {
+            this.endpoint.addTenant(tenant, this.dataStoreService.storeRequestStateUpdater)
+              .pipe(
+                tap(
+                  () => {
+                    getTenantFormGroupInTenantForm(this.tenantForm, tenantIndex).get('isAdded').setValue(true);
+                    this.dialog.open(ActionResponseComponent, {
+                      data: {
+                        title: ROOM_CONFIG.actions.addTenant,
+                        content: `Added ${getTenantFormGroupInTenantForm(this.tenantForm, tenantIndex).get('name').value}`
+                      }
+                    });
+                  },
+                  () => {
+                    this.dialog.open(ActionResponseComponent, {
+                      data: {
+                        title: ROOM_CONFIG.actions.addTenant,
+                        content: RequestResponse.Error
+                      }
+                    });
+                  }
+                ),
+                takeUntil(this.destroy$)
+              ).subscribe();
+          }
+        }),
+        takeUntil(this.destroy$)
+      ).subscribe();
   }
   onTenantClick(data: SetTenantObjectId): void {
     getTenantFormGroupInTenantForm(this.tenantForm, data.index).get('tenantObjectId').patchValue(data.tenantObjectId);

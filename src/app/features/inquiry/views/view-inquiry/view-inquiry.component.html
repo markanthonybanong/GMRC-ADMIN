@@ -1,12 +1,12 @@
  <div class="app-content-container">
-   <app-list-header
+   <app-inquiry-header
     class="app-content-header-container"
     (listAddInquiry)="store.onAddInquiry()"
     (listSearch)="store.onSearch($event)"
     (listDisplayAllInquiry)="store.onDisplayAllInquiry()"
    >
-   </app-list-header>
-   <app-list-body
+   </app-inquiry-header>
+   <app-inquiry-body
     class="app-content-body-container"
     [state$]="store.state$"
     [displayedColumns]="store.displayedColumns"
@@ -16,5 +16,5 @@
     (listInquiryUpdate)="store.onInquiryUpdate($event)"
     (listInquiryDelete)="store.onInquiryDelete($event)"
     >
-   </app-list-body>
+   </app-inquiry-body>
  </div>

@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy, ViewChild } from '@angular/core';
-import { ListStoreState } from './list.store.state';
+import { InquiryStoreState } from './inquiry.store.state';
 import { Store } from 'rxjs-observable-store';
 import { PageEvent, MatDialog } from '@angular/material';
 import { Subject } from 'rxjs';
@@ -8,23 +8,23 @@ import { RequestResponse } from '@gmrc-admin/shared/enums';
 import { Router } from '@angular/router';
 import { switchMap, map, tap, takeUntil, retry } from 'rxjs/operators';
 import { Inquiry } from '../../types/inquiry';
-import { ListEndpoint } from './list.endpoint';
+import { InquiryEndpoint } from './inquiry.endpoint';
 import { DataStoreService } from '@gmrc-admin/shared/services';
 import { ToDelete } from '../../types/to-delete';
 import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
 import { INQUIRY_CONFIG } from '../../inquiry.config';
-import { modifyInquiryObject } from '../../helpers/list/modify-inquiry-object';
+import { modifyInquiryObject } from '../../helpers/inquiry/modify-inquiry-object';
 @Injectable()
-export class ListStore  extends Store<ListStoreState> implements OnDestroy {
+export class InquiryStore  extends Store<InquiryStoreState> implements OnDestroy {
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
-    private endpoint: ListEndpoint,
+    private endpoint: InquiryEndpoint,
     private router: Router,
     private dataStoreService: DataStoreService,
     private dialog: MatDialog
   ) {
-    super(new ListStoreState());
+    super(new InquiryStoreState());
   }
 
   ngOnDestroy(): void {
@@ -119,7 +119,7 @@ export class ListStore  extends Store<ListStoreState> implements OnDestroy {
     this.dataStoreService.reloadTable$
       .pipe(
         switchMap(() => {
-          return this.endpoint.list(this.state.table.pageRequest, this.dataStoreService.storeRequestStateUpdater);
+          return this.endpoint.inquiry(this.state.table.pageRequest, this.dataStoreService.storeRequestStateUpdater);
         }),
         map((pageData) => {
           return modifyInquiryObject(pageData);

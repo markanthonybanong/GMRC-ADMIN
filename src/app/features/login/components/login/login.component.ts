@@ -1,19 +1,19 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatSelectChange } from '@angular/material';
-import { FormStoreState } from '../../services/form.store.state';
+import { LoginStoreState } from '../../services/login.store.state';
 
 @Component({
-  selector: 'app-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
-export class FormComponent{
+export class LoginComponent {
 
   @Input() form: FormGroup;
   @Input() userTypes: Array<string>;
   @Input() buttonName: string;
-  @Input() state$: FormStoreState;
+  @Input() state$: LoginStoreState;
   @Input() adminPassword: string;
   @Output() userType: EventEmitter<string> = new EventEmitter<string>();
   @Output() login: EventEmitter<object> = new EventEmitter<object>();

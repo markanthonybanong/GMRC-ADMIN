@@ -1,7 +1,7 @@
 import { Requests } from '../types/requests';
 
 
-export class FormStoreState {
+export class LoginStoreState {
   superAdminLogin = false;
   requests: Requests = {
     login: {

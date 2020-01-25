@@ -24,7 +24,7 @@ export class SearchTransientPrivateRoomComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.dataRoomService.init();
+
   }
 
 }

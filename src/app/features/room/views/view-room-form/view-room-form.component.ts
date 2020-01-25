@@ -16,7 +16,7 @@ export class ViewRoomFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.dataRoomService.init();
+
     this.store.init();
   }
 

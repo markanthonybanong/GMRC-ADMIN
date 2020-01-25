@@ -7,9 +7,9 @@ import { throwError, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
 @Injectable()
-export class ListEndpoint {
+export class InquiryEndpoint {
   constructor(private apiService: ApiService ) {}
-  list(pageRequest: any, requestStateUpdater: StoreRequestStateUpdater): Observable<PageData<Inquiry>> {
+  inquiry(pageRequest: any, requestStateUpdater: StoreRequestStateUpdater): Observable<PageData<Inquiry>> {
     const request = INQUIRY_CONFIG.request.list;
     requestStateUpdater(request.name, {inProgress: true});
     return this.apiService.post<PageData<Inquiry>>(request.path, pageRequest)

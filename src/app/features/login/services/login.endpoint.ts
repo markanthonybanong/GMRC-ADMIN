@@ -9,7 +9,7 @@ import { ApiService, AuthService } from '@gmrc-admin/shared/services';
 import { UserType } from '../login.enums';
 import { Token } from '@gmrc-admin/shared/types';
 @Injectable()
-export class FormEndpoint {
+export class LoginEndpoint {
   constructor(private apiService: ApiService, private authService: AuthService) {}
   login(credential: Credential, requestStateUpdater: StoreRequestStateUpdater): Observable<Token> {
     const request = credential.type === UserType.SuperAdmin

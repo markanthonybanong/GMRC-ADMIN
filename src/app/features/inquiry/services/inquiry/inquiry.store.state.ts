@@ -1,9 +1,9 @@
 import { Inquiry } from '../../types/inquiry';
-import { ListRequests } from '../../types/list-requests';
+import { InquiryRequests } from '../../types/inquiry-requests';
 import { INQUIRY_CONFIG } from '../../inquiry.config';
 import { Table } from '@gmrc-admin/shared/types';
 
-export class ListStoreState {
+export class InquiryStoreState {
   table: Table<Inquiry> = {
     pageRequest: {
       page: 1,
@@ -15,8 +15,8 @@ export class ListStoreState {
     totalCount: null,
     dataSource: [],
   };
-  requests: ListRequests = {
-    list: {
+  requests: InquiryRequests = {
+    inquiry: {
     }
   };
 }

@@ -3,20 +3,20 @@ import { CommonModule } from '@angular/common';
 import { InquiryRoutingModule } from './inquiry-routing.module';
 import { SharedModule } from '@gmrc-admin/shared';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { ViewListComponent } from './views/view-list/view-list.component';
-import { ViewFormComponent } from './views/view-form/view-form.component';
-import { ListHeaderComponent } from './components/list-header/list-header.component';
-import { ListBodyComponent } from './components/list-body/list-body.component';
-import { FormComponent } from './components/form/form.component';
+import { ViewInquiryComponent } from './views/view-inquiry/view-inquiry.component';
+import { ViewInquiryFormComponent } from './views/view-inquiry-form/view-inquiry-form.component';
+import { InquiryHeaderComponent } from './components/inquiry-header/inquiry-header.component';
 import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
 import { SearchComponent } from './modals/search/search.component';
+import { InquiryBodyComponent } from './components/inquiry-body/inquiry-body.component';
+import { InquiryFormComponent } from './components/inquiry-form/inquiry-form.component';
 @NgModule({
   declarations: [
-    ViewListComponent,
-    ViewFormComponent,
-    ListHeaderComponent,
-    ListBodyComponent,
-    FormComponent,
+    ViewInquiryComponent,
+    ViewInquiryFormComponent,
+    InquiryHeaderComponent,
+    InquiryBodyComponent,
+    InquiryFormComponent,
     SearchComponent,
   ],
   imports: [

@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ViewFormComponent } from './views/view-form/view-form.component';
+import { ViewLoginComponent } from './views/view-login/view-login.component';
 
 
 const routes: Routes = [
   {
     path: '',
-    component: ViewFormComponent
+    component: ViewLoginComponent
   }
 ];
 

@@ -8,7 +8,7 @@ import { tap } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
-export class FormEndpoint {
+export class InquiryFormEndpoint {
   constructor(private apiService: ApiService) {}
   inquiry(pageRequest: PageRequest, requestStateUpdater: StoreRequestStateUpdater): Observable<PageData<Inquiry>> {
     const request = INQUIRY_CONFIG.request.inquiry;

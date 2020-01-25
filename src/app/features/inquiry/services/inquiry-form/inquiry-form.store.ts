@@ -1,8 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { FormEndpoint } from './form.endpoint';
+import { InquiryFormEndpoint } from './inquiry-form.endpoint';
 import { StoreRequestStateUpdater } from '@gmrc-admin/shared/types';
 import { Subject, pipe, of, Observable, observable } from 'rxjs';
-import { FormStoreState } from './form.store.state';
+import { InquiryFormStoreState } from './inquiry-form.store.state';
 import { Store } from 'rxjs-observable-store';
 import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
 import { enumsToArray, getStoreRequestStateUpdater } from '@gmrc-admin/shared/helpers';
@@ -13,14 +13,14 @@ import { switchMap, tap, takeUntil, filter } from 'rxjs/operators';
 import { INQUIRY_CONFIG } from '../../inquiry.config';
 import { MatDialog } from '@angular/material';
 import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
-import { setInquiryFormValues } from '../../helpers/form/set-form-values';
-import { createBedInfo } from '../../helpers/form/create-bed-info';
-import { getBedInfos } from '../../helpers/form/get-bed-info';
+import { setInquiryFormValues } from '../../helpers/inquiry-form/set-form-values';
+import { createBedInfo } from '../../helpers/inquiry-form/create-bed-info';
+import { getBedInfos } from '../../helpers/inquiry-form/get-bed-info';
 import { DataStoreService } from '@gmrc-admin/shared/services';
 import { RoomType } from 'src/app/features/room/room.enums';
 
 @Injectable()
-export class FormStore extends Store<FormStoreState> implements OnDestroy {
+export class InquiryFormStore extends Store<InquiryFormStoreState> implements OnDestroy {
   private destroy$: Subject<boolean> = new Subject<boolean>();
   private form = this.formBuilder.group({
     name: [null, Validators.required],
@@ -35,13 +35,13 @@ export class FormStore extends Store<FormStoreState> implements OnDestroy {
   });
 
   constructor(
-    private endpoint: FormEndpoint,
+    private endpoint: InquiryFormEndpoint,
     private formBuilder: FormBuilder,
     private router: Router,
     private dialog: MatDialog,
     private dataStoreService: DataStoreService
   ) {
-    super(new FormStoreState());
+    super(new InquiryFormStoreState());
   }
 
   ngOnDestroy(): void {

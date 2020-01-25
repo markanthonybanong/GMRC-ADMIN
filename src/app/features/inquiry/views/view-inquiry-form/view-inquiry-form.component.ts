@@ -1,23 +1,22 @@
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
-import { FormStore } from '../../services/form/form.store';
-import { FormEndpoint } from '../../services/form/form.endpoint';
-import { RequestResponse } from '@gmrc-admin/shared/enums';
+import { InquiryFormStore } from '../../services/inquiry-form/inquiry-form.store';
 import { ActivatedRoute } from '@angular/router';
 import { filter, tap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { INQUIRY_CONFIG } from '../../inquiry.config';
 import { DataRoomService, DataTenantService, DataStoreService } from '@gmrc-admin/shared/services';
+import { InquiryFormEndpoint } from '../../services/inquiry-form/inquiry-form.endpoint';
 
 @Component({
-  selector: 'app-view-form',
-  templateUrl: './view-form.component.html',
-  styleUrls: ['./view-form.component.scss'],
-  providers: [FormStore, FormEndpoint]
+  selector: 'app-view-inquiry-form',
+  templateUrl: './view-inquiry-form.component.html',
+  styleUrls: ['./view-inquiry-form.component.scss'],
+  providers: [InquiryFormStore, InquiryFormEndpoint]
 })
-export class ViewFormComponent implements OnInit, OnDestroy {
+export class ViewInquiryFormComponent implements OnInit, OnDestroy {
   private destroy$: Subject<boolean> = new Subject<boolean>();
   constructor(
-    private store: FormStore,
+    private store: InquiryFormStore,
     private route: ActivatedRoute,
     private dataRoomService: DataRoomService,
     private dataTenantService: DataTenantService,

@@ -11,11 +11,11 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
-import { FormStoreState } from './form.store.state';
-import { FormEndpoint } from './form.endpoint';
+import { LoginStoreState } from './login.store.state';
+import { LoginEndpoint } from './login.endpoint';
 
 @Injectable()
-export class FormStore  extends Store<FormStoreState> implements OnDestroy{
+export class LoginStore  extends Store<LoginStoreState> implements OnDestroy{
   private userType: string = UserType.SuperAdmin;
   private createdAdminPassword: string = null;
   private storeRequestStateUpdater: StoreRequestStateUpdater;
@@ -26,11 +26,11 @@ export class FormStore  extends Store<FormStoreState> implements OnDestroy{
   });
 
   constructor(
-    private endpoint: FormEndpoint,
+    private endpoint: LoginEndpoint,
     private router: Router,
     private formBuilder: FormBuilder
   ) {
-    super(new  FormStoreState());
+    super(new  LoginStoreState());
   }
   init(): void {
     this.storeRequestStateUpdater = getStoreRequestStateUpdater(this);

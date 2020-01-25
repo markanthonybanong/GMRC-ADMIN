@@ -1,16 +1,16 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { ListStoreState } from '../../services/list/list.store.state';
+import { InquiryStoreState } from '../../services/inquiry/inquiry.store.state';
 import { RequestResponse } from '@gmrc-admin/shared/enums';
 import { PageEvent  } from '@angular/material';
 import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
-  selector: 'app-list-body',
-  templateUrl: './list-body.component.html',
-  styleUrls: ['./list-body.component.scss']
+  selector: 'app-inquiry-body',
+  templateUrl: './inquiry-body.component.html',
+  styleUrls: ['./inquiry-body.component.scss']
 })
-export class ListBodyComponent{
-  @Input() state$: Observable<ListStoreState>;
+export class InquiryBodyComponent{
+  @Input() state$: Observable<InquiryStoreState>;
   @Input() displayedColumns: Array<string>;
   @Input() pageSizeOptions: Array<number>;
   @Input() request: RequestResponse;
