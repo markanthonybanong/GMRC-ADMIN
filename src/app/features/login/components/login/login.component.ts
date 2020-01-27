@@ -9,7 +9,6 @@ import { LoginStoreState } from '../../services/login.store.state';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-
   @Input() form: FormGroup;
   @Input() userTypes: Array<string>;
   @Input() buttonName: string;

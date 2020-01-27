@@ -11,6 +11,7 @@ export class TransientPrivateRoomFormComponent implements OnInit {
   @Input() form: FormGroup;
   @Input() airconStatuses: Array<string>;
   @Input() roomStatuses: Array<string>;
+  @Input() inProgress: boolean;
   @Output() transientPrivateFormAddTenant: EventEmitter<null> = new EventEmitter<null>();
   @Output() transientPrivateFormBack: EventEmitter<null> = new EventEmitter<null>();
   @Output() transientPrivateFormOnSubmit: EventEmitter<null> = new EventEmitter<null>();

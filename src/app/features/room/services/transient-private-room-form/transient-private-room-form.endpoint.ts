@@ -49,6 +49,8 @@ export class TransientPrivateRoomFormEndpoint {
   addTenant(data: TenantData, requestStateUpdater: StoreRequestStateUpdater): Observable<Room> {
     const request = ROOM_CONFIG.request.submit.addTenantInTransientPrivateRoom;
     requestStateUpdater(request.name, {inProgress: true});
+
+
     return this.apiService.post<Room>(request.path, data)
     .pipe(
       tap(

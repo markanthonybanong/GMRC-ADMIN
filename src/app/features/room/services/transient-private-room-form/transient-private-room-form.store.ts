@@ -19,7 +19,6 @@ import { getTenantFormGroupInTenantForm } from '../../helpers/transient-private-
 import { SetTenantObjectId } from '../../types/transient-private-room-tenant-form/set-tenant-object-id';
 import { RequestResponse } from '@gmrc-admin/shared/enums';
 import { setTenantFormValues } from '../../helpers/transient-private-room-form/set-tenant-form-values';
-import { updateTransientPrivateRoomFormState } from '../../helpers/transient-private-room-form/update-transient-private-room-form-state';
 import { getAddedTenantObjectdIds } from '../../helpers/get-added-tenant-objectd-ids';
 @Injectable()
 export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFormStoreState> implements OnDestroy{
@@ -57,7 +56,6 @@ export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFor
     this.dataStoreService.storeRequestStateUpdater = getStoreRequestStateUpdater(this);
     this.searchTenants$();
     this.getRoom();
-
   }
   onAddTenant(): void {
     getTenantsInTenantForm(this.tenantForm).push(createTransientPrivateTenant());
@@ -108,13 +106,31 @@ export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFor
       roomObjectId: this.form.get('_id').value,
       tenantObjectId: getTenantFormGroupInTenantForm(this.tenantForm, tenantIndex).get('tenantObjectId').value
     };
+    this.setState({
+      ...this.state,
+      requests: {
+        ...this.state.requests,
+        submit: {
+          inProgress: true,
+        }
+      }
+    });
     this.dataRoomService.getAllRooms
       .pipe(
         tap((pageData) => {
           if (tenant.tenantObjectId === null || getAddedTenantObjectdIds(pageData.data).includes(tenant.tenantObjectId)) {
             const msg = tenant.tenantObjectId === null
                             ? `Select tenant`
-                            : `${getTenantFormGroupInTenantForm(this.tenantForm, tenantIndex).get('name').value} already added`
+                            : `${getTenantFormGroupInTenantForm(this.tenantForm, tenantIndex).get('name').value} already added`;
+            this.setState({
+              ...this.state,
+              requests: {
+                ...this.state.requests,
+                submit: {
+                  inProgress: false,
+                }
+              }
+            });
             this.dialog.open(ActionResponseComponent, {
               data: {
                 title: ROOM_CONFIG.actions.addTenant,
@@ -148,7 +164,23 @@ export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFor
           }
         }),
         takeUntil(this.destroy$)
-      ).subscribe();
+      ).subscribe(() => {}, () => {
+        this.setState({
+          ...this.state,
+          requests: {
+            ...this.state.requests,
+            submit: {
+              inProgress: false,
+            }
+          }
+        });
+        this.dialog.open(ActionResponseComponent, {
+          data: {
+            title: ROOM_CONFIG.actions.addTenant,
+            content: RequestResponse.Error
+          }
+        });
+      });
   }
   onTenantClick(data: SetTenantObjectId): void {
     getTenantFormGroupInTenantForm(this.tenantForm, data.index).get('tenantObjectId').patchValue(data.tenantObjectId);

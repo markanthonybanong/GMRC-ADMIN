@@ -10,6 +10,7 @@ import { SetTenantObjectId } from '../../../types/transient-private-room-tenant-
 export class TransientPrivateRoomTenantFormComponent implements OnInit {
   @Input() form: FormGroup;
   @Input() tenants: Array<Tenant>;
+  @Input() inProgress: boolean;
   @Output() transienPrivateRoomTenantFormOnSearchTenant: EventEmitter<string> = new EventEmitter<string>();
   @Output() transienPrivateRoomTenantFormOnRemoveTenant: EventEmitter<number> = new EventEmitter<number>();
   @Output() transienPrivateRoomTenantFormOnSubmit: EventEmitter<number> = new EventEmitter<number>();

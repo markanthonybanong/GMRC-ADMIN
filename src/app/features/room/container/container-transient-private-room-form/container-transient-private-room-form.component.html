@@ -13,6 +13,7 @@
     <app-transient-private-room-tenant-form
      [form]="tenantForm"
      [tenants]="tenants"
+     [inProgress]="subs.requests.submit.inProgress"
      (transienPrivateRoomTenantFormOnSearchTenant)="onSearchTenant($event)"
      (transienPrivateRoomTenantFormOnRemoveTenant)="onRemoveTenant($event)"
      (transienPrivateRoomTenantFormOnSubmit)="tenantFormOnSubmit($event)"
@@ -24,9 +25,11 @@
     [form]="form"
     [roomStatuses]="roomStatuses"
     [airconStatuses]="airconStatuses"
+    [inProgress]="subs.requests.submit.inProgress"
     (transientPrivateFormAddTenant)="onAddTenant()"
     (transientPrivateFormBack)="onBack()"
     (transientPrivateFormOnSubmit)="roomFormOnSubmit()"
+
     >
     </app-transient-private-room-form>
   </div>

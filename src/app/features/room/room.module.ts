@@ -17,6 +17,8 @@ import { TransientPrivateRoomHeaderComponent } from './components/transient-priv
 import { TransientPrivateRoomFormComponent } from './components/transient-private-room/transient-private-room-form/transient-private-room-form.component';
 import { ContainerTransientPrivateRoomFormComponent } from './container/container-transient-private-room-form/container-transient-private-room-form.component';
 import { TransientPrivateRoomTenantFormComponent } from './components/transient-private-room/transient-private-room-tenant-form/transient-private-room-tenant-form.component';
+import { ViewBedspaceRoomComponent } from './views/view-bedspace-room/view-bedspace-room.component';
+import { ViewBedspaceRoomFormComponent } from './views/view-bedspace-room-form/view-bedspace-room-form.component';
 @NgModule({
   declarations: [
     RoomHeaderComponent,
@@ -32,6 +34,8 @@ import { TransientPrivateRoomTenantFormComponent } from './components/transient-
     TransientPrivateRoomFormComponent,
     ContainerTransientPrivateRoomFormComponent,
     TransientPrivateRoomTenantFormComponent,
+    ViewBedspaceRoomComponent,
+    ViewBedspaceRoomFormComponent,
   ],
   imports: [
     CommonModule,

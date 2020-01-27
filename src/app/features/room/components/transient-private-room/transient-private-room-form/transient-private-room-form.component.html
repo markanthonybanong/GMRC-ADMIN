@@ -59,7 +59,7 @@
         <button mat-raised-button  color="primary" (click)='onBack()'>
           <span>Back</span>
         </button>
-        <button mat-raised-button color="primary" (click)='onSubmit()' [disabled]='form.invalid || isSubmitting'>
+        <button mat-raised-button color="primary" (click)='onSubmit()' [disabled]='form.invalid || inProgress'>
           <span>Update</span>
         </button>
       </div>

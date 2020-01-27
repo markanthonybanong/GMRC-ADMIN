@@ -7,7 +7,6 @@ import { getStoreRequestStateUpdater, removeEmptyKeys, updateState } from '@gmrc
 import { RequestResponse } from '@gmrc-admin/shared/enums';
 import { Router } from '@angular/router';
 import { switchMap, map, tap, takeUntil, retry } from 'rxjs/operators';
-import { Inquiry } from '../../types/inquiry';
 import { InquiryEndpoint } from './inquiry.endpoint';
 import { DataStoreService } from '@gmrc-admin/shared/services';
 import { ToDelete } from '../../types/to-delete';
