@@ -21,6 +21,8 @@ import { ViewBedspaceRoomComponent } from './views/view-bedspace-room/view-bedsp
 import { ViewBedspaceRoomFormComponent } from './views/view-bedspace-room-form/view-bedspace-room-form.component';
 import { BedspaceRoomBodyComponent } from './components/bedspace-room/bedspace-room-body/bedspace-room-body.component';
 import { SearchBedspaceRoomComponent } from './modals/search-bedspace-room/search-bedspace-room.component';
+import { ContainerBedspaceRoomFormComponent } from './container/container-bedspace-room-form/container-bedspace-room-form.component';
+import { BedspaceRoomFormComponent } from './components/bedspace-room/bedspace-room-form/bedspace-room-form.component';
 @NgModule({
   declarations: [
     RoomHeaderComponent,
@@ -40,6 +42,8 @@ import { SearchBedspaceRoomComponent } from './modals/search-bedspace-room/searc
     ViewBedspaceRoomFormComponent,
     BedspaceRoomBodyComponent,
     SearchBedspaceRoomComponent,
+    ContainerBedspaceRoomFormComponent,
+    BedspaceRoomFormComponent,
   ],
   imports: [
     CommonModule,

@@ -8,21 +8,35 @@ import { getStoreRequestStateUpdater } from '@gmrc-admin/shared/helpers';
 import { switchMap, debounceTime, takeUntil, tap } from 'rxjs/operators';
 import { Tenant } from 'src/app/features/tenant/types/tenant';
 import { BedspaceRoomFormEndpoint } from './bedspace-room-form.endpoint';
+import { FormBuilder, Validators } from '@angular/forms';
+import { setBedspaceFormValues } from '../../helpers/bedspace-room-form/set-bedspace-form-values';
+import { RequestResponse } from '@gmrc-admin/shared/enums';
 
 @Injectable()
 export class BedspaceRoomFormStore extends Store<BedspaceRoomFormStoreState> implements OnDestroy {
   private destroy$: Subject<boolean> = new Subject<boolean>();
   private searchTenantByName$: Subject<string> = new Subject<string>();
   public tenants: Array<Tenant>;
+  public form = this.formBuilder.group({
+    number: [null, Validators.required],
+    floor: null,
+    type: [null, Validators.required],
+    aircon: null,
+    _id: null,
+  });
   constructor(
     private endpoint: BedspaceRoomFormEndpoint,
-    private dataStoreService: DataStoreService
+    private dataStoreService: DataStoreService,
+    private formBuilder: FormBuilder
   ) {
     super(new BedspaceRoomFormStoreState());
   }
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
+  }
+  get requestResponse(): object {
+    return RequestResponse;
   }
   init(): void {
     this.dataStoreService.storeRequestStateUpdater = getStoreRequestStateUpdater(this);
@@ -33,8 +47,7 @@ export class BedspaceRoomFormStore extends Store<BedspaceRoomFormStoreState> imp
     this.endpoint.getRooms(this.state.pageRequest, this.dataStoreService.storeRequestStateUpdater)
     .pipe(
       tap((pageData) => {
-       console.log('page data ', pageData);
-       // setTenantFormValues(this.tenantForm, pageData.data[0].roomProperties[0].tenants);
+       setBedspaceFormValues(this.form, pageData.data[0]);
       }),
       takeUntil(this.destroy$)
     )

@@ -2,7 +2,7 @@ import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { Tenant } from 'src/app/features/tenant/types/tenant';
 import { Room } from '../../types/room/room';
 
-export function setTransientPrivateFormValues(form: FormGroup, room: Room) {
+export function setTransientPrivateFormValues(form: FormGroup, room: Room): void {
   if ( room.roomProperties.length) {
     const tenantArr: Array<Tenant> = [];
     const roomProperties = form.get('roomProperties') as FormArray;

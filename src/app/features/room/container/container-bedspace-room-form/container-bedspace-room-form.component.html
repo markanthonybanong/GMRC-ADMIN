@@ -1,0 +1,19 @@
+<div *ngIf="state$ | async as subs" class="form-container">
+  <div *ngIf="subs.requests.room.inProgress" class="spinner-container">
+    <div class="center-content">
+      <mat-spinner></mat-spinner>
+    </div>
+  </div>
+  <mat-card class="form-error-msg" *ngIf="subs.requests.room.error">
+    <div class="center-content">
+      <h1 class="error">{{requestResponse.Error}}</h1>
+    </div>
+  </mat-card>
+  <div *ngIf="subs.requests.room.success" class="full-width">
+    <app-bedspace-room-form
+     [form]="form"
+     [inProgress]="subs.requests.submit.inProgress"
+    >
+    </app-bedspace-room-form>
+  </div>
+</div>
