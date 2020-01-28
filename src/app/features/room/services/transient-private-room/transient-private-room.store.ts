@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { TransientPrivateRoomEndpoint } from './transient-private-room.endpoint';
 import { Store } from 'rxjs-observable-store';
 import { TransientPrivateRoomStoreState } from './transient-private-room.store.state';
-import { PageEvent } from '@angular/material';
+import { PageEvent, MatDialog } from '@angular/material';
 import { Subject } from 'rxjs';
 import { DataStoreService } from '@gmrc-admin/shared/services';
 import { switchMap } from 'rxjs/internal/operators/switchMap';
@@ -11,15 +11,17 @@ import { tap, retry, takeUntil } from 'rxjs/operators';
 import { ROOM_CONFIG } from '../../room.config';
 import { RequestResponse } from '@gmrc-admin/shared/enums';
 import { Router } from '@angular/router';
+import { SearchTransientPrivateRoomComponent } from '../../modals/search-transient-private-room/search-transient-private-room.component';
 
 @Injectable()
 export class TransientPrivateRoomStore extends Store<TransientPrivateRoomStoreState> implements OnDestroy {
   private destroy$: Subject<boolean> = new Subject<boolean>();
-
+  public tableName = 'Private/Transient Rooms';
   constructor(
     private endpoint: TransientPrivateRoomEndpoint,
     private dataStoreService: DataStoreService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {
     super(new TransientPrivateRoomStoreState());
   }
@@ -40,9 +42,6 @@ export class TransientPrivateRoomStore extends Store<TransientPrivateRoomStoreSt
       'actions'
     ];
   }
-  get totalCount(): number {
-    return this.state.table.totalCount;
-  }
   get request(): object {
     return RequestResponse;
   }
@@ -51,22 +50,32 @@ export class TransientPrivateRoomStore extends Store<TransientPrivateRoomStoreSt
     this.initReloadTable$();
     this.dataStoreService.reloadTable$.next();
   }
-  onSearch(search: object): void {
-    this.setState({
-      ...this.state,
-      table: {
-        ...this.state.table,
-        pageRequest: {
-          page: null,
-          limit: null,
-          filters: {
-            type: ROOM_CONFIG.filters.types.ADVANCESEARCHTRANSIENTPRIVATEROOMS,
-            roomFilter: removeEmptyKeys(search),
-          }
+  onSearch(): void {
+    const dialogRef = this.dialog.open(
+      SearchTransientPrivateRoomComponent, {
+        data: {
+          title: ROOM_CONFIG.actions.searchTransientPrivateRoom
         }
+    });
+    dialogRef.afterClosed().subscribe(search => {
+      if (search) {
+        this.setState({
+          ...this.state,
+          table: {
+            ...this.state.table,
+            pageRequest: {
+              page: null,
+              limit: 200,
+              filters: {
+                type: ROOM_CONFIG.filters.types.ADVANCESEARCHTRANSIENTPRIVATEROOMS,
+                roomFilter: removeEmptyKeys(search),
+              }
+            }
+          }
+        });
+        this.dataStoreService.reloadTable$.next();
       }
     });
-    this.dataStoreService.reloadTable$.next();
   }
   onDisplayAllRooms(): void {
     this.setState({

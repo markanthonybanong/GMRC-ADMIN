@@ -6,7 +6,6 @@ import { Tenant } from 'src/app/features/tenant/types/tenant';
 import { SetTenantObjectId } from '../../types/transient-private-room-tenant-form/set-tenant-object-id';
 import { RequestResponse } from 'src/app/shared/enums/request-response';
 
-
 @Component({
   selector: 'app-container-transient-private-room-form',
   templateUrl: './container-transient-private-room-form.component.html',
@@ -19,6 +18,7 @@ export class ContainerTransientPrivateRoomFormComponent implements OnInit {
   @Input() roomStatuses: Array<string>;
   @Input() tenantForm: FormGroup;
   @Input() tenants: Array<Tenant>;
+  @Input() floorNumbers: Array<number>;
   @Output() transientPrivateFormAddTenant: EventEmitter<null> = new EventEmitter<null>();
   @Output() transientPrivateFormBack: EventEmitter<null> = new EventEmitter<null>();
   @Output() transienPrivateRoomTenantFormOnSearchTenant: EventEmitter<string> = new EventEmitter<string>();

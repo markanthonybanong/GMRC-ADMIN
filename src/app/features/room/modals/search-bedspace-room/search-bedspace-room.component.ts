@@ -1,30 +1,28 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { DataRoomService } from '@gmrc-admin/shared/services';
 import { MAT_DIALOG_DATA } from '@angular/material';
+import { DataRoomService } from '@gmrc-admin/shared/services';
+import { getRoomNumbers, getFloorNumbers } from 'src/app/shared/helpers/array';
+import { takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { tap, takeUntil } from 'rxjs/operators';
-import { getRoomNumbers, getFloorNumbers } from '@gmrc-admin/shared/helpers';
 import { RoomType } from '../../room.enums';
 
 @Component({
-  selector: 'app-search-transient-private-room',
-  templateUrl: './search-transient-private-room.component.html',
-  styleUrls: ['./search-transient-private-room.component.scss']
+  selector: 'app-search-bedspace-room',
+  templateUrl: './search-bedspace-room.component.html',
+  styleUrls: ['./search-bedspace-room.component.scss']
 })
-export class SearchTransientPrivateRoomComponent implements OnInit, OnDestroy {
-  private destroy$: Subject<boolean> = new Subject<boolean>();
-  roomNumbers: Array<number>;
-  floorNumbers: Array<number>;
-  roomTypes: Array<string> = [RoomType.PRIVATE, RoomType.TRANSIENT];
-  form = this.formBuilder.group({
+export class SearchBedspaceRoomComponent implements OnInit, OnDestroy {
+  public form = this.formBuilder.group({
     number: null,
     floor: null,
-    type: null,
-    status: null,
+    deckStatus: null,
+    awayDeckStatus: null,
     aircon: null,
-    dueRentDate: null,
   });
+  public roomNumbers: Array<number>;
+  public floorNumbers: Array<number>;
+  private destroy$: Subject<boolean> = new Subject<boolean>();
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
@@ -32,13 +30,13 @@ export class SearchTransientPrivateRoomComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+
     this.setRoomAndFloorNumbers();
   }
-
   ngOnDestroy(): void {
-   this.destroy$.next(true);
-   this.destroy$.unsubscribe();
-  }
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+   }
   private setRoomAndFloorNumbers(): void {
     this.dataRoomService.getAllRooms
       .pipe(

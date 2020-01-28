@@ -16,6 +16,7 @@ export class InquiryFormComponent implements OnInit {
   @Input() genders: Array<string>;
   @Input() roomTypes: Array<string>;
   @Input() request: RequestResponse;
+  @Input() roomNumbers: Array<number>;
   @Output() formRoomChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() formBack: EventEmitter<null> = new EventEmitter<null>();
   @Output() formSubmit: EventEmitter<object> = new EventEmitter<object>();

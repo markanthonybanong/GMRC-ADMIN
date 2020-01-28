@@ -5,7 +5,7 @@ import { PageData, PageRequest } from '../types';
 import { ROOM_CONFIG } from 'src/app/features/room/room.config';
 import { DataStoreService } from './data-store.service';
 import { Room } from 'src/app/features/room/types/room/room';
-import { RoomStatus, AirconStatus, RoomType } from 'src/app/features/room/room.enums';
+import { RoomStatus, AirconStatus, RoomType, DeckStatus } from 'src/app/features/room/room.enums';
 import { Subject, Observable, BehaviorSubject, throwError } from 'rxjs';
 import { tap, map, switchMap } from 'rxjs/operators';
 import { error } from 'util';
@@ -34,6 +34,9 @@ export class DataRoomService {
  }
  get airconStatuses(): Array<string> {
   return enumsToArray(AirconStatus);
+ }
+ get deckStatus(): Array<string> {
+   return enumsToArray(DeckStatus);
  }
  get getAllRooms(): Observable<PageData<Room>> {
   return this.apiService.post<PageData<Room>>(ROOM_CONFIG.request.rooms.path, this.pagRequest)

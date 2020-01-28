@@ -1,6 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import { InquiryStore } from '../../services/inquiry/inquiry.store';
-import { DataTableService, DataStoreService } from '@gmrc-admin/shared/services';
+import { DataStoreService } from '@gmrc-admin/shared/services';
 import { InquiryEndpoint } from '../../services/inquiry/inquiry.endpoint';
 
 @Component({
@@ -13,7 +13,6 @@ export class ViewInquiryComponent implements OnInit  {
 
   constructor(
     private store: InquiryStore,
-    private dataTableService: DataTableService,
     private dataStoreService: DataStoreService) {
     this.store.init();
   }

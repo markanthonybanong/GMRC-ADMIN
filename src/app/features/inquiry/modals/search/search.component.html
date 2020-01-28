@@ -2,8 +2,8 @@
 <mat-dialog-content [formGroup]="form" class="form">
   <div id="form-column-2">
     <mat-form-field>
-      <mat-select placeholder="Room numbers" formControlName="roomNumber">
-        <mat-option *ngFor="let number of dataRoomService.roomNumbers;" [value]="number">
+      <mat-select placeholder="Room number" formControlName="roomNumber">
+        <mat-option *ngFor="let number of  roomNumbers;" [value]="number">
             {{number}}
         </mat-option>
       </mat-select>

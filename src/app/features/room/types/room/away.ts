@@ -1,14 +1,14 @@
 import { Tenant } from 'src/app/features/tenant/types/tenant';
 
 export interface Away {
-  inDate: string;
-  inTime: string;
-  outDate: string;
+  inDate: any;
+  inTime: any;
+  outDate: any;
   outTime: string;
   tenant: Tenant;
   tenantObjectId?: string;
   status: string;
-  willReturnIn: string;
+  willReturnIn: any;
   dueRentDate: number;
   rent: number;
 }

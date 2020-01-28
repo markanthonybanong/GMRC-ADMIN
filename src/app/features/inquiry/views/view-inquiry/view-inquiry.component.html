@@ -10,7 +10,7 @@
     class="app-content-body-container"
     [state$]="store.state$"
     [displayedColumns]="store.displayedColumns"
-    [pageSizeOptions]="dataTableService.pageSizeOptions"
+    [pageSizeOptions]="dataStoreService.pageSizeOptions"
     [request]="dataStoreService.request"
     (listPaginatorUpdate)="store.onPaginatorUpdate($event)"
     (listInquiryUpdate)="store.onInquiryUpdate($event)"

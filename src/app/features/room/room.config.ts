@@ -37,6 +37,9 @@ export const ROOM_CONFIG = {
       TRANSIENTPRIVATEROOMS: 'transientPrivateRooms',
       TRANSIENTPRIVATEROOMBYOBJECTID: 'transientPrivateRoomByObjectId',
       ADVANCESEARCHTRANSIENTPRIVATEROOMS: 'advanceSearchTransientPrivateRooms',
+      BEDSPACEROOMS: 'bedspaceRooms',
+      BEDSPACEROOMBYOBJECTID: 'bedspaceRoomByObjectId',
+      ADVANCESEARCHBEDSPACEROOMS: 'advanceSearchBedspaceRooms',
       TENANTBYKEYSTROKE: 'tenantByKeyStroke',
     },
     roomObjectId: 'roomObjectId',
@@ -46,6 +49,7 @@ export const ROOM_CONFIG = {
     update: 'UPDATE ROOM',
     delete: 'DELETE ROOM',
     searchTransientPrivateRoom: 'SEARCH TRANSIENT/PRIVATE ROOM',
+    searchBedspaceRoom: 'SEARCH BEDSPACE ROOM',
     addTenant: 'ADD TENANT',
     removeTenant: 'REMOVE TENANT',
   }

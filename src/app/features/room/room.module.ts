@@ -13,19 +13,21 @@ import { RoomFormComponent } from './components/room/room-form/room-form.compone
 import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
 import { ViewTransientPrivateRoomFormComponent } from './views/view-transient-private-room-form/view-transient-private-room-form.component';
 import { TransientPrivateRoomBodyComponent } from './components/transient-private-room/transient-private-room-body/transient-private-room-body.component';
-import { TransientPrivateRoomHeaderComponent } from './components/transient-private-room/transient-private-room-header/transient-private-room-header.component';
+import { RoomBodyHeaderComponent } from './components/room-body-header/room-body-header.component';
 import { TransientPrivateRoomFormComponent } from './components/transient-private-room/transient-private-room-form/transient-private-room-form.component';
 import { ContainerTransientPrivateRoomFormComponent } from './container/container-transient-private-room-form/container-transient-private-room-form.component';
 import { TransientPrivateRoomTenantFormComponent } from './components/transient-private-room/transient-private-room-tenant-form/transient-private-room-tenant-form.component';
 import { ViewBedspaceRoomComponent } from './views/view-bedspace-room/view-bedspace-room.component';
 import { ViewBedspaceRoomFormComponent } from './views/view-bedspace-room-form/view-bedspace-room-form.component';
+import { BedspaceRoomBodyComponent } from './components/bedspace-room/bedspace-room-body/bedspace-room-body.component';
+import { SearchBedspaceRoomComponent } from './modals/search-bedspace-room/search-bedspace-room.component';
 @NgModule({
   declarations: [
     RoomHeaderComponent,
     ViewRoomComponent,
     ViewTransientPrivateRoomComponent,
     TransientPrivateRoomBodyComponent,
-    TransientPrivateRoomHeaderComponent,
+    RoomBodyHeaderComponent,
     SearchTransientPrivateRoomComponent,
     PaginatorComponent,
     ViewRoomFormComponent,
@@ -36,6 +38,8 @@ import { ViewBedspaceRoomFormComponent } from './views/view-bedspace-room-form/v
     TransientPrivateRoomTenantFormComponent,
     ViewBedspaceRoomComponent,
     ViewBedspaceRoomFormComponent,
+    BedspaceRoomBodyComponent,
+    SearchBedspaceRoomComponent,
   ],
   imports: [
     CommonModule,
@@ -46,6 +50,7 @@ import { ViewBedspaceRoomFormComponent } from './views/view-bedspace-room-form/v
   ],
   entryComponents: [
     SearchTransientPrivateRoomComponent,
+    SearchBedspaceRoomComponent,
     ActionResponseComponent
   ]
 })

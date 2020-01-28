@@ -9,6 +9,8 @@
    (listAddRoom)="store.onAddRoom()"
   >
   </app-room-header>
-  <router-outlet></router-outlet>
+  <router-outlet
+    (activate)="store.setTableName($event)"
+  ></router-outlet>
 </div>
 

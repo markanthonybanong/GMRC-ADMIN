@@ -4,7 +4,6 @@ export * from './auth-guard.service';
 export * from './local-storage.service';
 export * from './state-variable.service';
 export * from './subject-variable.service';
-export * from './data-table.service';
 export * from './data-room.service';
 export * from './data-tenant.service';
 export * from './data-store.service';

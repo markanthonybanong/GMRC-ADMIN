@@ -15,6 +15,7 @@ import { InquiryFormEndpoint } from '../../services/inquiry-form/inquiry-form.en
 })
 export class ViewInquiryFormComponent implements OnInit, OnDestroy {
   private destroy$: Subject<boolean> = new Subject<boolean>();
+
   constructor(
     private store: InquiryFormStore,
     private route: ActivatedRoute,

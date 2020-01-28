@@ -10,8 +10,15 @@ export enum AirconStatus {
 }
 
 export enum RoomType {
-  BEDSPACE    = 'Bedspace',
   TRANSIENT   = 'Transient',
   PRIVATE     = 'Private',
-  SEMIPRIVATE = 'Semi Private'
+  SEMIPRIVATE = 'Semi Private',
+  BEDSPACE    = 'Bedspace',
+}
+
+export enum DeckStatus {
+  VACANT   = 'Vacant',
+  OCCUPIED = 'Occupied',
+  RESERVED = 'Reserved',
+  AWAY     = 'Away'
 }

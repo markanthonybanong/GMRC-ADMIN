@@ -16,6 +16,7 @@ import { MatDialog } from '@angular/material';
 import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
 import { ROOM_CONFIG } from '../../room.config';
 import { RoomType } from '../../room.enums';
+import {Location} from '@angular/common';
 
 @Injectable()
 export class RoomFormStore extends Store<RoomFormStoreState> implements OnDestroy {
@@ -34,6 +35,7 @@ export class RoomFormStore extends Store<RoomFormStoreState> implements OnDestro
     private endpoint: RoomFormEndpoint,
     private dataStoreService: DataStoreService,
     private dialog: MatDialog,
+    private location: Location
     ) {
     super(new RoomFormStoreState());
   }
@@ -60,7 +62,7 @@ export class RoomFormStore extends Store<RoomFormStoreState> implements OnDestro
       .pipe(
         tap(
           (room) => {
-            this.dialog.open(
+            const dialogRef = this.dialog.open(
               ActionResponseComponent, {
                 data: {
                   title: ROOM_CONFIG.actions.add,
@@ -68,7 +70,9 @@ export class RoomFormStore extends Store<RoomFormStoreState> implements OnDestro
                 }
               }
             );
-            this.router.navigate(['room/private-transient']);
+            dialogRef.afterClosed().subscribe(() => {
+              this.location.back();
+            });
           },
           () => {
             this.dialog.open(

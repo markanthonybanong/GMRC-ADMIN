@@ -2,11 +2,11 @@
   <mat-card class="app-content-body">
     <div class="table-container">
       <mat-card-content>
-        <app-transient-private-room-header
-        (roomSearch)="store.onSearch($event)"
+        <app-room-body-header
+        (roomSearch)="store.onSearch()"
         (roomDisplayAllRooms)="store.onDisplayAllRooms()"
         >
-        </app-transient-private-room-header>
+        </app-room-body-header>
         <app-transient-private-room-body
           [request]="store.request"
           [displayedColumns]="store.displayedColumns"
@@ -17,8 +17,8 @@
       </mat-card-content>
       <mat-card-footer>
         <app-paginator
-         [pageSizeOptions]="dataTableService.pageSizeOptions"
-         [totalCount]="store.totalCount"
+         [pageSizeOptions]="dataStoreService.pageSizeOptions"
+         [totalCount]="store.state.table.totalCount"
          (paginatorUpdate)="store.onPaginatorUpdate($event)"
         ></app-paginator>
       </mat-card-footer>

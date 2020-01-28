@@ -3,7 +3,7 @@ import { Store } from 'rxjs-observable-store';
 import { TransientPrivateRoomFormStoreState } from './transient-private-room-form.store.state';
 import { Subject, fromEvent, from, of } from 'rxjs';
 import { DataStoreService, DataRoomService } from '@gmrc-admin/shared/services';
-import { getStoreRequestStateUpdater } from '@gmrc-admin/shared/helpers';
+import { getStoreRequestStateUpdater, getFloorNumbers } from '@gmrc-admin/shared/helpers';
 import { TransientPrivateRoomFormEndpoint } from './transient-private-room-form.endpoint';
 import {  tap, takeUntil, switchMap, debounceTime, map, distinctUntilChanged } from 'rxjs/operators';
 import { Validators, FormBuilder } from '@angular/forms';
@@ -24,7 +24,8 @@ import { getAddedTenantObjectdIds } from '../../helpers/get-added-tenant-objectd
 export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFormStoreState> implements OnDestroy{
   private destroy$: Subject<boolean> = new Subject<boolean>();
   private searchTenantByName$: Subject<string> = new Subject<string>();
-  public tenants: Array<Tenant> = [];
+  public tenants: Array<Tenant>;
+  public floorNumbers: Array<number>;
   public form = this.formBuilder.group({
     number: [{value: null, disabled: true}, Validators.required],
     floor: null,
@@ -54,6 +55,7 @@ export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFor
   }
   init(): void {
     this.dataStoreService.storeRequestStateUpdater = getStoreRequestStateUpdater(this);
+    this.setFloorNumbers();
     this.searchTenants$();
     this.getRoom();
   }
@@ -242,5 +244,12 @@ export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFor
       ).subscribe((pageData) => {
         this.tenants = pageData.data;
       });
+  }
+  private setFloorNumbers(): void {
+    this.dataRoomService.getAllRooms
+      .pipe(
+        tap((pageData) => this.floorNumbers = getFloorNumbers(pageData.data)),
+        takeUntil(this.destroy$)
+      ).subscribe();
   }
 }

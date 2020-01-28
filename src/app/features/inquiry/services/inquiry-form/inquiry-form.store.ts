@@ -5,7 +5,7 @@ import { Subject, pipe, of, Observable, observable } from 'rxjs';
 import { InquiryFormStoreState } from './inquiry-form.store.state';
 import { Store } from 'rxjs-observable-store';
 import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
-import { enumsToArray, getStoreRequestStateUpdater } from '@gmrc-admin/shared/helpers';
+import { enumsToArray, getStoreRequestStateUpdater, getRoomNumbers } from '@gmrc-admin/shared/helpers';
 import {  RequestResponse } from '@gmrc-admin/shared/enums';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Inquiry } from '../../types/inquiry';
@@ -16,7 +16,7 @@ import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
 import { setInquiryFormValues } from '../../helpers/inquiry-form/set-form-values';
 import { createBedInfo } from '../../helpers/inquiry-form/create-bed-info';
 import { getBedInfos } from '../../helpers/inquiry-form/get-bed-info';
-import { DataStoreService } from '@gmrc-admin/shared/services';
+import { DataStoreService, DataRoomService } from '@gmrc-admin/shared/services';
 import { RoomType } from 'src/app/features/room/room.enums';
 
 @Injectable()
@@ -33,13 +33,14 @@ export class InquiryFormStore extends Store<InquiryFormStoreState> implements On
     bedInfos: this.formBuilder.array([]),
     _id: null,
   });
-
+  public roomNumbers: Array<number>;
   constructor(
     private endpoint: InquiryFormEndpoint,
     private formBuilder: FormBuilder,
     private router: Router,
     private dialog: MatDialog,
-    private dataStoreService: DataStoreService
+    private dataStoreService: DataStoreService,
+    private dataRoomService: DataRoomService
   ) {
     super(new InquiryFormStoreState());
   }
@@ -58,6 +59,7 @@ export class InquiryFormStore extends Store<InquiryFormStoreState> implements On
   }
   init(): void {
     this.dataStoreService.storeRequestStateUpdater = getStoreRequestStateUpdater(this);
+    this.setRoomNumbers();
     if (this.state.update) {
       this.getInquiry();
     }
@@ -120,5 +122,12 @@ export class InquiryFormStore extends Store<InquiryFormStoreState> implements On
         takeUntil(this.destroy$)
       )
       .subscribe();
+  }
+  private setRoomNumbers(): void {
+    this.dataRoomService.getAllRooms
+      .pipe(
+        tap((pageData) => this.roomNumbers = getRoomNumbers(pageData.data)),
+        takeUntil(this.destroy$)
+      ).subscribe();
   }
 }

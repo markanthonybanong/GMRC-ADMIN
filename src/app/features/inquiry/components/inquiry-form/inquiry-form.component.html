@@ -18,7 +18,11 @@
             <input matInput type="text" placeholder="Name"  formControlName="name">
           </mat-form-field>
           <mat-form-field>
-            <input matInput type="number" placeholder="Room number"  formControlName="roomNumber">
+            <mat-select placeholder="Room number" formControlName="roomNumber">
+              <mat-option *ngFor="let number of roomNumbers;" [value]="number">
+                  {{number}}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
         <div id="form-column-2">

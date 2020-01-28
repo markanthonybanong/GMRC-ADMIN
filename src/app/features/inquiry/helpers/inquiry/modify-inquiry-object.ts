@@ -3,15 +3,11 @@ import { PageData } from '@gmrc-admin/shared/types';
 import { Inquiry } from '../../types/inquiry';
 
 export function modifyInquiryObject(pageData: PageData<Inquiry>): PageData<Inquiry> {
-  return {
-    data: pageData.data.map((inquiry) => ({
-      ...inquiry,
-      willOccupyIn: toDateString(inquiry.willOccupyIn),
-      willOccupyInWarningMsg: isDateAfter(inquiry.willOccupyIn)
-      ? `${dateDiff(inquiry.willOccupyIn)} day/s over, since reservation date`
-      : null,
-    })),
-    pageCount: pageData.pageCount,
-    totalCount: pageData.totalCount,
-  };
+  pageData.data.map((inquiry) => {
+    inquiry.willOccupyIn = toDateString(inquiry.willOccupyIn);
+    inquiry.willOccupyInWarningMsg = isDateAfter(inquiry.willOccupyIn)
+                                     ? `${dateDiff(inquiry.willOccupyIn)} day/s over, since reservation date`
+                                     : null;
+  });
+  return pageData;
 }

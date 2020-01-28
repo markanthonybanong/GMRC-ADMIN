@@ -6,7 +6,7 @@
         <mat-spinner class="in-progress-request"  *ngIf="subs.requests.list.inProgress"></mat-spinner>
         <h1 class="error error-request" *ngIf="subs.requests.list.error">{{request.Error}}</h1>
       </div>
-      <table mat-table [dataSource]="subs.table.dataSource">
+      <table mat-table [dataSource]="subs.table.dataSource" *ngIf="subs.requests.list.success">
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef>Name</th>
           <td mat-cell *matCellDef="let element">{{element.name}}</td>
