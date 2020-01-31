@@ -1,0 +1,117 @@
+<div [formGroup]="form" *ngIf="form.get('beds').length" class="form form-grid-container-3-col">
+  <mat-card formArrayName="beds" *ngFor="let bed of form.get('beds').controls; let bedIndex = index;">
+    <mat-card-title class="center-text">
+      BED NUMBER {{bedIndex + 1}}
+    </mat-card-title>
+    <mat-card-content [formGroupName]="bedIndex">
+      <mat-form-field id="form-column-1">
+        <input matInput type="number" placeholder="Bed number" formControlName="number">
+      </mat-form-field>
+      <div formArrayName="decks" *ngFor="let deck of bed.get('decks').controls; let deckIndex = index">
+        <div [formGroupName]="deckIndex" class="deck-row">
+          <div id="form-grid-col-2">
+            <mat-form-field>
+              <input matInput  type="number" placeholder="Deck number" formControlName="number">
+            </mat-form-field>
+            <mat-form-field>
+              <mat-select placeholder="Deck status" (selectionChange)="onDeckStatusChange(bedIndex, deckIndex, $event)" formControlName="status">
+                <mat-option *ngFor="let status of deckStatuses;" [value]="status">
+                  {{status}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div id="form-grid-col-2">
+            <mat-form-field>
+              <input matInput type="text" placeholder="Tenant" (input)="onSearchTenant(deck.get('tenant').value)" formControlName="tenant"  [matAutocomplete]="auto" >
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let selectedTenant of tenants"  [value]="selectedTenant.firstname+' '+selectedTenant.middlename+' '+selectedTenant.lastname" (click)="onTenantClick({bedIndex: bedIndex, deckIndex: deckIndex, tenantObjectId: selectedTenant._id, type: 'Deck'})">
+                  {{ selectedTenant.firstname+" "+selectedTenant.middlename+" "+selectedTenant.lastname }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="number" placeholder="Monthly rent"  formControlName="monthlyRent">
+            </mat-form-field>
+          </div>
+          <div id="form-grid-col-2">
+            <mat-form-field>
+              <input matInput type="number" placeholder="Rice cooker bill"  formControlName="riceCookerBill">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="number" placeholder="Due rent date"  formControlName="dueRentDate">
+            </mat-form-field>
+          </div>
+          <!--TENANT AWAY BLOCK -->
+          <div formArrayName="away" *ngFor="let away of deck.get('away').controls; let awayIndex = index" class="deck-away-row">
+            <div [formGroupName]="awayIndex">
+              <div id="form-grid-col-2">
+                <mat-form-field>
+                  <input matInput [matDatepicker]="tenantWillReturnIn" placeholder="Will return in" formControlName="willReturnIn">
+                  <mat-datepicker-toggle matSuffix [for]="tenantWillReturnIn"></mat-datepicker-toggle>
+                  <mat-datepicker #tenantWillReturnIn></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-select placeholder="Deck status" formControlName="status">
+                    <mat-option *ngFor="let status of awayDeckStatuses;" [value]="status">
+                      {{status}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div id="form-grid-col-2">
+                <mat-form-field>
+                  <input matInput [matDatepicker]="inDate" placeholder="In date" formControlName="inDate">
+                  <mat-datepicker-toggle matSuffix [for]="inDate"></mat-datepicker-toggle>
+                  <mat-datepicker #inDate></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field>
+                  <input matInput [matDatepicker]="outDate" placeholder="Out date" formControlName="outDate">
+                  <mat-datepicker-toggle matSuffix [for]="outDate"></mat-datepicker-toggle>
+                  <mat-datepicker #outDate></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div id="form-grid-col-2">
+                <mat-form-field>
+                  <input matInput [ngxTimepicker]="inTime" formControlName="inTime" placeholder="In time">
+                  <ngx-material-timepicker #inTime></ngx-material-timepicker>
+                </mat-form-field>
+                <mat-form-field>
+                  <input matInput [ngxTimepicker]="outTime" formControlName="outTime" placeholder="Out time">
+                  <ngx-material-timepicker #outTime></ngx-material-timepicker>
+                </mat-form-field>
+              </div>
+              <div id="form-grid-col-2">
+                <mat-form-field>
+                  <input matInput type="text" placeholder="Tenant name"  formControlName="tenant" (input)="onSearchTenant(away.get('tenant').value)" [matAutocomplete]="auto">
+                  <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let tenant of tenants" (click)="onTenantClick({bedIndex: bedIndex, deckIndex: deckIndex, tenantObjectId: tenant._id, type: 'Away'})" [value]="tenant.firstname+' '+tenant.middlename+' '+tenant.lastname">
+                      {{ tenant.firstname+" "+tenant.middlename+" "+tenant.lastname }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <mat-form-field>
+                  <input matInput type="number" placeholder="Due rent date"  formControlName="dueRentDate">
+                </mat-form-field>
+              </div>
+              <mat-form-field id="form-column-1">
+                <input matInput type="number" placeholder="Rent"  formControlName="rent">
+              </mat-form-field>
+            </div>
+          </div>
+          <!--END OF TENANT AWAY BLOCK-->
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <div class="action-buttons-container">
+        <!-- <button mat-raised-button color="primary" (click)='onSubmit(bedIndex)' [disabled]='form.invalid || inProgress'>
+          <span>{{bed.get('fromServer').value ? 'Update ': 'Add'}}</span>
+        </button> -->
+        <button mat-raised-button color="primary" (click)='onSubmit(bedIndex)'>
+          <span>Update</span>
+        </button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</div>

@@ -28,6 +28,10 @@ export const ROOM_CONFIG = {
       addTenantInTransientPrivateRoom: {
         name: 'submit',
         path: 'room/addTenantInTransientPrivateRoom'
+      },
+      addBed: {
+        name: 'submit',
+        path: 'room/createBed'
       }
     }
   },

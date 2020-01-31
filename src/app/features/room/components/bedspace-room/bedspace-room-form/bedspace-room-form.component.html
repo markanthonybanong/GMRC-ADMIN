@@ -1,1 +1,49 @@
-<p>bedspace-room-form works!</p>
+<div class="center-content">
+  <mat-card class="form">
+    <mat-card-title class="center-content">UPDATE ROOM</mat-card-title>
+    <mat-card-content [formGroup]="form">
+      <div id="form-column-2">
+        <mat-form-field>
+          <mat-select placeholder="Room number"  formControlName="number">
+            <mat-option *ngFor="let number of roomNumbers;" [value]="number">
+              {{number}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Floor number"  formControlName="floor">
+            <mat-option *ngFor="let number of floorNumbers;" [value]="number">
+              {{number}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div id="form-column-2">
+        <mat-form-field>
+          <input matInput type="text" placeholder="Room type" formControlName="type">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Aircon" formControlName="aircon">
+            <mat-option *ngFor="let status of airconStatuses;" [value]="status">
+              {{status}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <button id="form-column-1" mat-raised-button color="primary" (click)="onAddBed()" [disabled]="bedsFormArrayLength > 3">
+        <span>ADD BED</span>
+      </button>
+    </mat-card-content>
+    <mat-card-actions>
+      <div class="action-buttons-container">
+        <button mat-raised-button  color="primary" (click)='onBack()'>
+          <span>Back</span>
+        </button>
+        <button mat-raised-button color="primary" (click)='onSubmit()' [disabled]='form.invalid || inProgress'>
+          <span>Update</span>
+        </button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</div>
+

@@ -11,4 +11,5 @@ export interface Away {
   willReturnIn: any;
   dueRentDate: number;
   rent: number;
+  fromServer?: boolean;
 }

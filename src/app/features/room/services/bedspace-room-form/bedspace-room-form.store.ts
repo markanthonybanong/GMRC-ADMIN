@@ -1,16 +1,31 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BedspaceRoomEndpoint } from '../bedspace-room/bedspace-room.endpoint';
 import { BedspaceRoomFormStoreState } from './bedspace-room-form.store.state';
 import { Store } from 'rxjs-observable-store';
 import { Subject } from 'rxjs';
-import { DataStoreService } from '@gmrc-admin/shared/services';
-import { getStoreRequestStateUpdater } from '@gmrc-admin/shared/helpers';
+import { DataStoreService, DataRoomService } from '@gmrc-admin/shared/services';
+import { getStoreRequestStateUpdater, getRoomNumbers, getFloorNumbers, isArrayUnique } from '@gmrc-admin/shared/helpers';
 import { switchMap, debounceTime, takeUntil, tap } from 'rxjs/operators';
 import { Tenant } from 'src/app/features/tenant/types/tenant';
 import { BedspaceRoomFormEndpoint } from './bedspace-room-form.endpoint';
 import { FormBuilder, Validators } from '@angular/forms';
 import { setBedspaceFormValues } from '../../helpers/bedspace-room-form/set-bedspace-form-values';
 import { RequestResponse } from '@gmrc-admin/shared/enums';
+import { Router } from '@angular/router';
+import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
+import { ROOM_CONFIG } from '../../room.config';
+import { MatDialog } from '@angular/material';
+import { addBedFormGroup } from '../../helpers/bedspace-room-form/add-bed-form-group';
+import { getDeckFormGroup } from '../../helpers/bedspace-room-form/get-deck-form-group';
+import { getAwayFormArray } from '../../helpers/bedspace-room-form/get-away-form-array';
+import { DeckStatus, BedspaceTenantType } from '../../room.enums';
+import { createAwayFormGroup } from '../../helpers/bedspace-room-form/create-away-form-group';
+import { getBedFormGroup } from '../../helpers/bedspace-room-form/get-bed-form-group';
+import { getNewlyAddedTenantObjIdInBed } from '../../helpers/bedspace-room-form/get-newly-added-tenant-obj-id-in-bed';
+import { addDeckTenantObjectId } from '../../helpers/bedspace-room-form/add-deck-tenant-object-id';
+import { addAwayTenantObjectId } from '../../helpers/bedspace-room-form/add-away-tenant-object-id';
+import { isNewlyAddedTenantsExist } from '../../helpers/bedspace-room-form/is-newly-added-tenants-exist';
+import { getBedsFormArray } from '../../helpers/bedspace-room-form/get-beds-form-array';
+import { setBedFormValues } from '../../helpers/bedspace-room-form/set-bed-form-values';
 
 @Injectable()
 export class BedspaceRoomFormStore extends Store<BedspaceRoomFormStoreState> implements OnDestroy {
@@ -18,16 +33,24 @@ export class BedspaceRoomFormStore extends Store<BedspaceRoomFormStoreState> imp
   private searchTenantByName$: Subject<string> = new Subject<string>();
   public tenants: Array<Tenant>;
   public form = this.formBuilder.group({
-    number: [null, Validators.required],
+    number: [{value: null, disabled: true}, Validators.required],
     floor: null,
-    type: [null, Validators.required],
+    type: [{value: null, disabled: true}, Validators.required],
     aircon: null,
     _id: null,
   });
+  public bedForm = this.formBuilder.group({
+    beds: this.formBuilder.array([]),
+  });
+  public roomNumbers: Array<number>;
+  public floorNumbers: Array<number>;
   constructor(
     private endpoint: BedspaceRoomFormEndpoint,
     private dataStoreService: DataStoreService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private dataRoomService: DataRoomService,
+    private router: Router,
+    private dialog: MatDialog
   ) {
     super(new BedspaceRoomFormStoreState());
   }
@@ -38,18 +61,139 @@ export class BedspaceRoomFormStore extends Store<BedspaceRoomFormStoreState> imp
   get requestResponse(): object {
     return RequestResponse;
   }
+  get awayDeckStatuses(): Array<string> {
+    return this.dataRoomService.deckStatus.filter( e => e !== DeckStatus.AWAY);
+  }
+  get bedsFormArrayLength(): number {
+    return getBedsFormArray(this.bedForm).length;
+  }
   init(): void {
     this.dataStoreService.storeRequestStateUpdater = getStoreRequestStateUpdater(this);
     this.searchTenants$();
     this.getRoom();
+    this.setRoomAndFloorNumbers();
   }
-  private getRoom(): void {
-    this.endpoint.getRooms(this.state.pageRequest, this.dataStoreService.storeRequestStateUpdater)
+  onBack(): void {
+    this.router.navigate(['room/bedspace']);
+  }
+  onSubmit(): void {
+    this.endpoint.updateRoom(this.form.value, this.dataStoreService.storeRequestStateUpdater)
+      .pipe(
+        tap(
+          (room) => {
+            this.dialog.open(ActionResponseComponent, {
+              data: {
+                title: ROOM_CONFIG.actions.update,
+                content: `Updated room ${room.number}`
+              }
+            });
+          },
+          () => {
+            this.dialog.open(ActionResponseComponent, {
+              data: {
+                title: ROOM_CONFIG.actions.update,
+                content: RequestResponse.Error
+              }
+            });
+          }
+        )
+      )
+      .subscribe();
+  }
+  onAddBed(): void {
+    addBedFormGroup(this.bedForm);
+    const bedIndex = getBedsFormArray.length !== 0 ? getBedsFormArray.length - 1 : 0;
+    const body = {
+      bed: getBedFormGroup(this.bedForm, bedIndex).value,
+      roomObjectId: this.form.get('_id').value,
+    };
+    console.log('the body ', body);
+    this.endpoint.addBed( body, this.dataStoreService.storeRequestStateUpdater)
+      .pipe(
+        tap(
+          () => {
+          },
+          () => {
+            this.dialog.open(ActionResponseComponent, {
+              data: {
+                title: ROOM_CONFIG.actions.addTenant,
+                content: RequestResponse.Error
+              }
+            });
+          }
+        )
+      ).subscribe();
+  }
+  onSearchTenant(name: string): void {
+    this.setState({
+      ...this.state,
+      pageRequest: {
+        ...this.state.pageRequest,
+        filters: {
+          type: ROOM_CONFIG.filters.types.TENANTBYKEYSTROKE,
+          tenantName: name,
+        }
+      }
+    });
+    this.searchTenantByName$.next();
+  }
+  onDeckStatusChange(deck: {bedIndex: number, deckIndex: number, deckStatus: string}): void {
+    const awayFormArray = getAwayFormArray(this.bedForm, deck.bedIndex, deck.deckIndex);
+    const deckFormGroup = getDeckFormGroup(this.bedForm, deck.bedIndex, deck.deckIndex);
+    const awayFormGroup = awayFormArray.at(0);
+    if (deck.deckStatus === DeckStatus.AWAY && awayFormArray.length === 0) {
+      awayFormArray.push(createAwayFormGroup());
+    } else if (deck.deckStatus !== DeckStatus.AWAY && awayFormGroup.get('status').value !== DeckStatus.VACANT) {
+      deckFormGroup.get('status').patchValue(DeckStatus.AWAY);
+    } else if (deck.deckStatus !== DeckStatus.AWAY && awayFormArray.length) {
+      awayFormArray.removeAt(0);
+    }
+  }
+  onTenantClick(tenant: {bedIndex: number, deckIndex: number, tenantObjectId: string, type: string}): void {
+    if (tenant.type === BedspaceTenantType.DECK) {
+      addDeckTenantObjectId(this.bedForm, tenant.bedIndex, tenant.deckIndex, tenant.tenantObjectId);
+    } else {
+      addAwayTenantObjectId(this.bedForm, tenant.bedIndex, tenant.deckIndex, tenant.tenantObjectId);
+    }
+  }
+  onBedFormSubmit(bedIndex: number): void {
+    const newlyAddedTenants = getNewlyAddedTenantObjIdInBed(getBedFormGroup(this.bedForm, bedIndex).value);
+    const addedTenantsUnique = isArrayUnique(newlyAddedTenants);
+    this.setState({...this.state, requests: {...this.state.requests, submit: {inProgress: true}}});
+    this.dataRoomService.getAllRooms
     .pipe(
       tap((pageData) => {
-       setBedspaceFormValues(this.form, pageData.data[0]);
+        if (!addedTenantsUnique || isNewlyAddedTenantsExist(newlyAddedTenants, pageData.data)) {
+          this.dialog.open(ActionResponseComponent, {
+            data: {
+              title: ROOM_CONFIG.actions.addTenant,
+              content: !addedTenantsUnique ? 'Cannot add duplicate tenants' : 'Tenant already added',
+            }
+          });
+        } else {
+          //TODO: determine if you couldjust directly set the decks for this bedspace, instead of adding first
+
+        }
       }),
       takeUntil(this.destroy$)
+    ).subscribe(() => {}, () => {
+      this.setState({...this.state, requests: {...this.state.requests, submit: {inProgress: false}}});
+      this.dialog.open(ActionResponseComponent, {
+        data: {
+          title: ROOM_CONFIG.actions.addTenant,
+          content: RequestResponse.Error
+        }
+      });
+    });
+  }
+  private getRoom(): void {
+    this.endpoint.getRoom(this.state.pageRequest, this.dataStoreService.storeRequestStateUpdater)
+    .pipe(
+      tap((pageData) => {
+        console.log('the page data ', pageData.data);
+        setBedspaceFormValues(this.form, pageData.data[0]);
+        setBedFormValues(this.bedForm, pageData.data[0].bedspaces);
+      })
     )
     .subscribe();
   }
@@ -62,5 +206,15 @@ export class BedspaceRoomFormStore extends Store<BedspaceRoomFormStoreState> imp
       ).subscribe((pageData) => {
         this.tenants = pageData.data;
       });
+  }
+  private setRoomAndFloorNumbers(): void {
+    this.dataRoomService.getAllRooms
+      .pipe(
+        tap((pageData) => {
+          this.roomNumbers = getRoomNumbers(pageData.data);
+          this.floorNumbers = getFloorNumbers(pageData.data);
+        }),
+        takeUntil(this.destroy$)
+      ).subscribe();
   }
 }

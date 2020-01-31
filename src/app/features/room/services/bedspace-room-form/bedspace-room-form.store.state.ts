@@ -1,5 +1,6 @@
 import { PageRequest } from '@gmrc-admin/shared/types';
 import { Requests } from '../../types/requests';
+import { Bedspace } from '../../types/room/bedspace';
 
 export class BedspaceRoomFormStoreState {
   pageRequest: PageRequest = {

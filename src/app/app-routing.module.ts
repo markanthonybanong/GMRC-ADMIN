@@ -6,6 +6,7 @@ import { InquiryModule } from './features/inquiry/inquiry.module';
 import { LayoutComponent } from './layout/layout/layout.component';
 import { AuthGuardService } from '@gmrc-admin/shared/services';
 import { RoomModule } from './features/room/room.module';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 
 const routes: Routes = [
@@ -23,7 +24,10 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    NgxMaterialTimepickerModule,
+    RouterModule.forRoot(routes)
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

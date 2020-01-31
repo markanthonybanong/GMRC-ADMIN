@@ -166,7 +166,7 @@ export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFor
           }
         }),
         takeUntil(this.destroy$)
-      ).subscribe(() => {}, () => {
+      ).subscribe(() => {}, (err) => {
         this.setState({
           ...this.state,
           requests: {
@@ -176,6 +176,8 @@ export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFor
             }
           }
         });
+        console.log('the erro ', err);
+
         this.dialog.open(ActionResponseComponent, {
           data: {
             title: ROOM_CONFIG.actions.addTenant,
@@ -215,7 +217,7 @@ export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFor
           () => {
             this.dialog.open(ActionResponseComponent, {
               data: {
-                title: ROOM_CONFIG.actions.addTenant,
+                title: ROOM_CONFIG.actions.update,
                 content: RequestResponse.Error
               }
             });

@@ -5,6 +5,7 @@ import { ROOM_CONFIG } from '../../room.config';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, tap, takeUntil } from 'rxjs/operators';
+import { DataRoomService } from '@gmrc-admin/shared/services';
 
 @Component({
   selector: 'app-view-bedspace-room-form',
@@ -17,10 +18,12 @@ export class ViewBedspaceRoomFormComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: BedspaceRoomFormStore,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dataRoomService: DataRoomService,
   ) { }
 
   ngOnInit() {
+    this.subscribeToRouteParamater();
     this.store.init();
   }
   ngOnDestroy(): void {

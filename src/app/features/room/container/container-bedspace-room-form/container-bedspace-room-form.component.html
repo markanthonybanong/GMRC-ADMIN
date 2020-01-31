@@ -10,9 +10,28 @@
     </div>
   </mat-card>
   <div *ngIf="subs.requests.room.success" class="full-width">
+    <app-bedspace-bed-form
+    [form]="bedForm"
+    [tenants]="tenants"
+    [inProgress]="subs.requests.submit.inProgress"
+    [deckStatuses]="deckStatuses"
+    [awayDeckStatuses]="awayDeckStatuses"
+    (formOnSearchTenant)="onSearchTenant($event)"
+    (formOnDeckStatusChange)="onDeckStatusChange($event)"
+    (formOnSubmit)="onBedFormOnSubmit($event)"
+    (formOnTenantClick)="onTenantClick($event)"
+    >
+    </app-bedspace-bed-form>
     <app-bedspace-room-form
      [form]="form"
      [inProgress]="subs.requests.submit.inProgress"
+     [roomNumbers]="roomNumbers"
+     [floorNumbers]="floorNumbers"
+     [airconStatuses]="airconStatuses"
+     [bedsFormArrayLength]="bedsFormArrayLength"
+     (roomOnBack)="onBack()"
+     (roomOnSubmit)="onSubmit()"
+     (roomOnAddBed)="onAddBed()"
     >
     </app-bedspace-room-form>
   </div>

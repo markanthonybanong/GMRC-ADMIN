@@ -23,6 +23,8 @@ import { BedspaceRoomBodyComponent } from './components/bedspace-room/bedspace-r
 import { SearchBedspaceRoomComponent } from './modals/search-bedspace-room/search-bedspace-room.component';
 import { ContainerBedspaceRoomFormComponent } from './container/container-bedspace-room-form/container-bedspace-room-form.component';
 import { BedspaceRoomFormComponent } from './components/bedspace-room/bedspace-room-form/bedspace-room-form.component';
+import { BedspaceBedFormComponent } from './components/bedspace-room/bedspace-bed-form/bedspace-bed-form.component';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 @NgModule({
   declarations: [
     RoomHeaderComponent,
@@ -44,13 +46,15 @@ import { BedspaceRoomFormComponent } from './components/bedspace-room/bedspace-r
     SearchBedspaceRoomComponent,
     ContainerBedspaceRoomFormComponent,
     BedspaceRoomFormComponent,
+    BedspaceBedFormComponent,
   ],
   imports: [
     CommonModule,
     RoomRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    SharedModule
+    SharedModule,
+    NgxMaterialTimepickerModule
   ],
   entryComponents: [
     SearchTransientPrivateRoomComponent,

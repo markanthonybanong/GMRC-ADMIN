@@ -22,3 +22,7 @@ export enum DeckStatus {
   RESERVED = 'Reserved',
   AWAY     = 'Away'
 }
+export enum BedspaceTenantType {
+  AWAY = 'Away',
+  DECK = 'Deck'
+}

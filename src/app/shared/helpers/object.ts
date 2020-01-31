@@ -7,3 +7,10 @@ export function removeEmptyKeys(obj: object): object {
   });
   return filteredObj;
 }
+export function isObjectEmpty(obj: object): boolean {
+  let isEmpty = true;
+  if (Object.keys(obj).length) {
+    isEmpty = false;
+  }
+  return isEmpty;
+}
