@@ -110,7 +110,12 @@ export class BedspaceRoomStore extends Store<BedspaceRoomStoreState> implements 
     this.dataStoreService.reloadTable$
       .pipe(
         switchMap(() => this.endpoint.getRooms(this.state.table.pageRequest, this.dataStoreService.storeRequestStateUpdater)),
-        map((pageData) => modifyRoomObjectForBedspace(pageData)),
+        map((pageData) => {
+          console.log('hte pagedata ', pageData);
+
+          return modifyRoomObjectForBedspace(pageData);
+
+        }),
         tap((pageData) => updateState(this, pageData)),
         retry(1),
         takeUntil(this.destroy$)

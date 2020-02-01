@@ -14,7 +14,11 @@ import { SetParentElHeightDirective } from './directives/set-parent-el-height.di
   ],
   exports: [
     AngularMaterialModule,
-    SetParentElHeightDirective
+    SetParentElHeightDirective,
+    ActionResponseComponent
   ],
+  entryComponents: [
+    ActionResponseComponent
+  ]
 })
 export class SharedModule { }

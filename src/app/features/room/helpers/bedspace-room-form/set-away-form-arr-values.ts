@@ -15,7 +15,7 @@ export function setAwayFormArrValues(away: Away): FormArray {
       rent: away.rent,
       tenant: away.tenant !== null ? `${away.tenant.firstname} ${away.tenant.middlename} ${away.tenant.lastname}` : null,
       tenantObjectId: away.tenant !== null ? away.tenant._id : null,
-      fromServer: true,
+      fromServer: away.tenant !== null ? true : false,
     }),
   ]);
 }

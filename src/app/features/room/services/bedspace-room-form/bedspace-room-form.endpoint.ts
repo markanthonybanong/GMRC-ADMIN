@@ -63,6 +63,25 @@ export class BedspaceRoomFormEndpoint {
       )
     );
   }
+  updateBed(body: object, requestStateUpdater): Observable<Bedspace> {
+    const request = ROOM_CONFIG.request.submit.updateBed;
+    requestStateUpdater(request.name, {inProgress: true});
+    return this.apiService.put<Bedspace>(request.path, body)
+    .pipe(
+      tap(
+        (createdBed) => {
+          requestStateUpdater(request.name, {inProgress: false, success: true});
+          return createdBed;
+        },
+        (error: HttpErrorResponse) => {
+          requestStateUpdater(request.name, {inProgress: false, error: true});
+          return throwError(error);
+        }
+      )
+    );
+  }
+
+
   getTenants(pageRequest: PageRequest, requestStateUpdater: StoreRequestStateUpdater): Observable<PageData<Tenant>> {
     const request = ROOM_CONFIG.request.tenantByKeyStroke;
     requestStateUpdater(request.name, {inProgress: true});

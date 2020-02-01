@@ -6,7 +6,6 @@ import { isObjectEmpty } from '@gmrc-admin/shared/helpers';
 
 export function setBedFormValues(form: FormGroup, beds: Array<Bedspace>): void {
   const formBuilder = new FormBuilder();
-
   beds.forEach((bed) => {
     const decks = formBuilder.array([]);
     bed.decks.forEach((deck) => {
@@ -17,14 +16,15 @@ export function setBedFormValues(form: FormGroup, beds: Array<Bedspace>): void {
         monthlyRent: deck.monthlyRent,
         riceCookerBill: deck.riceCookerBill,
         tenant: deck.tenant !== null ? `${deck.tenant.firstname}  ${deck.tenant.middlename} ${deck.tenant.lastname}` : null,
-        away: isObjectEmpty(deck.away[0]) ? formBuilder.array([]) :  setAwayFormArrValues(deck.away[0]),
+        away: deck.away === null ? formBuilder.array([]) :  setAwayFormArrValues(deck.away[0]),
         tenantObjectId: deck.tenant !== null ? deck.tenant._id : null,
-        fromServer: true,
+        fromServer: deck.tenant !== null ? true : false,
       }));
     });
     getBedsFormArray(form).push(formBuilder.group({
       number: bed.number,
       decks,
+     _id: bed._id
     }));
   });
 }

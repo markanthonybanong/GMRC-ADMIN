@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { BedspaceRoomFormStoreState } from './bedspace-room-form.store.state';
 import { Store } from 'rxjs-observable-store';
 import { Subject } from 'rxjs';
-import { DataStoreService, DataRoomService } from '@gmrc-admin/shared/services';
+import { DataStoreService, DataRoomService, ModalService } from '@gmrc-admin/shared/services';
 import { getStoreRequestStateUpdater, getRoomNumbers, getFloorNumbers, isArrayUnique } from '@gmrc-admin/shared/helpers';
 import { switchMap, debounceTime, takeUntil, tap } from 'rxjs/operators';
 import { Tenant } from 'src/app/features/tenant/types/tenant';
@@ -26,6 +26,7 @@ import { addAwayTenantObjectId } from '../../helpers/bedspace-room-form/add-away
 import { isNewlyAddedTenantsExist } from '../../helpers/bedspace-room-form/is-newly-added-tenants-exist';
 import { getBedsFormArray } from '../../helpers/bedspace-room-form/get-beds-form-array';
 import { setBedFormValues } from '../../helpers/bedspace-room-form/set-bed-form-values';
+import { setBedBody } from '../../helpers/bedspace-room-form/set-bed-body';
 
 @Injectable()
 export class BedspaceRoomFormStore extends Store<BedspaceRoomFormStoreState> implements OnDestroy {
@@ -50,7 +51,7 @@ export class BedspaceRoomFormStore extends Store<BedspaceRoomFormStoreState> imp
     private formBuilder: FormBuilder,
     private dataRoomService: DataRoomService,
     private router: Router,
-    private dialog: MatDialog
+    private modalService: ModalService
   ) {
     super(new BedspaceRoomFormStoreState());
   }
@@ -81,20 +82,10 @@ export class BedspaceRoomFormStore extends Store<BedspaceRoomFormStoreState> imp
       .pipe(
         tap(
           (room) => {
-            this.dialog.open(ActionResponseComponent, {
-              data: {
-                title: ROOM_CONFIG.actions.update,
-                content: `Updated room ${room.number}`
-              }
-            });
+            this.modalService.success(ROOM_CONFIG.actions.update, `Updated room ${room.number}`);
           },
           () => {
-            this.dialog.open(ActionResponseComponent, {
-              data: {
-                title: ROOM_CONFIG.actions.update,
-                content: RequestResponse.Error
-              }
-            });
+            this.modalService.error(ROOM_CONFIG.actions.update);
           }
         )
       )
@@ -104,22 +95,17 @@ export class BedspaceRoomFormStore extends Store<BedspaceRoomFormStoreState> imp
     addBedFormGroup(this.bedForm);
     const bedIndex = getBedsFormArray.length !== 0 ? getBedsFormArray.length - 1 : 0;
     const body = {
-      bed: getBedFormGroup(this.bedForm, bedIndex).value,
+      bed: setBedBody(getBedFormGroup(this.bedForm, bedIndex).value),
       roomObjectId: this.form.get('_id').value,
     };
-    console.log('the body ', body);
     this.endpoint.addBed( body, this.dataStoreService.storeRequestStateUpdater)
       .pipe(
         tap(
-          () => {
+          (bed) => {
+            this.modalService.success(ROOM_CONFIG.actions.addBed, 'Bed added');
           },
           () => {
-            this.dialog.open(ActionResponseComponent, {
-              data: {
-                title: ROOM_CONFIG.actions.addTenant,
-                content: RequestResponse.Error
-              }
-            });
+            this.modalService.error(ROOM_CONFIG.actions.addBed);
           }
         )
       ).subscribe();
@@ -156,35 +142,38 @@ export class BedspaceRoomFormStore extends Store<BedspaceRoomFormStoreState> imp
       addAwayTenantObjectId(this.bedForm, tenant.bedIndex, tenant.deckIndex, tenant.tenantObjectId);
     }
   }
-  onBedFormSubmit(bedIndex: number): void {
-    const newlyAddedTenants = getNewlyAddedTenantObjIdInBed(getBedFormGroup(this.bedForm, bedIndex).value);
+  // TODO: rename components .. etc
+  onBedFormUpdate(bedIndex: number): void {
+    const bedFormGroup = getBedFormGroup(this.bedForm, bedIndex);
+    const newlyAddedTenants = getNewlyAddedTenantObjIdInBed(bedFormGroup.value);
     const addedTenantsUnique = isArrayUnique(newlyAddedTenants);
     this.setState({...this.state, requests: {...this.state.requests, submit: {inProgress: true}}});
     this.dataRoomService.getAllRooms
     .pipe(
       tap((pageData) => {
         if (!addedTenantsUnique || isNewlyAddedTenantsExist(newlyAddedTenants, pageData.data)) {
-          this.dialog.open(ActionResponseComponent, {
-            data: {
-              title: ROOM_CONFIG.actions.addTenant,
-              content: !addedTenantsUnique ? 'Cannot add duplicate tenants' : 'Tenant already added',
-            }
-          });
+          const content = !addedTenantsUnique ? 'Cannot add duplicate tenants' : 'Tenant already added';
+          this.modalService.warn(ROOM_CONFIG.actions.addTenant, content);
         } else {
-          //TODO: determine if you couldjust directly set the decks for this bedspace, instead of adding first
-
+          const body = {
+            bedObjectId: bedFormGroup.get('_id').value,
+            bed: setBedBody(bedFormGroup.value),
+          };
+          this.endpoint.updateBed(body , this.dataStoreService.storeRequestStateUpdater)
+            .pipe(
+             tap(
+              (bed) => {
+                this.modalService.success(ROOM_CONFIG.actions.updateBed, `Updated bed number ${bed.number}`);
+              },
+              () => {
+                this.setState({...this.state, requests: {...this.state.requests, submit: {inProgress: false}}});
+                this.modalService.error(ROOM_CONFIG.actions.addTenant);
+              }
+            )
+            ).subscribe();
         }
       }),
-      takeUntil(this.destroy$)
-    ).subscribe(() => {}, () => {
-      this.setState({...this.state, requests: {...this.state.requests, submit: {inProgress: false}}});
-      this.dialog.open(ActionResponseComponent, {
-        data: {
-          title: ROOM_CONFIG.actions.addTenant,
-          content: RequestResponse.Error
-        }
-      });
-    });
+    ).subscribe();
   }
   private getRoom(): void {
     this.endpoint.getRoom(this.state.pageRequest, this.dataStoreService.storeRequestStateUpdater)

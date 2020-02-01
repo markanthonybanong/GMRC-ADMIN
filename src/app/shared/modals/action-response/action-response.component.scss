@@ -1,5 +1,8 @@
 mat-dialog-content{
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  p{
+    margin: 0;
+  }
 }
 mat-dialog-actions{
   display: flex;

@@ -5,11 +5,12 @@ export interface Deck {
   number?: number;
   status?: string;
   dueRentDate?: number;
-  tenant?: Tenant;
+  tenant?: any;
   away?: Away[];
-  riceCookerBill: number;
+  riceCookerBill?: number;
   tenantObjectId?: string;
   oldTenantObjectId?: string;
   monthlyRent?: number;
+  fromServer?: boolean;
 
 }

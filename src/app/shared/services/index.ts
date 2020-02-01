@@ -7,3 +7,4 @@ export * from './subject-variable.service';
 export * from './data-room.service';
 export * from './data-tenant.service';
 export * from './data-store.service';
+export * from './modal.service';

@@ -6,5 +6,6 @@ export function createBedFormGroup(): FormGroup {
   return formBuilder.group({
     number: [null, Validators.required],
     decks: addDecksFormArray(),
+    _id: null,
   });
 }

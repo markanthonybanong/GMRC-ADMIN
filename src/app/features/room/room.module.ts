@@ -59,7 +59,6 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
   entryComponents: [
     SearchTransientPrivateRoomComponent,
     SearchBedspaceRoomComponent,
-    ActionResponseComponent
   ]
 })
 export class RoomModule { }

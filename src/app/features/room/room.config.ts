@@ -32,6 +32,10 @@ export const ROOM_CONFIG = {
       addBed: {
         name: 'submit',
         path: 'room/createBed'
+      },
+      updateBed: {
+        name: 'submit',
+        path: 'room/updateBed'
       }
     }
   },
@@ -56,5 +60,7 @@ export const ROOM_CONFIG = {
     searchBedspaceRoom: 'SEARCH BEDSPACE ROOM',
     addTenant: 'ADD TENANT',
     removeTenant: 'REMOVE TENANT',
+    addBed: 'ADD BED',
+    updateBed: 'UPDATE BED'
   }
 };

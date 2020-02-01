@@ -1,7 +1,7 @@
 import { Directive, Renderer2, ElementRef, AfterViewInit } from '@angular/core';
 import { RequestResponse } from '@gmrc-admin/shared/enums';
 @Directive({
-  selector: '[appActionResponseError]'
+  selector: '[appActionResponse]'
 })
 export class ActionResponseErrorDirective implements AfterViewInit {
   constructor(  private renderer: Renderer2, private elRef: ElementRef) { }
