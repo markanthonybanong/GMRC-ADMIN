@@ -3,6 +3,7 @@
   <p *ngIf="data.success" class="success">{{data.content}}</p>
   <p *ngIf="data.warn" class="warn">{{data.content}}</p>
   <p *ngIf="data.error" class="error">{{data.content}}</p>
+  <p *ngIf="data.confirmation" class="warn">{{data.content}}</p>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-raised-button color="primary" [mat-dialog-close]="true">Ok</button>

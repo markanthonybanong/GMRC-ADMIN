@@ -11,9 +11,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { setBedspaceFormValues } from '../../helpers/bedspace-room-form/set-bedspace-form-values';
 import { RequestResponse } from '@gmrc-admin/shared/enums';
 import { Router } from '@angular/router';
-import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
 import { ROOM_CONFIG } from '../../room.config';
-import { MatDialog } from '@angular/material';
 import { addBedFormGroup } from '../../helpers/bedspace-room-form/add-bed-form-group';
 import { getDeckFormGroup } from '../../helpers/bedspace-room-form/get-deck-form-group';
 import { getAwayFormArray } from '../../helpers/bedspace-room-form/get-away-form-array';
@@ -27,6 +25,8 @@ import { isNewlyAddedTenantsExist } from '../../helpers/bedspace-room-form/is-ne
 import { getBedsFormArray } from '../../helpers/bedspace-room-form/get-beds-form-array';
 import { setBedFormValues } from '../../helpers/bedspace-room-form/set-bed-form-values';
 import { setBedBody } from '../../helpers/bedspace-room-form/set-bed-body';
+import { setDeckFromServerStatus } from '../../helpers/bedspace-room-form/set-deck-from-server-status';
+import { setDeckFormGroupToNull } from '../../helpers/bedspace-room-form/set-deck-form-group-to-null';
 
 @Injectable()
 export class BedspaceRoomFormStore extends Store<BedspaceRoomFormStoreState> implements OnDestroy {
@@ -93,7 +93,8 @@ export class BedspaceRoomFormStore extends Store<BedspaceRoomFormStoreState> imp
   }
   onAddBed(): void {
     addBedFormGroup(this.bedForm);
-    const bedIndex = getBedsFormArray.length !== 0 ? getBedsFormArray.length - 1 : 0;
+    const bedsFormArray =  getBedsFormArray(this.bedForm);
+    const bedIndex = bedsFormArray.length !== 0 ? bedsFormArray.length - 1 : 0;
     const body = {
       bed: setBedBody(getBedFormGroup(this.bedForm, bedIndex).value),
       roomObjectId: this.form.get('_id').value,
@@ -103,6 +104,7 @@ export class BedspaceRoomFormStore extends Store<BedspaceRoomFormStoreState> imp
         tap(
           (bed) => {
             this.modalService.success(ROOM_CONFIG.actions.addBed, 'Bed added');
+            getBedFormGroup(this.bedForm, bedIndex).get('_id').patchValue(bed._id);
           },
           () => {
             this.modalService.error(ROOM_CONFIG.actions.addBed);
@@ -124,25 +126,32 @@ export class BedspaceRoomFormStore extends Store<BedspaceRoomFormStoreState> imp
     this.searchTenantByName$.next();
   }
   onDeckStatusChange(deck: {bedIndex: number, deckIndex: number, deckStatus: string}): void {
-    const awayFormArray = getAwayFormArray(this.bedForm, deck.bedIndex, deck.deckIndex);
     const deckFormGroup = getDeckFormGroup(this.bedForm, deck.bedIndex, deck.deckIndex);
+    const awayFormArray = getAwayFormArray(this.bedForm, deck.bedIndex, deck.deckIndex);
     const awayFormGroup = awayFormArray.at(0);
     if (deck.deckStatus === DeckStatus.AWAY && awayFormArray.length === 0) {
       awayFormArray.push(createAwayFormGroup());
-    } else if (deck.deckStatus !== DeckStatus.AWAY && awayFormGroup.get('status').value !== DeckStatus.VACANT) {
+    } else if (deck.deckStatus === DeckStatus.VACANT && awayFormArray.length === 0) {
+     this.modalService.confirmation(ROOM_CONFIG.actions.updateDeck, 'Setting deck value to vacant will remove its content')
+      .afterClosed().subscribe((isTrue) => {
+        if (isTrue) {
+          setDeckFormGroupToNull(deckFormGroup);
+        }
+      });
+    } else if (deck.deckStatus !== DeckStatus.AWAY && awayFormArray.length && awayFormGroup.get('status').value !== DeckStatus.VACANT) {
       deckFormGroup.get('status').patchValue(DeckStatus.AWAY);
     } else if (deck.deckStatus !== DeckStatus.AWAY && awayFormArray.length) {
       awayFormArray.removeAt(0);
     }
   }
   onTenantClick(tenant: {bedIndex: number, deckIndex: number, tenantObjectId: string, type: string}): void {
+    setDeckFromServerStatus(getDeckFormGroup(this.bedForm, tenant.bedIndex, tenant.deckIndex), tenant.type);
     if (tenant.type === BedspaceTenantType.DECK) {
       addDeckTenantObjectId(this.bedForm, tenant.bedIndex, tenant.deckIndex, tenant.tenantObjectId);
     } else {
       addAwayTenantObjectId(this.bedForm, tenant.bedIndex, tenant.deckIndex, tenant.tenantObjectId);
     }
   }
-  // TODO: rename components .. etc
   onBedFormUpdate(bedIndex: number): void {
     const bedFormGroup = getBedFormGroup(this.bedForm, bedIndex);
     const newlyAddedTenants = getNewlyAddedTenantObjIdInBed(bedFormGroup.value);
@@ -154,6 +163,7 @@ export class BedspaceRoomFormStore extends Store<BedspaceRoomFormStoreState> imp
         if (!addedTenantsUnique || isNewlyAddedTenantsExist(newlyAddedTenants, pageData.data)) {
           const content = !addedTenantsUnique ? 'Cannot add duplicate tenants' : 'Tenant already added';
           this.modalService.warn(ROOM_CONFIG.actions.addTenant, content);
+          this.setState({...this.state, requests: {...this.state.requests, submit: {inProgress: false}}});
         } else {
           const body = {
             bedObjectId: bedFormGroup.get('_id').value,
@@ -179,7 +189,6 @@ export class BedspaceRoomFormStore extends Store<BedspaceRoomFormStoreState> imp
     this.endpoint.getRoom(this.state.pageRequest, this.dataStoreService.storeRequestStateUpdater)
     .pipe(
       tap((pageData) => {
-        console.log('the page data ', pageData.data);
         setBedspaceFormValues(this.form, pageData.data[0]);
         setBedFormValues(this.bedForm, pageData.data[0].bedspaces);
       })
@@ -203,7 +212,6 @@ export class BedspaceRoomFormStore extends Store<BedspaceRoomFormStoreState> imp
           this.roomNumbers = getRoomNumbers(pageData.data);
           this.floorNumbers = getFloorNumbers(pageData.data);
         }),
-        takeUntil(this.destroy$)
       ).subscribe();
   }
 }

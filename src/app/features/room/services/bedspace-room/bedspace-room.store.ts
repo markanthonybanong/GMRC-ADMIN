@@ -111,8 +111,7 @@ export class BedspaceRoomStore extends Store<BedspaceRoomStoreState> implements 
       .pipe(
         switchMap(() => this.endpoint.getRooms(this.state.table.pageRequest, this.dataStoreService.storeRequestStateUpdater)),
         map((pageData) => {
-          console.log('hte pagedata ', pageData);
-
+          console.log('pagedata ', pageData);
           return modifyRoomObjectForBedspace(pageData);
 
         }),

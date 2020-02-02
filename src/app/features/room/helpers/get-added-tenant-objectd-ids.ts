@@ -4,7 +4,6 @@ import { RoomType } from '../room.enums';
 
 export function getAddedTenantObjectdIds(rooms: Array<Room>): Array<string> {
   const ids = [];
-  console.log('the rooms here ', rooms);
   rooms.forEach(room => {
     if (room.type === RoomType.PRIVATE || room.type === RoomType.TRANSIENT) {
       getPrivateTransientRoomTenantsObjectId(room, ids);
@@ -23,6 +22,9 @@ function getBedspaceRoomTenantsObjectId(room: Room, ids: Array<string>): void {
       bed.decks.forEach(deck => {
         if (deck.tenant !== null) {
           ids.push(deck.tenant._id);
+        }
+        if(deck.away !== null && deck.away[0].tenantObjectId !== null) {
+          ids.push(deck.away[0].tenantObjectId);
         }
        });
     });

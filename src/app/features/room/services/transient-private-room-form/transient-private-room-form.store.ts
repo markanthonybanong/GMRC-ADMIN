@@ -176,7 +176,7 @@ export class TransientPrivateRoomFormStore extends Store<TransientPrivateRoomFor
             }
           }
         });
-        console.log('the erro ', err);
+
 
         this.dialog.open(ActionResponseComponent, {
           data: {

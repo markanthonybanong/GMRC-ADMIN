@@ -61,6 +61,7 @@ export const ROOM_CONFIG = {
     addTenant: 'ADD TENANT',
     removeTenant: 'REMOVE TENANT',
     addBed: 'ADD BED',
-    updateBed: 'UPDATE BED'
+    updateBed: 'UPDATE BED',
+    updateDeck: 'UPDATE DECK'
   }
 };

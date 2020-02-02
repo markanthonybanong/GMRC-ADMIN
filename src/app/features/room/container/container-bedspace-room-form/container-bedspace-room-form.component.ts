@@ -27,7 +27,7 @@ export class ContainerBedspaceRoomFormComponent implements OnInit {
   @Output() bedFormOnSearchTenant: EventEmitter<string> = new EventEmitter<string>();
   @Output() formOnDeckStatusChange: EventEmitter<object> = new EventEmitter<object>();
   @Output() bedFormOnTenantClick: EventEmitter<object> = new EventEmitter<object>();
-  @Output() bedFormOnSubmit: EventEmitter<number> = new EventEmitter<number>();
+  @Output() bedFormUpdate: EventEmitter<number> = new EventEmitter<number>();
 
   constructor() { }
 
@@ -48,8 +48,8 @@ export class ContainerBedspaceRoomFormComponent implements OnInit {
   onDeckStatusChange(deck: object): void {
     this.formOnDeckStatusChange.emit(deck);
   }
-  onBedFormOnSubmit(bedIndex: number): void {
-    this.bedFormOnSubmit.emit(bedIndex);
+  onBedFormUpdate(bedIndex: number): void {
+    this.bedFormUpdate.emit(bedIndex);
   }
   onTenantClick(tenant: object): void {
     this.bedFormOnTenantClick.emit(tenant);

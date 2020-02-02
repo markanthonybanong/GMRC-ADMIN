@@ -105,10 +105,7 @@
     </mat-card-content>
     <mat-card-actions>
       <div class="action-buttons-container">
-        <!-- <button mat-raised-button color="primary" (click)='onSubmit(bedIndex)' [disabled]='form.invalid || inProgress'>
-          <span>{{bed.get('fromServer').value ? 'Update ': 'Add'}}</span>
-        </button> -->
-        <button mat-raised-button color="primary" (click)='onSubmit(bedIndex)'>
+        <button mat-raised-button color="primary" (click)='onUpdate(bedIndex)' [disabled]='inProgress'>
           <span>Update</span>
         </button>
       </div>

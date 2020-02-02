@@ -5,7 +5,7 @@ export interface Deck {
   number?: number;
   status?: string;
   dueRentDate?: number;
-  tenant?: any;
+  tenant?: Tenant;
   away?: Away[];
   riceCookerBill?: number;
   tenantObjectId?: string;

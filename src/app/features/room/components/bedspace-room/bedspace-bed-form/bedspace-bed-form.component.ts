@@ -18,7 +18,7 @@ export class BedspaceBedFormComponent implements OnInit {
   @Output() formOnSearchTenant: EventEmitter<string> = new EventEmitter<string>();
   @Output() formOnDeckStatusChange: EventEmitter<object> = new EventEmitter<object>();
   @Output() formOnTenantClick: EventEmitter<object> = new EventEmitter<object>();
-  @Output() formOnSubmit: EventEmitter<number> = new EventEmitter<number>();
+  @Output() formUpdate: EventEmitter<number> = new EventEmitter<number>();
   constructor() { }
 
   ngOnInit() {
@@ -36,8 +36,8 @@ export class BedspaceBedFormComponent implements OnInit {
       deckStatus: $event.value
     });
   }
-  onSubmit(bedIndex: number): void {
-    this.formOnSubmit.emit(bedIndex);
+  onUpdate(bedIndex: number): void {
+    this.formUpdate.emit(bedIndex);
   }
 
 }

@@ -80,8 +80,6 @@ export class BedspaceRoomFormEndpoint {
       )
     );
   }
-
-
   getTenants(pageRequest: PageRequest, requestStateUpdater: StoreRequestStateUpdater): Observable<PageData<Tenant>> {
     const request = ROOM_CONFIG.request.tenantByKeyStroke;
     requestStateUpdater(request.name, {inProgress: true});
