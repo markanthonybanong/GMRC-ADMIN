@@ -19,7 +19,7 @@ export class InquiryFormComponent implements OnInit {
   @Input() roomNumbers: Array<number>;
   @Output() formRoomChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() formBack: EventEmitter<null> = new EventEmitter<null>();
-  @Output() formSubmit: EventEmitter<object> = new EventEmitter<object>();
+  @Output() formSubmit: EventEmitter<null> = new EventEmitter<null>();
 
   constructor() { }
 
@@ -32,6 +32,6 @@ export class InquiryFormComponent implements OnInit {
     this.formBack.emit();
   }
   onSubmit(): void {
-    this.formSubmit.emit(this.form.value);
+    this.formSubmit.emit();
   }
 }

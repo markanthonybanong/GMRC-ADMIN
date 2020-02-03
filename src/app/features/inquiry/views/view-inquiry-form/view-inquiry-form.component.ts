@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { InquiryFormStore } from '../../services/inquiry-form/inquiry-form.store';
 import { ActivatedRoute } from '@angular/router';
-import { filter, tap, takeUntil } from 'rxjs/operators';
+import { filter, tap} from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { INQUIRY_CONFIG } from '../../inquiry.config';
 import { DataRoomService, DataTenantService, DataStoreService } from '@gmrc-admin/shared/services';
@@ -48,8 +48,7 @@ export class ViewInquiryFormComponent implements OnInit, OnDestroy {
             }
           }
         });
-      }),
-      takeUntil(this.destroy$)
+      })
     )
     .subscribe();
   }

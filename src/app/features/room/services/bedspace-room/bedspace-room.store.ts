@@ -3,7 +3,7 @@ import { Store } from 'rxjs-observable-store';
 import { BedspaceRoomStoreState } from './bedspace-room.store.state';
 import { Subject } from 'rxjs';
 import { DataStoreService } from '@gmrc-admin/shared/services';
-import { getStoreRequestStateUpdater, updateState, removeEmptyKeys } from '@gmrc-admin/shared/helpers';
+import { getStoreRequestStateUpdater, updateState} from '@gmrc-admin/shared/helpers';
 import { switchMap } from 'rxjs/internal/operators/switchMap';
 import { BedspaceRoomEndpoint } from './bedspace-room.endpoint';
 import { tap, retry, takeUntil, map } from 'rxjs/operators';
@@ -111,11 +111,12 @@ export class BedspaceRoomStore extends Store<BedspaceRoomStoreState> implements 
       .pipe(
         switchMap(() => this.endpoint.getRooms(this.state.table.pageRequest, this.dataStoreService.storeRequestStateUpdater)),
         map((pageData) => {
-          console.log('pagedata ', pageData);
           return modifyRoomObjectForBedspace(pageData);
-
         }),
-        tap((pageData) => updateState(this, pageData)),
+        tap((pageData) => {
+          console.log('the page data', pageData);
+          updateState(this, pageData);
+        }),
         retry(1),
         takeUntil(this.destroy$)
       ).subscribe();

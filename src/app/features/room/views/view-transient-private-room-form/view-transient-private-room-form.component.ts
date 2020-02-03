@@ -45,8 +45,7 @@ export class ViewTransientPrivateRoomFormComponent implements OnInit, OnDestroy 
             }
           }
         });
-      }),
-      takeUntil(this.destroy$)
+      })
     )
     .subscribe();
   }

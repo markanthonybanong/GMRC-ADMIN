@@ -4,19 +4,16 @@ import { StoreRequestStateUpdater } from '@gmrc-admin/shared/types';
 import { Subject, pipe, of, Observable, observable } from 'rxjs';
 import { InquiryFormStoreState } from './inquiry-form.store.state';
 import { Store } from 'rxjs-observable-store';
-import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
-import { enumsToArray, getStoreRequestStateUpdater, getRoomNumbers } from '@gmrc-admin/shared/helpers';
-import {  RequestResponse } from '@gmrc-admin/shared/enums';
-import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, Validators } from '@angular/forms';
+import {  getStoreRequestStateUpdater, getRoomNumbers } from '@gmrc-admin/shared/helpers';
+import { Router  } from '@angular/router';
 import { Inquiry } from '../../types/inquiry';
-import { switchMap, tap, takeUntil, filter } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { INQUIRY_CONFIG } from '../../inquiry.config';
-import { MatDialog } from '@angular/material';
-import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
 import { setInquiryFormValues } from '../../helpers/inquiry-form/set-form-values';
 import { createBedInfo } from '../../helpers/inquiry-form/create-bed-info';
 import { getBedInfos } from '../../helpers/inquiry-form/get-bed-info';
-import { DataStoreService, DataRoomService } from '@gmrc-admin/shared/services';
+import { DataStoreService, DataRoomService, ModalService } from '@gmrc-admin/shared/services';
 import { RoomType } from 'src/app/features/room/room.enums';
 
 @Injectable()
@@ -38,7 +35,7 @@ export class InquiryFormStore extends Store<InquiryFormStoreState> implements On
     private endpoint: InquiryFormEndpoint,
     private formBuilder: FormBuilder,
     private router: Router,
-    private dialog: MatDialog,
+    private modalService: ModalService,
     private dataStoreService: DataStoreService,
     private dataRoomService: DataRoomService
   ) {
@@ -74,24 +71,21 @@ export class InquiryFormStore extends Store<InquiryFormStoreState> implements On
   onBack(): void {
     this.router.navigate(['inquiry']);
   }
-  onSubmit(inputInquiry: Inquiry): void {
+  onSubmit(): void {
     const observableInquiry: Observable<Inquiry> = this.state.update
-    ? this.endpoint.update(inputInquiry, this.dataStoreService.storeRequestStateUpdater)
-    : this.endpoint.add(inputInquiry, this.dataStoreService.storeRequestStateUpdater);
+    ? this.endpoint.update(this.form.value, this.dataStoreService.storeRequestStateUpdater)
+    : this.endpoint.add(this.form.value, this.dataStoreService.storeRequestStateUpdater);
     observableInquiry
       .pipe(
         tap(
           (inquiry) => {
-            this.dialog.open(
-              ActionResponseComponent, {
-                data: {
-                  title: this.state.update ? INQUIRY_CONFIG.actions.update : INQUIRY_CONFIG.actions.add,
-                  content: this.state.update
-                  ? `Updated ${inquiry.name}'s inquiry`
-                  : `Added inquiry for ${inquiry.name}`,
-                }
-              }
-            );
+            const title   = this.state.update
+                            ? INQUIRY_CONFIG.actions.update
+                            : INQUIRY_CONFIG.actions.add;
+            const content = this.state.update
+                            ? `Updated ${inquiry.name}'s inquiry`
+                            : `Added inquiry for ${inquiry.name}`;
+            this.modalService.success(title, content);
             setInquiryFormValues(this.form, inquiry);
             this.setState({
               ...this.state,
@@ -99,17 +93,9 @@ export class InquiryFormStore extends Store<InquiryFormStoreState> implements On
             });
           },
           () => {
-            this.dialog.open(
-              ActionResponseComponent, {
-                data: {
-                  title: this.state.update ? INQUIRY_CONFIG.actions.update : INQUIRY_CONFIG.actions.add,
-                  content: RequestResponse.Error,
-                }
-              }
-            );
+            this.modalService.error(this.state.update ? INQUIRY_CONFIG.actions.update : INQUIRY_CONFIG.actions.add);
           }
-        ),
-        takeUntil(this.destroy$)
+        )
       )
       .subscribe();
   }
@@ -118,8 +104,7 @@ export class InquiryFormStore extends Store<InquiryFormStoreState> implements On
       .pipe(
         tap((pageData) => {
           setInquiryFormValues(this.form, pageData.data[0]);
-        }),
-        takeUntil(this.destroy$)
+        })
       )
       .subscribe();
   }
@@ -127,7 +112,6 @@ export class InquiryFormStore extends Store<InquiryFormStoreState> implements On
     this.dataRoomService.getAllRooms
       .pipe(
         tap((pageData) => this.roomNumbers = getRoomNumbers(pageData.data)),
-        takeUntil(this.destroy$)
       ).subscribe();
   }
 }

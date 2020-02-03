@@ -4,13 +4,11 @@ import { Store } from 'rxjs-observable-store';
 import { PageEvent, MatDialog } from '@angular/material';
 import { Subject } from 'rxjs';
 import { getStoreRequestStateUpdater, removeEmptyKeys, updateState } from '@gmrc-admin/shared/helpers';
-import { RequestResponse } from '@gmrc-admin/shared/enums';
 import { Router } from '@angular/router';
 import { switchMap, map, tap, takeUntil, retry } from 'rxjs/operators';
 import { InquiryEndpoint } from './inquiry.endpoint';
-import { DataStoreService } from '@gmrc-admin/shared/services';
+import { DataStoreService, ModalService } from '@gmrc-admin/shared/services';
 import { ToDelete } from '../../types/to-delete';
-import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
 import { INQUIRY_CONFIG } from '../../inquiry.config';
 import { modifyInquiryObject } from '../../helpers/inquiry/modify-inquiry-object';
 @Injectable()
@@ -21,7 +19,7 @@ export class InquiryStore  extends Store<InquiryStoreState> implements OnDestroy
     private endpoint: InquiryEndpoint,
     private router: Router,
     private dataStoreService: DataStoreService,
-    private dialog: MatDialog
+    private modalService: ModalService,
   ) {
     super(new InquiryStoreState());
   }
@@ -66,19 +64,12 @@ export class InquiryStore  extends Store<InquiryStoreState> implements OnDestroy
     this.router.navigate([`inquiry/update/${objectId}`]);
   }
   onInquiryDelete(toDelete: ToDelete): void {
-    const dialogRef = this.dialog.open(
-      ActionResponseComponent, {
-        data: {
-          title: INQUIRY_CONFIG.actions.delete,
-          content: `Are you sure you want to delete ${toDelete.name}'s inquiry?`
+    this.modalService.confirmation(INQUIRY_CONFIG.actions.delete, `Are you sure you want to delete ${toDelete.name}'s inquiry?`)
+      .afterClosed().subscribe(deleteInquiry => {
+        if (deleteInquiry) {
+         this.deleteInquiry(toDelete.objectId);
         }
-      }
-    );
-    dialogRef.afterClosed().subscribe(deleteInquiry => {
-       if (deleteInquiry) {
-        this.deleteInquiry(toDelete.objectId);
-       }
-    });
+      });
   }
   onSearch(search: object): void {
     this.setState({
@@ -135,24 +126,13 @@ export class InquiryStore  extends Store<InquiryStoreState> implements OnDestroy
       .pipe(
         tap(
           (inquiry) => {
-            this.dialog.open(ActionResponseComponent, {
-              data: {
-                title: INQUIRY_CONFIG.actions.delete,
-                content: `Deleted ${inquiry.name}'s inquiry`
-              }
-            });
+            this.modalService.success(INQUIRY_CONFIG.actions.delete, `Deleted ${inquiry.name}'s inquiry`);
             this.dataStoreService.reloadTable$.next();
           },
           () => {
-            this.dialog.open(ActionResponseComponent, {
-              data: {
-                title: INQUIRY_CONFIG.actions.delete,
-                content: RequestResponse.Error,
-              }
-            });
+            this.modalService.error(INQUIRY_CONFIG.actions.delete);
           }
-        ),
-        takeUntil(this.destroy$)
+        )
       )
       .subscribe();
   }
