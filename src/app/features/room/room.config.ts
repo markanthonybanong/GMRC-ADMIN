@@ -4,10 +4,6 @@ export const ROOM_CONFIG = {
       name: 'rooms',
       path: 'room/page',
     },
-    room: {
-      name: 'room',
-      path: 'room/page',
-    },
     tenantByKeyStroke: {
       name: 'tenants',
       path: 'tenant/page'
@@ -39,8 +35,8 @@ export const ROOM_CONFIG = {
       }
     }
   },
-  filters: {
-    types: {
+  filter: {
+    type: {
       ALLROOMS: 'allRooms',
       TRANSIENTPRIVATEROOMS: 'transientPrivateRooms',
       TRANSIENTPRIVATEROOMBYOBJECTID: 'transientPrivateRoomByObjectId',
@@ -52,7 +48,7 @@ export const ROOM_CONFIG = {
     },
     roomObjectId: 'roomObjectId',
   },
-  actions: {
+  action: {
     add: 'ADD ROOM',
     update: 'UPDATE ROOM',
     delete: 'DELETE ROOM',

@@ -1,0 +1,7 @@
+<div class="login-error-msg">
+  <p class="center-text error" *ngIf="state.requests.login.error">INVALID PASSWORD OR PASSWORD HAVE EXPIRED</p>
+  <p class="center-text error" *ngIf="state.requests.createAdminAccount.error">SOMETHING WENT WRONG</p>
+</div>
+<div class="login-msg">
+  <p class="center-text" *ngIf="state.requests.createAdminAccount.success">CREATED ADMIN PASSWORD <span id="bold">{{adminPassword}}</span></p>
+</div>

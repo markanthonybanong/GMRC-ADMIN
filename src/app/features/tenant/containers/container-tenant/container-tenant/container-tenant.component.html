@@ -1,0 +1,38 @@
+<div class="app-container" *ngIf="state$ | async as subs">
+  <mat-card class="app-header-grandparent-container">
+    <mat-card-content>
+      <app-tenant-header
+        class="app-header-container"
+        (tenantHeaderOnSearch)="onSearch()"
+        (tenantHeaderOnDisplayAllTenants)="onDisplayAllTenants()"
+        (tenantHeaderOnAddTenant)="onAddTenant()"
+      >
+      </app-tenant-header>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="app-body-grandparent-container push-paginator-bottom">
+    <mat-card-content>
+      <app-in-progress-error *ngIf="subs.requests.tenants.inProgress || subs.requests.tenants.error"
+       [request]="subs.requests.tenants"
+       [requestResponse]="requestResponse"
+      >
+      </app-in-progress-error>
+      <app-tenant-table
+        *ngIf="subs.requests.tenants.success"
+        [state]="subs"
+        [displayedColumns]="displayedColumns"
+        (tenantTableUpdateTenant)="onUpdateTenant($event)"
+      >
+      </app-tenant-table>
+    </mat-card-content>
+    <mat-card-actions>
+      <app-paginator
+       [pageSizeOptions]="pageSizeOptions"
+       [length]="subs.table.totalCount"
+       [request]="subs.requests.tenants"
+       (paginatorOnUpdate)="onPaginatorUpdate($event)"
+      >
+      </app-paginator>
+    </mat-card-actions>
+  </mat-card>
+</div>

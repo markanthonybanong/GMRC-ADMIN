@@ -1,0 +1,15 @@
+<app-container-tenant-form
+[state$]="store.state$"
+[requestResponse]="dataStoreService.requestResponse"
+[tenantForm]="store.tenantForm"
+[genders]="dataTenantService.genders"
+[networks]="dataTenantService.networks"
+[roomNumbers]="dataRoomService.roomNumbers"
+[tenantImgHover]="store.tenantImgHover"
+(containerTenantFormOnBack)="store.onBack()"
+(containerTenantFormOnSubmit)="store.onSubmit()"
+(containerTenantFormOnTenantImgMouseEnter)="store.onTenantImgMouseEnter()"
+(containerTenantFormOnTenantImgMouseLeave)="store.onTenantImgMouseLeave()"
+(containerTenantFormOnSelectPhoto)="store.onSelectPhoto()"
+>
+</app-container-tenant-form>

@@ -1,66 +1,54 @@
-.app-content-container{
+.app-container{
    display: flex;
    flex-flow: column;
    height: 100%;
-   .app-content-header{
+   .app-header-grandparent-container{
     margin: 5px 5px 0 5px;
-    >.second-column{
-      button {
-        margin-top: 5px;
-        width: 100%;
-      }
-      button:first-child{
-        margin-top: 0px;
+    .app-header-container{
+      >.second-column{
+        button {
+          margin-top: 5px;
+          width: 100%;
+        }
+        button:first-child{
+          margin-top: 0px;
+        }
       }
     }
-  }
-  .app-content-body-container{
-    display: flex;
+   }
+   .app-body-grandparent-container{
+    margin: 5px 5px 5px 5px;
     flex: 1 0 auto;
-  }
+    display: flex;
+    flex-flow: column;
+   }
+   .app-routed-table-grand-parent-container{
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    .app-routed-table-container{
+      margin: 5px 5px 5px 5px;
+      flex: 1 0 auto;
+      .app-routed-table-header-container{
+        >.second-column{
+          button {
+            margin-top: 5px;
+            width: 100%;
+          }
+          button:first-child{
+            margin-top: 0px;
+          }
+        }
+      }
+    }
+   }
+   .push-paginator-bottom{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+   }
 }
 
-.app-content-body{
-  margin: 5px 5px 5px 5px;
-  flex: 1 0 auto;
-  .request-status{
-    .in-progress-request{
-      position: absolute;
-      left: 45%;
-      top: 42%;
-    }
-    .error-request{
-      position: absolute;
-      left: 33%;
-      top: 46%;
-    }
-  }
-}
-/*push the paginator below in screen*/
-.table-container{
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.app-content-routed-body-container{
-  height: 100%;
-  display: flex;
-  flex-flow: column;
-  .request-status{
-    .in-progress-request{
-      position: absolute;
-      left: 45%;
-      top: 55%;
-    }
-    .error-request{
-      position: absolute;
-      left: 33%;
-      top: 56%;
-    }
-  }
-}
 
 /*MEDIA QUERIES*/
 /*MAX-WIDTH*/
@@ -79,7 +67,7 @@
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) {
-  .app-content-header{
+  .app-header-container, .app-routed-table-header-container{
     display: flex !important;
     justify-content: space-between !important;
     >.first-column, >.second-column{

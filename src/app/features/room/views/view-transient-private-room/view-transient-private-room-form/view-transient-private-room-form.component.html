@@ -1,0 +1,17 @@
+<app-container-transient-private-room-form
+ [state$]="store.state$"
+ [form]="store.form"
+ [roomStatuses]="dataRoomService.roomStatuses"
+ [tenantForm]="store.tenantForm"
+ [airconStatuses]="dataRoomService.airconStatuses"
+ [tenants]="dataTenantService.tenants"
+ [requestResponse]="dataStoreService.requestResponse"
+ (transientPrivateFormAddTenant)="store.onAddTenant()"
+ (transientPrivateFormBack)="store.onBack()"
+ (transienPrivateRoomTenantFormOnSearchTenant)="dataTenantService.onSearchTenant($event)"
+ (transienPrivateRoomTenantFormOnRemoveTenant)="store.onRemoveTenant($event)"
+ (transienPrivateRoomTenantFormOnSubmit)="store.onTenantFormSubmit($event)"
+ (transienPrivateRoomTenantFormOnTenantClick)="store.onTenantClick($event)"
+ (transientPrivateFormOnSubmit)="store.onRoomFormSubmit()"
+>
+</app-container-transient-private-room-form>

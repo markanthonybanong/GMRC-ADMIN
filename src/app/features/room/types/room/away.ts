@@ -1,4 +1,4 @@
-import { Tenant } from 'src/app/features/tenant/types/tenant';
+import { Tenant } from 'src/app/features/tenant/types/tenant/tenant';
 
 export interface Away {
   inDate: any;

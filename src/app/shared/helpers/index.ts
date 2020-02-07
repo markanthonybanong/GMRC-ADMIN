@@ -4,3 +4,4 @@ export * from './date';
 export * from './number';
 export * from './object';
 export * from './store';
+export * from './room';

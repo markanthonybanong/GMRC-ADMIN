@@ -1,10 +1,7 @@
 .form-container{
   height: 100%;
   display: flex;
-  .spinner-container{
-    flex:1;
-  }
-  .form-error-msg{
+  .form-inprogress-error{
     flex:1;
     margin: 5px;
   }

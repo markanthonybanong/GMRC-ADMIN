@@ -1,0 +1,11 @@
+.form-horizontal{
+  display: flex !important;
+  flex-flow: row;
+  .form-horizontal-header{
+    width: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+}

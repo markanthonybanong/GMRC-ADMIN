@@ -1,0 +1,36 @@
+<div *ngIf="state$ | async as subs" class="form-container">
+  <mat-card class="form-inprogress-error" *ngIf="subs.requests.rooms.inProgress || subs.requests.rooms.error">
+    <mat-card-content >
+        <app-in-progress-error
+        [request]="subs.requests.rooms"
+        [requestResponse]="requestResponse"
+      >
+      </app-in-progress-error>
+    </mat-card-content>
+  </mat-card>
+  <div *ngIf="subs.requests.rooms.success" class="full-width">
+    <app-bedspace-bed-form
+    [form]="bedForm"
+    [tenants]="tenants"
+    [inProgress]="subs.requests.submit.inProgress"
+    [deckStatuses]="deckStatuses"
+    [awayDeckStatuses]="awayDeckStatuses"
+    (formOnSearchTenant)="onSearchTenant($event)"
+    (formOnDeckStatusChange)="onDeckStatusChange($event)"
+    (formUpdate)="onBedFormUpdate($event)"
+    (formOnTenantClick)="onTenantClick($event)"
+    >
+    </app-bedspace-bed-form>
+    <app-bedspace-room-form
+     [form]="form"
+     [inProgress]="subs.requests.submit.inProgress"
+
+     [airconStatuses]="airconStatuses"
+     [bedsFormArrayLength]="bedsFormArrayLength"
+     (roomOnBack)="onBack()"
+     (roomOnSubmit)="onSubmit()"
+     (roomOnAddBed)="onAddBed()"
+    >
+    </app-bedspace-room-form>
+  </div>
+</div>

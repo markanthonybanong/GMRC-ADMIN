@@ -7,6 +7,8 @@ import { LayoutComponent } from './layout/layout/layout.component';
 import { AuthGuardService } from '@gmrc-admin/shared/services';
 import { RoomModule } from './features/room/room.module';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { TenantModule } from './features/tenant/tenant.module';
+import { PaymentModule } from './features/payment/payment.module';
 
 
 const routes: Routes = [
@@ -17,7 +19,9 @@ const routes: Routes = [
     component: LayoutComponent,
     children: [
       { path: 'inquiry', loadChildren: () => InquiryModule, canActivate: [AuthGuardService] },
-      { path: 'room', loadChildren: () => RoomModule, canActivate: [AuthGuardService] }
+      { path: 'room', loadChildren: () => RoomModule, canActivate: [AuthGuardService] },
+      { path: 'tenant', loadChildren: () => TenantModule, canActivate: [AuthGuardService] },
+      { path: 'payment', loadChildren: () => PaymentModule, canActivate: [AuthGuardService] },
     ]
   },
   { path: '**', component: PageNotFoundComponent }

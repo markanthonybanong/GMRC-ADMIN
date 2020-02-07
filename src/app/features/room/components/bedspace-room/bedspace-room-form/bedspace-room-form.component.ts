@@ -9,8 +9,6 @@ import { FormGroup } from '@angular/forms';
 export class BedspaceRoomFormComponent implements OnInit {
   @Input() form: FormGroup;
   @Input() inProgress: boolean;
-  @Input() roomNumbers: Array<number>;
-  @Input() floorNumbers: Array<number>;
   @Input() airconStatuses: Array<string>;
   @Input() bedsFormArrayLength: number;
   @Output() roomOnBack: EventEmitter<null> = new EventEmitter<null>();

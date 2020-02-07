@@ -1,0 +1,26 @@
+<div class="form-container" *ngIf="state$ | async as subs">
+  <mat-card class="form-inprogress-error" *ngIf="subs.requests.inquiries.inProgress ||subs.requests.inquiries.error">
+    <mat-card-content>
+      <app-in-progress-error
+        [request]="subs.requests.inquiries"
+        [requestResponse]="requestResponse"
+      >
+      </app-in-progress-error>
+    </mat-card-content>
+  </mat-card>
+  <app-inquiry-form
+   class="center-content"
+  *ngIf="subs.requests.inquiries.success"
+   [state]="subs"
+   [inquiryForm]="inquiryForm"
+   [knownGMRCThrough]="knownGMRCThrough"
+   [genders]="genders"
+   [roomTypes]="roomTypes"
+   [requestResponse]="requestResponse"
+   [roomNumbers]="roomNumbers"
+   (formRoomChange)="onRoomChange($event)"
+   (formBack)="onBack()"
+   (formSubmit)="onSubmit()"
+  >
+</app-inquiry-form>
+</div>

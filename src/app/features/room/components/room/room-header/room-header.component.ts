@@ -1,5 +1,4 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { MatDialog } from '@angular/material';
 @Component({
   selector: 'app-room-header',
   templateUrl: './room-header.component.html',
@@ -7,29 +6,25 @@ import { MatDialog } from '@angular/material';
 })
 export class RoomHeaderComponent implements OnInit {
   @Input() roomTableName: string;
-  @Output () listPrivateTransientRooms: EventEmitter<null> = new EventEmitter<null>();
-  @Output () listBedspaceRooms: EventEmitter<null> = new EventEmitter<null>();
-  @Output () listSemiPrivateRooms: EventEmitter<null> = new EventEmitter<null>();
-  @Output () listUnsettleBill: EventEmitter<null> = new EventEmitter<null>();
-  @Output() listAddRoom: EventEmitter<null> = new EventEmitter<null>();
-  constructor(private dialog: MatDialog) { }
+  @Output () roomHeaderOnPrivateTransientRooms: EventEmitter<null> = new EventEmitter<null>();
+  @Output () roomHeaderOnBedspaceRooms: EventEmitter<null> = new EventEmitter<null>();
+  @Output () roomHeaderOnSemiPrivateRooms: EventEmitter<null> = new EventEmitter<null>();
+  @Output() roomHeaderOnAddRoom: EventEmitter<null> = new EventEmitter<null>();
+  constructor() { }
 
   ngOnInit() {
   }
   onPrivateTransientRooms(): void {
-    this.listPrivateTransientRooms.emit();
+    this.roomHeaderOnPrivateTransientRooms.emit();
   }
   onBedspaceRooms(): void {
-    this.listBedspaceRooms.emit();
+    this.roomHeaderOnBedspaceRooms.emit();
   }
   onSemiPrivateRooms(): void {
-    this.listSemiPrivateRooms.emit();
-  }
-  onUnsettleBill(): void {
-    this.listUnsettleBill.emit();
+    this.roomHeaderOnSemiPrivateRooms.emit();
   }
   onAddRoom(): void {
-    this.listAddRoom.emit();
+    this.roomHeaderOnAddRoom.emit();
   }
 
 }

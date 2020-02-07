@@ -1,0 +1,11 @@
+<app-container-transient-private-room
+ [state$]="store.state$"
+ [requestResponse]="dataStoreService.requestResponse"
+ [displayedColumns]="dataRoomService.tranSientPrivateDisplayedColumns"
+ [pageSizeOptions]="dataStoreService.pageSizeOptions"
+ (containerTranPriRoomOnSearch)="store.onSearch()"
+ (containerTranPriRoomOnDisplayAllRooms)="store.onDisplayAllRooms()"
+ (containerTranPriRoomOnRoomUpdate)="store.onRoomUpdate($event)"
+ (containerTranPriRoomOnPaginatorUpdate)="store.onPaginatorUpdate($event)"
+>
+</app-container-transient-private-room>

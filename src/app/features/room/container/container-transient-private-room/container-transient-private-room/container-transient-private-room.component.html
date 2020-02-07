@@ -1,0 +1,37 @@
+<div appSetParentElHeight class="app-routed-table-grand-parent-container">
+  <mat-card class="app-routed-table-container push-paginator-bottom" *ngIf="state$ | async as subs">
+    <mat-card-content>
+      <app-in-progress-error
+       *ngIf="subs.requests.rooms.inProgress || subs.requests.rooms.error"
+       [request]="subs.requests.rooms"
+       [requestResponse]="requestResponse"
+      >
+      </app-in-progress-error>
+      <app-room-table-header
+       class="app-routed-table-header-container"
+       *ngIf="subs.requests.rooms.success"
+       (roomSearch)="onSearch()"
+       (roomDisplayAllRooms)="onDisplayAllRooms()"
+      >
+      </app-room-table-header>
+      <app-transient-private-room-table
+      *ngIf="subs.requests.rooms.success"
+      [displayedColumns]="displayedColumns"
+      [state]="subs"
+      (tranPriRoomTableOnRoomUpdate)="onRoomUpdate($event)"
+      >
+      </app-transient-private-room-table>
+    </mat-card-content>
+    <mat-card-actions>
+      <app-paginator
+      [pageSizeOptions]="pageSizeOptions"
+      [length]="subs.table.totalCount"
+      [request]="subs.requests.rooms"
+      (paginatorOnUpdate)="onPaginatorUpdate($event)"
+       >
+      </app-paginator>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+

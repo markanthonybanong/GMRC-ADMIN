@@ -1,0 +1,13 @@
+<app-container-inquiry
+ [state$]="store.state$"
+ [displayedColumns]="dataInquiryService.displayedColumns"
+ [pageSizeOptions]="dataStoreService.pageSizeOptions"
+ [requestResponse]="dataStoreService.requestResponse"
+ (containerInquiryOnAdd)="store.onAddInquiry()"
+ (containerInquiryOnSearch)="store.onSearch()"
+ (containerInquiryOnDisplayAllInquiry)="store.onDisplayAllInquiry()"
+ (containerInquiryOnPaginatorUpdate)="store.onPaginatorUpdate($event)"
+ (containerInquiryOnInquiryUpdate)="store.onInquiryUpdate($event)"
+ (containerInquiryOnInquiryDelete)="store.onInquiryDelete($event)"
+>
+</app-container-inquiry>

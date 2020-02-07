@@ -1,0 +1,12 @@
+<app-container-tenant
+ [state$]="store.state$"
+ [requestResponse]="dataStoreService.requestResponse"
+ [displayedColumns]="dataTenantService.displayedColumns"
+ [pageSizeOptions]="dataStoreService.pageSizeOptions"
+ (containerTenantOnSearch)="store.onSearch()"
+ (containerTenantOnDisplayAllTenants)="store.onDisplayAllTenants()"
+ (containerTenantOnAddTenant)="store.onAddTenant()"
+ (containerTenantOnUpdateTenant)="store.onUpdateTenant($event)"
+ (containerTenantOnPaginatorUpdate)="store.onPaginatorUpdate($event)"
+>
+</app-container-tenant>

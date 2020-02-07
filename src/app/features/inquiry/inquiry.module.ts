@@ -3,21 +3,26 @@ import { CommonModule } from '@angular/common';
 import { InquiryRoutingModule } from './inquiry-routing.module';
 import { SharedModule } from '@gmrc-admin/shared';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { ViewInquiryComponent } from './views/view-inquiry/view-inquiry.component';
-import { ViewInquiryFormComponent } from './views/view-inquiry-form/view-inquiry-form.component';
-import { InquiryHeaderComponent } from './components/inquiry-header/inquiry-header.component';
+import { ViewInquiryComponent } from './views/view-inquiry/view-inquiry/view-inquiry.component';
+import { ViewInquiryFormComponent } from './views/view-inquiry/view-inquiry-form/view-inquiry-form.component';
 import { ActionResponseComponent } from '@gmrc-admin/shared/modals';
-import { SearchComponent } from './modals/search/search.component';
-import { InquiryBodyComponent } from './components/inquiry-body/inquiry-body.component';
-import { InquiryFormComponent } from './components/inquiry-form/inquiry-form.component';
+import { InquiryHeaderComponent } from './components/inquiry/inquiry-header/inquiry-header.component';
+import { InquiryTableComponent } from './components/inquiry/inquiry-table/inquiry-table.component';
+import { InquiryFormComponent } from './components/inquiry/inquiry-form/inquiry-form.component';
+import { SearchInquiryComponent } from './modals/inquiry/search-inquiry/search-inquiry.component';
+import { ContainerInquiryComponent } from './containers/container-inquiry/container-inquiry/container-inquiry.component';
+import { ContainerInquiryFormComponent } from './containers/container-inquiry/container-inquiry-form/container-inquiry-form.component';
+
 @NgModule({
   declarations: [
     ViewInquiryComponent,
     ViewInquiryFormComponent,
     InquiryHeaderComponent,
-    InquiryBodyComponent,
+    InquiryTableComponent,
     InquiryFormComponent,
-    SearchComponent,
+    SearchInquiryComponent,
+    ContainerInquiryComponent,
+    ContainerInquiryFormComponent,
   ],
   imports: [
     CommonModule,
@@ -28,7 +33,7 @@ import { InquiryFormComponent } from './components/inquiry-form/inquiry-form.com
   ],
   entryComponents: [
      ActionResponseComponent,
-     SearchComponent
+     SearchInquiryComponent
   ]
 })
 export class InquiryModule { }

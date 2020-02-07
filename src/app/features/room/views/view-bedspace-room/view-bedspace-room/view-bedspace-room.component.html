@@ -1,0 +1,11 @@
+<app-container-bedspace-room
+[state$]="store.state$"
+[requestResponse]="dataStoreService.requestResponse"
+[displayedColumns]="dataRoomService.bedspaceDisplayedColumns"
+[pageSizeOptions]="dataStoreService.pageSizeOptions"
+(containerBedspaceRoomOnSearch)="store.onSearch()"
+(containerBedspaceRoomOnDisplayAllRooms)="store.onDisplayAllRooms()"
+(containerBedspaceRoomOnRoomUpdate)="store.onRoomUpdate($event)"
+(paginatorOnUpdate)="store.onPaginatorUpdate($event)"
+>
+</app-container-bedspace-room>

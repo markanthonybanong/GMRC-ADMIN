@@ -1,0 +1,35 @@
+<div class="center-content" *ngIf="state$ | async as subs">
+  <mat-card>
+    <mat-card-title class="center-text">GMRC ADMIN</mat-card-title>
+    <mat-card-content class="form">
+      <app-login
+       [loginForm]="loginForm"
+       [userTypes]="userTypes"
+       (loginOnUserTypeChange)="onUserTypeChange($event)"
+      >
+      </app-login>
+      <app-login-display-server-response
+       [state]="subs"
+       [adminPassword]="adminPassword"
+      >
+      </app-login-display-server-response>
+    </mat-card-content>
+    <mat-card-actions>
+      <div class="action-buttons-container">
+        <button
+           color="primary"
+           mat-raised-button
+           *ngIf="subs.superAdminLogin"
+           (click)="onCreateAdminPassword()"
+           [disabled]="subs.requests.createAdminAccount.inProgress"
+         >Create Admin Password</button>
+        <button
+           color="primary"
+           mat-raised-button
+           (click)="onUserLogin()"
+           [disabled]="loginForm.invalid || subs.requests.login.inProgress"
+        >{{buttonName}}</button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</div>

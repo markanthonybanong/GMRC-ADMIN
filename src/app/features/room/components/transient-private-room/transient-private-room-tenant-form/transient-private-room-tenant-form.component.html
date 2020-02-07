@@ -14,8 +14,6 @@
     <mat-card-content [formGroupName]="i">
       <mat-form-field id="form-column-1">
         <input matInput type="text" placeholder="Tenant name"  formControlName="name" (input)="onSearchTenant(tenant.get('name').value)" [matAutocomplete]="auto">
-
-
       </mat-form-field>
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option

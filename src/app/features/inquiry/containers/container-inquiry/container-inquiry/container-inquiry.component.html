@@ -1,0 +1,41 @@
+
+ <div class="app-container" *ngIf="state$ | async as subs">
+  <mat-card class="app-header-grandparent-container">
+    <mat-card-content>
+      <app-inquiry-header
+      class="app-header-container"
+      (inquiryHeaderOnAdd)="onAddInquiry()"
+      (inquiryHeaderOnSearch)="onSearch()"
+      (inquiryHeaderOnDisplayAll)="onDisplayAllInquiry()"
+     >
+     </app-inquiry-header>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="app-body-grandparent-container push-paginator-bottom">
+    <mat-card-content>
+      <app-in-progress-error *ngIf="subs.requests.inquiries.inProgress || subs.requests.inquiries.error"
+       [request]="subs.requests.inquiries"
+       [requestResponse]="requestResponse"
+      >
+      </app-in-progress-error>
+      <app-inquiry-table
+      *ngIf="subs.requests.inquiries.success"
+      [state]="subs"
+      [displayedColumns]="displayedColumns"
+      [pageSizeOptions]="pageSizeOptions"
+      (inquiryTableOnUpdate)="onInquiryUpdate($event)"
+      (inquiryTableOnDelete)="onInquiryDelete($event)"
+      >
+      </app-inquiry-table>
+    </mat-card-content>
+    <mat-card-actions>
+      <app-paginator
+       [pageSizeOptions]="pageSizeOptions"
+       [length]="subs.table.totalCount"
+       [request]="subs.requests.inquiries"
+       (paginatorOnUpdate)="onPaginatorUpdate($event)"
+      >
+      </app-paginator>
+    </mat-card-actions>
+  </mat-card>
+</div>

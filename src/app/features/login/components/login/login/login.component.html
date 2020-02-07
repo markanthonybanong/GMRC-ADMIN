@@ -1,0 +1,17 @@
+<div [formGroup]="loginForm">
+  <mat-form-field id="form-column-1" appearance="outline">
+      <mat-label>User Type</mat-label>
+      <mat-select placeholder="Account Type" (selectionChange)="onUserTypeChange($event)" formControlName="type">
+        <mat-option *ngFor="let type of userTypes;" [value]="type">
+          {{type}}
+        </mat-option>
+      </mat-select>
+  </mat-form-field>
+  <mat-form-field id="form-column-1" appearance="outline">
+    <mat-label>Password</mat-label>
+    <input matInput type="password" placeholder="Password"  formControlName="password">
+  </mat-form-field>
+</div>
+
+
+

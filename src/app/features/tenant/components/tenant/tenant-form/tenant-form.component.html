@@ -1,0 +1,95 @@
+<mat-card class="form-horizontal">
+  <div class="form-horizontal-header">
+    <div class="header-content">
+      <div class="tenant-image-container">
+        <div class="tenant-image" (mouseenter)="onTenantImgMouseEnter()"  (mouseleave)="onTenantImgMouseLeave()">
+          <img src="../../../assets/img/tenant_default_image.png" *ngIf="form.get('tenantImage').value === null">
+          <img [src]="form.get('tenantImage').value" *ngIf="form.get('tenantImage').value !== null">
+          <div (click)="onSelectPhoto()" class="tenant-image-selector" *ngIf="tenantImgHover === true">
+            <div>
+              <mat-icon>camera_alt</mat-icon>
+              <p>Update</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <mat-card-title class="center-text">{{state.isUpdate ? 'UPDATE TENANT' : 'ADD TENANT'}}</mat-card-title>
+    </div>
+  </div>
+  <div class="form-horizontal-content">
+    <mat-card-content [formGroup]="form">
+    <div id="form-column-2">
+      <mat-form-field>
+        <input matInput type="text" placeholder="Firstname"  formControlName="firstname">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" placeholder="Middlename"  formControlName="middlename">
+      </mat-form-field>
+    </div>
+    <div id="form-column-2">
+      <mat-form-field>
+        <input matInput type="text" placeholder="Lastname"  formControlName="lastname">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="number" placeholder="Age"  formControlName="age">
+      </mat-form-field>
+    </div>
+    <div id="form-column-2">
+      <mat-form-field>
+        <mat-select placeholder="Gender" formControlName="gender">
+          <mat-option *ngFor="let gender of genders;" [value]="gender">
+            {{gender}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Type of network" formControlName="typeOfNetwork">
+            <mat-option *ngFor="let network of networks;" [value]="network">
+              {{network}}
+            </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div id="form-column-2">
+      <mat-form-field>
+        <input matInput type="number" placeholder="Contact number"  formControlName="contactNumber">
+      </mat-form-field>
+      <mat-form-field>
+          <input matInput type="number" placeholder="Emergency contact #"  formControlName="emergencyContactNumber">
+      </mat-form-field>
+    </div>
+    <div id="form-column-2">
+      <mat-form-field>
+        <mat-select placeholder="Room number" formControlName="roomNumber">
+          <mat-option *ngFor="let number of roomNumbers;" [value]="number">
+            {{number}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+          <input matInput type="number" placeholder="Due rent date"  formControlName="dueRentDate">
+      </mat-form-field>
+    </div>
+    <mat-form-field id="form-column-1">
+      <textarea matInput placeholder="Address" formControlName="address"></textarea>
+    </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <div class="action-buttons-container">
+        <button
+          color="primary"
+          mat-raised-button
+          (click)="onBack()"
+        >Back
+        </button>
+        <button
+          color="primary"
+          mat-raised-button
+          (click)="onSubmit()"
+          [disabled]="form.invalid || state.requests.submit.inProgress"
+        >{{state.isUpdate ? 'Update' : 'Add'}}
+        </button>
+      </div>
+    </mat-card-actions>
+  </div>
+</mat-card>

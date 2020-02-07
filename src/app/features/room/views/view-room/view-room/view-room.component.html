@@ -1,0 +1,9 @@
+<app-container-room
+[roomTableName]="store.roomTableName"
+(containerRoomOnPrivateTransientRooms)="store.onPrivateTransientRooms()"
+(containerRoomOnBedspaceRooms)="store.onBedspaceRooms()"
+(containerRoomOnSemiPrivateRooms)="store.onSemiPrivateRooms()"
+(containerRoomOnAddRoom)="store.onAddRoom()"
+(containerRoomOnSetTableName)="store.setTableName($event)"
+>
+</app-container-room>

@@ -1,0 +1,13 @@
+<app-container-inquiry-form
+ [state$]="store.state$"
+ [requestResponse]="dataStoreService.requestResponse"
+ [inquiryForm]="store.inquiryForm"
+ [knownGMRCThrough]="dataInquiryService.knownGMRCThrough"
+ [genders]="dataTenantService.genders"
+ [roomTypes]="dataRoomService.roomTypes"
+ [roomNumbers]="dataRoomService.roomNumbers"
+ (containerInquiryFormOnRoomChange)="store.onRoomChange($event)"
+ (containerInquiryFormOnBack)="store.onBack()"
+ (containerInquiryFormOnSubmit)="store.onSubmit()"
+>
+</app-container-inquiry-form>

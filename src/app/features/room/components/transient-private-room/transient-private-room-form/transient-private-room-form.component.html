@@ -7,11 +7,7 @@
           <input matInput type="number" placeholder="Room number" formControlName="number">
         </mat-form-field>
         <mat-form-field>
-          <mat-select placeholder="Floor number"  formControlName="floor">
-            <mat-option *ngFor="let number of floorNumbers;" [value]="number">
-              {{number}}
-            </mat-option>
-          </mat-select>
+          <input matInput type="number" placeholder="Floor number" formControlName="floor">
         </mat-form-field>
       </div>
       <div id="form-column-2">

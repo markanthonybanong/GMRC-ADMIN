@@ -1,0 +1,11 @@
+<app-container-login
+ [state$]="store.state$"
+ [loginForm]="store.loginForm"
+ [userTypes]="dataLoginService.userTypes"
+ [adminPassword]="store.createdAdminPassword"
+ [buttonName]="store.buttonName"
+ (containerLoginOnUserTypeChange)="store.onUserTypeChange($event)"
+ (containerLoginOnLogin)="store.onLogin($event)"
+ (containerLoginOncreateAdminPassword)="store.onCreateAdminPassword()"
+>
+</app-container-login>

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Tenant } from 'src/app/features/tenant/types/tenant';
 import { MatSelectChange } from '@angular/material';
+import { Tenant } from 'src/app/features/tenant/types/tenant/tenant';
 
 @Component({
   selector: 'app-bedspace-bed-form',

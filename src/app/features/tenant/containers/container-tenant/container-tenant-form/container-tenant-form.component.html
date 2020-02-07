@@ -1,0 +1,27 @@
+<div class="form-container" *ngIf="state$ | async as subs">
+  <mat-card class="form-inprogress-error" *ngIf="subs.requests.tenants.inProgress ||subs.requests.tenants.error">
+    <mat-card-content>
+      <app-in-progress-error
+        [request]="subs.requests.tenants"
+        [requestResponse]="requestResponse"
+      >
+      </app-in-progress-error>
+    </mat-card-content>
+  </mat-card>
+  <app-tenant-form
+   class="center-content"
+   *ngIf="subs.requests.tenants.success"
+   [form]="tenantForm"
+   [state]="subs"
+   [genders]="genders"
+   [networks]="networks"
+   [roomNumbers]="roomNumbers"
+   [tenantImgHover]="tenantImgHover"
+   (tenantFormOnBack)="onBack()"
+   (tenantFormOnSubmit)="onSubmit()"
+   (tenantFormOnTenantImgMouseEnter)="onTenantImgMouseEnter()"
+   (tenantFormOnTenantImgMouseLeave)="onTenantImgMouseLeave()"
+   (tenantFormOnSelectPhoto)="onSelectPhoto()"
+  >
+  </app-tenant-form>
+</div>

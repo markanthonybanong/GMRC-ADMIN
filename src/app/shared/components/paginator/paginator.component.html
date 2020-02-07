@@ -1,0 +1,7 @@
+<mat-paginator
+[pageSizeOptions]="pageSizeOptions"
+[length]="length"
+[hidePageSize]="request.inProgress || request.error"
+showFirstLastButtons
+(page)="onPaginatorUpdate($event)">
+</mat-paginator>

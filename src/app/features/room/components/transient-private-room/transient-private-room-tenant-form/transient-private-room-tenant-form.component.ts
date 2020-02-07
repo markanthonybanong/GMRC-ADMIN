@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Tenant } from 'src/app/features/tenant/types/tenant';
 import { SetTenantObjectId } from '../../../types/transient-private-room-tenant-form/set-tenant-object-id';
+import { Tenant } from 'src/app/features/tenant/types/tenant/tenant';
 @Component({
   selector: 'app-transient-private-room-tenant-form',
   templateUrl: './transient-private-room-tenant-form.component.html',

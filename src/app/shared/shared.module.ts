@@ -5,9 +5,18 @@ import { ActionResponseComponent } from './modals/action-response/action-respons
 import { ActionResponseErrorDirective } from './directives/action-response-error.directive';
 import { ConfirmationComponent } from './modals/confirmation/confirmation.component';
 import { SetParentElHeightDirective } from './directives/set-parent-el-height.directive';
+import { PaginatorComponent } from './components/paginator/paginator.component';
+import { InProgressErrorComponent } from './components/in-progress-error/in-progress-error.component';
 
 @NgModule({
-  declarations: [ActionResponseComponent, ActionResponseErrorDirective, ConfirmationComponent, SetParentElHeightDirective],
+  declarations: [
+    ActionResponseComponent,
+    ActionResponseErrorDirective,
+    ConfirmationComponent,
+    SetParentElHeightDirective,
+    PaginatorComponent,
+    InProgressErrorComponent
+  ],
   imports: [
     CommonModule,
     AngularMaterialModule
@@ -15,7 +24,9 @@ import { SetParentElHeightDirective } from './directives/set-parent-el-height.di
   exports: [
     AngularMaterialModule,
     SetParentElHeightDirective,
-    ActionResponseComponent
+    ActionResponseComponent,
+    PaginatorComponent,
+    InProgressErrorComponent,
   ],
   entryComponents: [
     ActionResponseComponent

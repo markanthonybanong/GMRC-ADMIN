@@ -1,24 +1,20 @@
-<mat-card class="app-content-header">
-  <div class="first-column">
-    <div class="center-content">
-      <h1>{{roomTableName}}</h1>
-    </div>
+<div class="first-column">
+  <div class="center-content">
+    <h1>{{roomTableName}}</h1>
   </div>
-  <div class="second-column">
-    <button color="primary" mat-raised-button (click)="onPrivateTransientRooms()">
-      <span>Private/Transient</span>
-    </button>
-    <button mat-raised-button color="primary" routerLinkActive="active-button" (click)="onSemiPrivateRooms()">
-      <span>Semi Private</span>
-    </button>
-    <button color="primary" mat-raised-button routerLinkActive="active-button" (click)="onBedspaceRooms()">
-      <span>Bedspace</span>
-    </button>
-    <button mat-raised-button color="primary" routerLinkActive="active-button" (click)="onUnsettleBill()">
-      <span>Unsettle Bill</span>
-    </button>
-    <button mat-raised-button color="primary" routerLinkActive="active-button" (click)="onAddRoom()">
-      <span>Add Room</span>
-    </button>
-  </div>
-</mat-card>
+</div>
+<div class="second-column">
+  <button color="primary" mat-raised-button (click)="onPrivateTransientRooms()">
+    <span>Private/Transient</span>
+  </button>
+  <button mat-raised-button color="primary" (click)="onSemiPrivateRooms()">
+    <span>Semi Private</span>
+  </button>
+  <button color="primary" mat-raised-button (click)="onBedspaceRooms()">
+    <span>Bedspace</span>
+  </button>
+  <button mat-raised-button color="primary" (click)="onAddRoom()">
+    <span>Add Room</span>
+  </button>
+</div>
+

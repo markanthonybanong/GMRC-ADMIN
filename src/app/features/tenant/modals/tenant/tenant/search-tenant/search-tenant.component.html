@@ -1,0 +1,34 @@
+<h3 mat-dialog-title class="center-text">{{data.title}}</h3>
+<mat-dialog-content [formGroup]="form" class="form">
+  <div id="form-column-2">
+    <mat-form-field>
+      <mat-select placeholder="Room number" formControlName="roomNumber">
+        <mat-option *ngFor="let number of  roomNumbers;" [value]="number">
+            {{number}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Gender" formControlName="gender">
+        <mat-option *ngFor="let gender of dataTenantService.genders;" [value]="gender">
+            {{gender}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div id="form-column-2">
+    <mat-form-field>
+      <mat-select placeholder="Type network" formControlName="typeOfNetwork">
+        <mat-option *ngFor="let network of dataTenantService.networks;" [value]="network">
+            {{network}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="number" placeholder="Due rent date" formControlName="dueRentDate">
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions class="action-buttons-container">
+  <button mat-raised-button color="primary" [matDialogClose]='form.value'>Ok</button>
+</mat-dialog-actions>
