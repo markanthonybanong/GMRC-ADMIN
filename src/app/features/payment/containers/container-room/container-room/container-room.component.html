@@ -1,0 +1,41 @@
+<div appSetParentElHeight class="app-routed-table-grand-parent-container">
+    <mat-card class="app-routed-table-container push-paginator-bottom" *ngIf="state$ | async as subs">
+      <mat-card-content>
+        <app-in-progress-error
+         *ngIf="subs.requests.roomPayments.inProgress || subs.requests.roomPayments.error"
+         [request]="subs.requests.roomPayments"
+         [requestResponse]="requestResponse"
+        >
+        </app-in-progress-error>
+        <app-payment-table-header
+         class="app-routed-table-header-container"
+         *ngIf="subs.requests.roomPayments.success"
+         [payment]="roomPayment"
+         (paymentTableHeaderOnSearch)="onSearch()"
+         (paymentTableHeaderOnDisplayAll)="onDisplayAllRoomPayments()"
+         (paymentTableHeaderOnAdd)="onAddRoomPayment()"
+        >
+        </app-payment-table-header>
+        <app-room-payment-table
+        *ngIf="subs.requests.roomPayments.success"
+        [displayColumns]="displayColumns"
+        [state]="subs"
+        (roomPaymentTableOnUpdateRoomPayment)="onRoomPaymentUpdate($event)"
+        >
+        </app-room-payment-table>
+
+      </mat-card-content>
+      <mat-card-actions>
+        <app-paginator
+        [pageSizeOptions]="pageSizeOptions"
+        [length]="subs.table.totalCount"
+        [request]="subs.requests.roomPayments"
+        (paginatorOnUpdate)="onPaginatorUpdate($event)"
+         >
+        </app-paginator>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  
+  
+  

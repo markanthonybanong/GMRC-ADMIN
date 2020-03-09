@@ -1,0 +1,29 @@
+<div *ngIf="state$ | async as subs" class="form-container">
+    <mat-card class="form-inprogress-error" *ngIf="subs.requests.unsettleBillPayments.inProgress || subs.requests.unsettleBillPayments.error">
+      <mat-card-content >
+          <app-in-progress-error
+          [request]="subs.requests.unsettleBillPayments"
+          [requestResponse]="requestResponse"
+        >
+        </app-in-progress-error>
+      </mat-card-content>
+    </mat-card>
+    <div *ngIf="subs.requests.unsettleBillPayments.success" class="full-width">
+      <app-unsettle-bill-form
+       class="center-content"
+       [unsettleBillForm]="unsettleBillForm"
+       [state]="subs"
+       [roomNumbers]="roomNumbers"
+       [roomTypes]="roomTypes"
+       [tenants]="tenants"
+       (unsettleBillFormOnSetTenantOBjectId)="onSetTenantObjectId($event)"
+       (unsettleBillFormOnAddTenant)="onAddTenant()"
+       (unsettleBillFormOnBack)="onBack()"
+       (unsettleBillFormOnSubmit)="onSubmit()"
+       (unsettleBillFormOnRemoveTenant)="onRemoveTenant($event)"
+       (unsettleBillFormOnSearchTenant)="onSearchTenant($event)"
+      >
+      </app-unsettle-bill-form>
+    </div>
+  </div>
+  

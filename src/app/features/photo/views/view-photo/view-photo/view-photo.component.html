@@ -1,0 +1,12 @@
+ <app-photo
+  class="center-content"
+  [isShowWebcam]="dataPhotoService.isShowWebcam"
+  [triggerObservable]="store.triggerObservable"
+  [webcamImage]="dataPhotoService.webcamImage"
+  (photoOnHandleImage)="store.onHandleImage($event)"
+  (photoOnHandleInitError)="store.onHandleInitError($event)"
+  (photoOnTriggerSnapshot)="store.onTriggerSnapshot()"
+ 
+ >
+
+ </app-photo>

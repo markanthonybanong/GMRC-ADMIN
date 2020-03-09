@@ -1,1 +1,15 @@
-<p>view-penalty-form works!</p>
+<app-container-penalty-form
+    [state$]="store.state$"
+    [requestResponse]="dataStoreService.requestResponse"
+    [penaltyForm]="store.penaltyForm" 
+    [roomNumbers]="dataRoomService.roomNumbers"
+    [tenants]="dataTenantService.tenants"
+    [roomViolations]="dataPenaltyService.roomViolations"
+    [paymentStatuses]="dataPaymentServices.basicPaymentStatuses"
+    (containerFormOnSearchTenant)="dataTenantService.onSearchTenant($event)"
+    (containerFormOnSetTenantObjectId)="store.onSetTenantObjectId($event)"
+    (containerFormOnSubmit)="store.onSubmit()"
+    (containerFormOnBack)="store.onBack()"
+    (containerFormOnPaymentStatusSelect)="store.onPaymentStatusSelect($event)"
+>
+</app-container-penalty-form>

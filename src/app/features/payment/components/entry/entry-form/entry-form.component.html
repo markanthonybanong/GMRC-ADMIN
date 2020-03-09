@@ -1,0 +1,111 @@
+<mat-card>
+    <mat-card-title class="center-content">
+        {{state.isUpdate ? 'UPDATE ENTRY' : 'ADD ENTRY'}}
+    </mat-card-title>
+    <mat-card-content [formGroup]="entryForm" class="horizontal-form form">
+        <div>
+            <div id="form-column-2">
+                <mat-form-field>
+                    <mat-select placeholder="Room number"  formControlName="roomNumber">
+                      <mat-option *ngFor="let number of roomNumbers;" [value]="number">
+                        {{number}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput type="text" placeholder="Tenant" formControlName="tenant" (input)="onSearchTenant(entryForm.get('tenant').value)" [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option *ngFor="let tenant of tenants" (click)="onSetTenantObjectId(tenant._id)" [value]="tenant.firstname+' '+tenant.middlename+' '+tenant.lastname">
+                          {{ tenant.firstname+" "+tenant.middlename+" "+tenant.lastname }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+            <div id="form-column-2">
+                <mat-form-field>
+                    <input matInput type="number" placeholder="Monthy rent" formControlName="monthlyRent">
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-select placeholder="Key" formControlName="key">
+                    <mat-option *ngFor="let status of keyStatuses;" [value]="status">
+                      {{status}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+            </div>
+            <div id="form-column-2">
+                <mat-form-field>
+                    <input matInput [matDatepicker]="dateEntry" placeholder="Date entry" formControlName="dateEntry">
+                    <mat-datepicker-toggle matSuffix [for]="dateEntry"></mat-datepicker-toggle>
+                    <mat-datepicker #dateEntry></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput [matDatepicker]="dateExit" placeholder="Date exit" formControlName="dateExit">
+                    <mat-datepicker-toggle matSuffix [for]="dateExit"></mat-datepicker-toggle>
+                    <mat-datepicker #dateExit></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div id="form-column-2">
+                <mat-form-field>
+                    <mat-select placeholder="One month deposit"  formControlName="oneMonthDeposit" (selectionChange)="onOneMonthDepositToggle($event)">
+                      <mat-option *ngFor="let status of paymentStatuses;" [value]="status">
+                        {{status}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select placeholder="One month advance"  formControlName="oneMonthAdvance" (selectionChange)="onOneMonthAdvanceToggle($event)">
+                        <mat-option *ngFor="let status of paymentStatuses;" [value]="status">
+                          {{status}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="balance"> 
+                <div formArrayName="oneMonthDepositBalance" *ngFor="let property of entryForm.get('oneMonthDepositBalance').controls; let i = index;">
+                    <div [formGroupName]="i">
+                      <mat-form-field id="form-column-1">
+                        <input matInput type="number" placeholder="Deposit balance" formControlName="balance">
+                      </mat-form-field>
+                    </div>
+                </div>
+                <div formArrayName="oneMonthAdvanceBalance" *ngFor="let property of entryForm.get('oneMonthAdvanceBalance').controls; let i = index;">
+                    <div [formGroupName]="i">
+                      <mat-form-field id="form-column-1">
+                        <input matInput type="number" placeholder="Advance balance" formControlName="balance">
+                      </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <button id="form-column-1" mat-raised-button color="primary" (click)="onAddPartialPayment()">
+                <span>ADD PARTIAL PAYMENT</span>
+            </button>
+        </div>
+        <div class="partial-payment" *ngIf="entryForm.get('partialPayments').length">
+            <div id="form-column-1" formArrayName="partialPayments" *ngFor="let payment of entryForm.get('partialPayments').controls; let i = index;">
+                <div [formGroupName]="i" class="payment">        
+                  <div id="form-column-2">
+                      <mat-form-field>
+                          <input matInput [matDatepicker]="date" placeholder="Date" formControlName="date">
+                          <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                          <mat-datepicker #date></mat-datepicker>
+                      </mat-form-field>
+                      <mat-form-field>
+                        <input matInput type="number" placeholder="Amount" formControlName="amount">
+                      </mat-form-field>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions>
+        <div class="action-buttons-container">
+          <button mat-raised-button  color="primary" (click)='onBack()'>
+            <span>Back</span>
+          </button>
+          <button mat-raised-button color="primary" (click)='onSubmit()' [disabled]='entryForm.invalid || state.requests.submit.inProgress'>
+            <span>{{state.isUpdate ? 'Update' : 'Add'}}</span>
+          </button>
+        </div>
+    </mat-card-actions>
+</mat-card>

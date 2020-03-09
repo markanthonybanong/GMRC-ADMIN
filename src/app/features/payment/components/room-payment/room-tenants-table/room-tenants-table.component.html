@@ -1,0 +1,52 @@
+<table mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="tenants">
+    <th mat-header-cell *matHeaderCellDef>Tenants</th>
+    <td mat-cell *matCellDef="let element">{{element.name}}</td>
+  </ng-container>
+  <ng-container matColumnDef="dueDate">
+    <th mat-header-cell *matHeaderCellDef>Due date</th>
+    <td mat-cell *matCellDef="let element">{{element.dueRentDate}}</td>
+  </ng-container>
+  <ng-container matColumnDef="monthlyRent">
+    <th mat-header-cell *matHeaderCellDef>Monthly rent/rent</th>
+    <td mat-cell *matCellDef="let element">
+      <div *ngIf="roomType === 'Bedspace' || element.index === 0">
+        <p>rent: {{element.rent}}</p>
+        <p>rent to pay: {{element.rentToPay}}</p>
+        <p *ngIf="element.rentInterestAdded !== null" >{{element.rentInterestAdded}}</p>
+      </div>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="riceCookerBill">
+      <th mat-header-cell *matHeaderCellDef>Rice cooker bill</th>
+      <td mat-cell *matCellDef="let element">
+        <div *ngIf="roomType === 'Bedspace' || element.index === 0">
+          <p>bill: {{element.riceCookerBill}}</p>
+          <p>bill to pay: {{element.riceCookerBillToPay}}</p>
+          <p *ngIf="element.riceCookerBillInterestAdded !== null"  >{{element.riceCookerBillInterestAdded}}</p>
+        </div>
+      </td>
+    </ng-container>
+  <ng-container matColumnDef="rentStatus">
+    <th mat-header-cell *matHeaderCellDef>Rent status</th>
+    <td mat-cell *matCellDef="let element">
+        <p appPaymentColorStatus>{{element.rentStatus.value}}</p>
+        <p *ngIf="element.rentStatus.balance !== null">{{element.rentStatus.balance}}</p>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="riceCookerBillStatus">
+    <th mat-header-cell *matHeaderCellDef>Rice cooker bill status</th>
+    <td mat-cell *matCellDef="let element">
+        <p appPaymentColorStatus >{{element.riceCookerBillStatus.value}}</p>
+        <p *ngIf="element.riceCookerBillStatus.balance !== null">{{element.riceCookerBillStatus.balance}}</p>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef>Action</th>
+    <td mat-cell *matCellDef="let element">
+       <mat-icon *ngIf="roomType === 'Bedspace' || element.index === 0"  (click)="onUpdateTenantPayment(element.index)">edit</mat-icon>
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

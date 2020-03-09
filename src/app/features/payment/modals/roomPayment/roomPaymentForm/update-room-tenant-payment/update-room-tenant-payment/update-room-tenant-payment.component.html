@@ -1,0 +1,57 @@
+<h3 mat-dialog-title class="center-text">
+    Update Tenant Payment
+</h3>
+<mat-dialog-content [formGroup]="form" class="form">
+    <div id="form-column-2">
+        <mat-form-field>
+          <input matInput type="text" placeholder="Tenant name" formControlName="name">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput type="number" placeholder="Due rent date" formControlName="dueDate">
+        </mat-form-field>
+    </div>
+    <div id="form-column-2">
+      <mat-form-field>
+        <input matInput type="number" placeholder="Rent" formControlName="rent">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Rent status" formControlName="rentStatus" (selectionChange)="statusToggle($event)">
+          <mat-option *ngFor="let status of dataPaymentService.paymentStatuses;" [value]="status">
+              {{status}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div id="form-column-1" formArrayName="rentBalance" *ngFor="let property of form.get('rentBalance').controls; let i = index;">
+      <div [formGroupName]="i">
+        <mat-form-field>
+          <input matInput type="number" placeholder="Remaining balance" formControlName="balance">
+        </mat-form-field>
+      </div>
+    </div>
+    <div id="form-column-2">
+      <mat-form-field>
+        <input matInput type="number" placeholder="Rice cooker bill" formControlName="riceCookerBill">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Rice cooker bill status" formControlName="riceCookerBillStatus" (selectionChange)="riceCookerBillStatusToggle($event)">
+          <mat-option *ngFor="let status of dataPaymentService.paymentStatuses;" [value]="status">
+              {{status}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div id="form-column-1" formArrayName="riceCookerBillBalance" *ngFor="let property of form.get('riceCookerBillBalance').controls; let i = index;">
+      <div [formGroupName]="i">
+        <mat-form-field>
+          <input matInput type="number" placeholder="Remaining balance" formControlName="balance">
+        </mat-form-field>
+      </div>
+    </div>
+     
+</mat-dialog-content>
+<mat-dialog-actions class="action-buttons-container">
+  <button mat-raised-button color="primary" [matDialogClose]='form.value' [disabled]="!form.valid">
+    <span id="button-text-white">Set</span>
+  </button>
+</mat-dialog-actions>

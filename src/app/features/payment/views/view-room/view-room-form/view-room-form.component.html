@@ -1,1 +1,25 @@
-<p>view-room-form works!</p>
+<app-container-room-form
+ [state$]="store.state$"
+ [requestResponse]="dataStoreService.requestResponse"
+ [roomPaymentForm]="store.roomPaymentForm"
+ [roomNumbers]="dataRoomService.roomNumbers"
+ [paymentStatuses]="dataPaymentService.paymentStatuses"
+ [electricBillPlaceHolder]="dataRoomPaymentService.electricBillPlaceHolder"
+ [waterBillPlaceHolder]="dataRoomPaymentService.waterBillPlaceHolder"
+ [isDisableTenantsButton]="dataRoomPaymentService.isDisableTenantsButton"
+ [roomType]="store.roomType"
+ [pageSizeOptions]="dataRoomPaymentService.pageSizeOptions"
+ (containerRoomFormOnChoosenMonthHandler)="store.onChoosenMonthHandler($event)"
+ (containerRoomFormOnShowTenants)="store.onShowTenants()"
+ (containerRoomFormOnCalculateTotalKWUsed)="store.onCalculateTotalKWUsed()"
+ (containerRoomFormOnRoomNumberSelect)="store.onRoomNumberSelect($event)"
+ (containerRoomFormOnCalculateTotalAmountElectricBill)="store.onCalculateTotalAmountElectricBill()"
+ (containerRoomFormOnElectricBillStatusSelect)="store.onElectricBillStatusSelect($event)"
+ (containerRoomFormOnCalculateWaterBill)="store.onCalculateWaterBill()"
+ (containerRoomFormOnWaterBillStatusSelect)="store.onWaterBillStatusSelect($event)"
+ (containerRoomFormOnPaginatorUpdate)="store.onPaginatorUpdate($event)"
+ (containerRoomFormOnUpdateTenantPayment)="store.onUpdateTenantPayment($event)"
+ (containerRoomFormOnOnSubmit)="store.onSubmit()"
+ (containerRoomFormOnBack)="store.onBack()"
+>
+</app-container-room-form>

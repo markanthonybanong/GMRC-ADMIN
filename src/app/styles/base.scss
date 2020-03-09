@@ -10,6 +10,21 @@ html, body {
     height: 100%;
     width: 100%;
   }
+  .hidden-date-input {
+    width: 0;
+    border: none;
+    padding: 0;
+  }
+  .space-between{
+     display: flex;
+     justify-content: space-between;
+     .first-child, .last-child{
+       width: 48%;
+     }
+     mat-form-field{
+       width: 100%;
+     }
+   }
   .center-text{
     text-align: center;
   }

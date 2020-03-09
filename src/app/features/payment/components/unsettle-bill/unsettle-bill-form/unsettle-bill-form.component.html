@@ -1,0 +1,79 @@
+<mat-card>
+    <mat-card-title class="center-content">
+        {{state.isUpdate ? 'UPDATE UNSETTLE BILL' : 'ADD UNSETTLE BILL'}}
+    </mat-card-title>
+    <mat-card-content [formGroup]="unsettleBillForm" class="form">
+        <div id="form-column-2">
+            <mat-form-field>
+                <mat-select placeholder="Room number"  formControlName="roomNumber">
+                  <mat-option *ngFor="let number of roomNumbers;" [value]="number">
+                    {{number}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-select placeholder="Room type"  formControlName="roomType">
+                <mat-option *ngFor="let roomType of roomTypes;" [value]="roomType">
+                  {{roomType}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+        <div id="form-column-2">
+            <mat-form-field>
+                <input matInput type="number" placeholder="Due date" formControlName="dueDate">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput [matDatepicker]="dateExit" placeholder="Date exit" formControlName="dateExit">
+                <mat-datepicker-toggle matSuffix [for]="dateExit"></mat-datepicker-toggle>
+                <mat-datepicker #dateExit></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div id="form-column-2">
+            <mat-form-field>
+                <input matInput type="number" placeholder="Rent balance" formControlName="rentBalance">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="number" placeholder="Electric bill balance" formControlName="electricBillBalance">
+            </mat-form-field>
+        </div>
+        <div id="form-column-2">
+            <mat-form-field>
+                <input matInput type="number" placeholder="Water bill balance" formControlName="waterBillBalance">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="number" placeholder="Rice cooker bill balance" formControlName="riceCookerBillBalance">
+            </mat-form-field>
+        </div>
+        <div class="tenant-row"  formArrayName="tenants" *ngFor="let tenant of unsettleBillForm.get('tenants').controls; let i=index;">
+            <div [formGroupName]="i">
+              <div class="remove-tenant">
+                <mat-icon class="material-icons" color="warn" (click)="onRemoveTenant(i)">
+                   cancel
+                </mat-icon>
+              </div>
+              <mat-form-field id="form-column-1">
+                <input matInput type="text" placeholder="Tenant name"  formControlName="name" (input)="onSearchTenant(tenant.get('name').value)" [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let tenant of tenants" (click)="onSetTenantObjectId(tenant._id, i)" [value]="tenant.firstname+' '+tenant.middlename+' '+tenant.lastname">
+                      {{ tenant.firstname+" "+tenant.middlename+" "+tenant.lastname }}
+                    </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+          </div>
+          <button id="form-column-1" mat-raised-button color="primary"  (click)="onAddTenant()">
+            <span>ADD TENANT</span>
+          </button>
+    </mat-card-content>
+    <mat-card-actions>
+        <div class="action-buttons-container">
+          <button mat-raised-button  color="primary" (click)='onBack()'>
+            <span>Back</span>
+          </button>
+          <button mat-raised-button color="primary" (click)='onSubmit()' [disabled]='unsettleBillForm.invalid || state.requests.submit.inProgress'>
+            <span>{{state.isUpdate ? 'Update' : 'Add'}}</span>
+          </button>
+        </div>
+    </mat-card-actions>
+</mat-card>

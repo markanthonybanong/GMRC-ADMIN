@@ -1,1 +1,14 @@
-<p>view-unsettle-bill works!</p>
+<app-container-unsettle-bill
+[state$]="store.state$"
+[requestResponse]="dataStoreService.requestResponse"
+[unSettleBill]="dataUnsettleBillService.unSettleBill"
+[pageSizeOptions]="dataStoreService.pageSizeOptions"
+[displayColumns]="dataUnsettleBillService.displayColumns"
+(containerUnsettleBillOnSearch)="store.onSearch()"
+(containerUnsettleBillOnDisplayAllUnsettleBills)="store.onDisplayAllUnsettleBills()"
+(containerUnsettleBillOnAddUnsettleBill)="store.onAddUnsettleBill()"
+(containerUnsettleBillOnUpdateUnsettleBill)="store.onUpdateUnsettleBill($event)"
+(containerUnsettleBillOnDeleteUnsettleBill)="store.onDeleteUnsettleBill($event)"
+(containerUnsettleBillOnPaginatorUpdate)="store.onPaginatorUpdate($event)"
+>
+</app-container-unsettle-bill>

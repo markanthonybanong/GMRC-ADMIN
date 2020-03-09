@@ -1,1 +1,14 @@
-<p>view-entry works!</p>
+<app-container-entry
+[state$]="store.state$" 
+[requestResponse]="dataStoreService.requestResponse"
+[entry]="dataEntryService.entry"
+[displayColumns]="dataEntryService.entryTableDisplayColumns"
+[pageSizeOptions]="dataStoreService.pageSizeOptions"
+(containerEntryOnSearch)="store.onSearch()"
+(containerEntryOnDisplayEntries)="store.onDisplayAllEntries()"
+(containerEntryOnAddEntry)="store.onAddEntry()"
+(containerEntryOnUpdate)="store.onUpdateEntry($event)"
+(containerEntryOnPaginatorUpdate)="store.onPaginatorUpdate($event)"
+
+>
+</app-container-entry>

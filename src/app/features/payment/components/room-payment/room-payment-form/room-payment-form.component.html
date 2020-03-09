@@ -1,0 +1,116 @@
+<mat-card>
+    <mat-card-title class="center-content">
+        {{state.isUpdate ? 'UPDATE ROOM PAYMENT' : 'ADD ROOM PAYMENT'}}
+    </mat-card-title>
+    <mat-card-content [formGroup]="roomPaymentForm" class="horizontal-form form">
+        <div>
+          <div id="form-column-2">
+              <mat-form-field>
+                  <mat-select placeholder="Room number"  formControlName="roomNumber" (selectionChange)="onRoomNumberSelect($event)">
+                    <mat-option *ngFor="let number of roomNumbers;" [value]="number">
+                      {{number}}
+                    </mat-option>
+                  </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                  <input class="hidden-date-input" [matDatepicker]="date">
+                  <input matInput placeholder="Month/Year" formControlName="date">
+                  <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                  <mat-datepicker #date
+                                  startView="multi-year"
+                                  (monthSelected)="onChosenMonthHandler($event, date)"
+                  ></mat-datepicker>
+              </mat-form-field>
+          </div>
+          <div id="form-column-2">
+              <mat-form-field>
+                  <input matInput [matDatepicker]="previousReading" placeholder="Previous reading" formControlName="previousReading">
+                  <mat-datepicker-toggle matSuffix [for]="previousReading"></mat-datepicker-toggle>
+                  <mat-datepicker #previousReading></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput type="number" placeholder="KW used"  formControlName="previousReadingKWUsed">
+              </mat-form-field>
+          </div>
+          <div id="form-column-2">
+              <mat-form-field>
+                  <input matInput [matDatepicker]="presentReading" placeholder="Present reading" formControlName="presentReading">
+                  <mat-datepicker-toggle matSuffix [for]="presentReading"></mat-datepicker-toggle>
+                  <mat-datepicker #presentReading></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput type="number" placeholder="KW used"  formControlName="presentReadingKWUsed" (input)="onCalculateTotalKWUsed()">
+              </mat-form-field>
+          </div>
+          <div id="form-column-2">
+            <mat-form-field>
+                <input disabled="true" matInput type="number" placeholder="Total"  formControlName="total">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="number" placeholder="Amount/ KW used (NORECO)"  formControlName="amountKWUsed" (input)="onCalculateTotalAmountElectricBill()">
+            </mat-form-field>
+          </div>
+         <div id="form-column-2">
+            <mat-form-field>
+                <input [placeholder]="electricBillPlaceHolder" matInput type="number" formControlName="totalAmountElectricBill">
+            </mat-form-field>
+            <mat-form-field>
+              <mat-select placeholder="Electric bill status"  formControlName="electricBillStatus" (selectionChange)="onElectricBillStatusSelect($event)">
+                <mat-option *ngFor="let status of paymentStatuses;" [value]="status">
+                  {{status}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+         </div>
+          <div id="form-column-1" formArrayName="electricBillBalance" *ngFor="let property of roomPaymentForm.get('electricBillBalance').controls; let i = index;">
+            <div [formGroupName]="i">
+              <mat-form-field>
+                <input [placeholder]="electricBillBalancePlaceHolder" matInput type="number" formControlName="balance">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div id="form-column-2">
+            <mat-form-field>
+                <input matInput type="number" placeholder="Enter water bill" formControlName="enterWaterBill" (input)="onCalculateWaterBill()" disabled>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="number" [placeholder]="waterBillPlaceHolder" formControlName="waterBill">
+            </mat-form-field>
+          </div>
+          <div class="space-between">
+            <div class="first-child">
+              <mat-form-field>
+                <mat-select  placeholder="Water bill status"  formControlName="waterBillStatus" (selectionChange)="onWaterBillStatusSelect($event)">
+                  <mat-option *ngFor="let status of paymentStatuses;" [value]="status">
+                    {{status}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="last-child" formArrayName="waterBillBalance" *ngFor="let property of roomPaymentForm.get('waterBillBalance').controls; let i = index;">
+              <div [formGroupName]="i">
+                <mat-form-field>
+                  <input matInput type="number" [placeholder]="waterBillBalancePlaceHolder" formControlName="balance">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <button id="form-column-1" mat-raised-button color="primary" (click)='onShowTenants()' [disabled]='isDisableTenantsButton'>
+            <span id="button-text-white">Show Tenants</span>
+          </button>
+        </div>
+    
+    </mat-card-content>
+    <mat-card-actions>
+        <div class="action-buttons-container">
+          <button mat-raised-button  color="primary" (click)='onBack()'>
+            <span>Back</span>
+          </button>
+          <button mat-raised-button color="primary" (click)='onSubmit()' [disabled]='roomPaymentForm.invalid || state.requests.submit.inProgress'>
+            <span>{{state.isUpdate ? 'Update' : 'Add'}}</span>
+          </button>
+        </div>
+    </mat-card-actions>
+</mat-card>

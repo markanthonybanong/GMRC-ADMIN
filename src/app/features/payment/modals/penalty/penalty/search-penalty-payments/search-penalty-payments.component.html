@@ -1,0 +1,40 @@
+<h3 mat-dialog-title class="center-text">
+    SEARCH PENALTY
+</h3>
+   <mat-dialog-content [formGroup]="penaltySearchForm" class="form">
+       <div id="form-column-2">
+         <mat-form-field>
+           <mat-select placeholder="Room number" formControlName="roomNumber">
+             <mat-option *ngFor="let number of dataRoomService.roomNumbers;" [value]="number">
+                 {{number}}
+             </mat-option>
+           </mat-select>
+         </mat-form-field>
+         <mat-form-field>
+            <input matInput [matDatepicker]="date" placeholder="Date" formControlName="date">
+            <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+            <mat-datepicker #date></mat-datepicker>
+        </mat-form-field>
+       </div>
+       <div id="form-column-2">
+            <mat-form-field>
+                <input matInput type="text" placeholder="Tenant name"  formControlName="tenantName" (input)="dataTenantService.onSearchTenant(penaltySearchForm.get('tenantName').value)" [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let tenant of dataTenantService.tenants" (click)="setTenantObjectId(tenant._id)" [value]="tenant.firstname+' '+tenant.middlename+' '+tenant.lastname">
+                      {{ tenant.firstname+" "+tenant.middlename+" "+tenant.lastname }}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+           <mat-form-field>
+               <mat-select placeholder="Payment status"  formControlName="paymentStatus">
+                 <mat-option *ngFor="let status of dataPaymentService.basicPaymentStatuses;" [value]="status">
+                   {{status}}
+                 </mat-option>
+               </mat-select>
+           </mat-form-field>
+       </div>
+   </mat-dialog-content>
+   <mat-dialog-actions class="action-buttons-container">
+     <button mat-raised-button color="primary" [matDialogClose]='penaltySearchForm.value'>Ok</button>
+   </mat-dialog-actions>
+     

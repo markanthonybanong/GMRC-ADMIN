@@ -1,11 +1,10 @@
-.form-horizontal{
+.horizontal-form{
   display: flex !important;
   flex-flow: row;
-  .form-horizontal-header{
-    width: 250px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  >div{
+    margin-right: 15px;
   }
-
+  >div:last-child{
+    margin-right: 0px;
+  }
 }

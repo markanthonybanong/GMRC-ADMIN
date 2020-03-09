@@ -1,0 +1,35 @@
+<h3 mat-dialog-title class="center-text">
+    SEARCH UNSETTLE BILL
+   </h3>
+   <mat-dialog-content [formGroup]="unsettleBillSearchForm" class="form">
+       <div id="form-column-2">
+            <mat-form-field>
+                <mat-select placeholder="Room numbers" formControlName="roomNumber">
+                  <mat-option *ngFor="let number of dataRoomService.roomNumbers;" [value]="number">
+                      {{number}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-select placeholder="Room type" formControlName="roomType">
+                  <mat-option *ngFor="let type of dataRoomService.roomTypes;" [value]="type">
+                      {{type}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+       </div>
+       <div id="form-column-2">
+            <mat-form-field>
+                <input matInput type="text" placeholder="Tenant name"  formControlName="tenantName" (input)="dataTenantService.onSearchTenant(unsettleBillSearchForm.get('tenantName').value)" [matAutocomplete]="auto">
+            </mat-form-field>
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let tenant of dataTenantService.tenants" (click)="onSetTenantObjectId(tenant._id)" [value]="tenant.firstname+' '+tenant.middlename+' '+tenant.lastname">
+                {{ tenant.firstname+" "+tenant.middlename+" "+tenant.lastname }}
+              </mat-option>
+            </mat-autocomplete>
+       </div>
+   </mat-dialog-content>
+   <mat-dialog-actions class="action-buttons-container">
+     <button mat-raised-button color="primary" [matDialogClose]='unsettleBillSearchForm.value'>Ok</button>
+   </mat-dialog-actions>
+     

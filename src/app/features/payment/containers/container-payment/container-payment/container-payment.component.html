@@ -1,0 +1,19 @@
+<div class="app-container">
+    <mat-card class="app-header-grandparent-container">
+      <mat-card-content>
+        <app-payment-header
+        class="app-header-container"
+        [paymentTableName]="paymentTableName"
+        (paymentHeaderOnEntry)="onEntry()"
+        (paymentHeaderOnRoom)="onRoom()"
+        (paymentHeaderOnPenalty)="onPenalty()"
+        (paymentHeaderOnUnsettleBill)="onUnsettleBill()"
+        >
+        </app-payment-header>
+      </mat-card-content>
+    </mat-card>
+    <router-outlet
+      (activate)="onSetTableName($event)"
+    ></router-outlet>
+  </div>
+  

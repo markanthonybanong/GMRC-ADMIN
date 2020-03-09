@@ -1,3 +1,14 @@
+.tenant-form{
+  display: flex !important;
+  flex-flow: row;
+  .tenant-form-header{
+    width: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
 .tenant-image-container{
   display: flex;
   justify-content: center;

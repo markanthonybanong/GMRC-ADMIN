@@ -1,0 +1,31 @@
+<div *ngIf="state$ | async as subs" class="form-container">
+    <mat-card class="form-inprogress-error" *ngIf="subs.requests.entryPayments.inProgress || subs.requests.entryPayments.error">
+      <mat-card-content >
+          <app-in-progress-error
+          [request]="subs.requests.entryPayments"
+          [requestResponse]="requestResponse"
+        >
+        </app-in-progress-error>
+      </mat-card-content>
+    </mat-card>
+    <div *ngIf="subs.requests.entryPayments.success" class="full-width">
+      <app-entry-form
+       class="center-content"
+       [entryForm]="entryForm"
+       [state]="subs"
+       [roomNumbers]="roomNumbers"
+       [tenants]="tenants"
+       [keyStatuses]="keyStatuses"
+       [paymentStatuses]="paymentStatuses"
+       (entryFormOnSearchTenant)="onSearchTenant($event)"
+       (entryFormOnSetTenantObjId)="onSetTenantObjId($event)"
+       (entryFormOnOneMonthDepositToggle)="onOneMonthDepositToggle($event)"
+       (entryFormOnOneMonthAdvanceToggle)="onOneMonthAdvanceToggle($event)"
+       (entryFormOnAddPartialPayment)="onAddPartialPayment()"
+       (entryFormOnBack)="onBack()"
+       (entryFormOnSubmit)="onSubmit()"
+      >
+      </app-entry-form>
+    </div>
+  </div>
+  

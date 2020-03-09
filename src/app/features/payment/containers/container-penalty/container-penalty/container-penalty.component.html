@@ -1,0 +1,42 @@
+<div appSetParentElHeight class="app-routed-table-grand-parent-container">
+    <mat-card class="app-routed-table-container push-paginator-bottom" *ngIf="state$ | async as subs">
+      <mat-card-content>
+        <app-in-progress-error
+         *ngIf="subs.requests.penaltyPayments.inProgress || subs.requests.penaltyPayments.error"
+         [request]="subs.requests.penaltyPayments"
+         [requestResponse]="requestResponse"
+        >
+        </app-in-progress-error>
+        <app-payment-table-header
+         class="app-routed-table-header-container"
+         *ngIf="subs.requests.penaltyPayments.success"
+         [payment]="penalty"
+         (paymentTableHeaderOnSearch)="onSearch()"
+         (paymentTableHeaderOnDisplayAll)="onDisplayAllPenalties()"
+         (paymentTableHeaderOnAdd)="onAddPenalty()"
+        >
+        </app-payment-table-header>
+        <app-penalty-table
+        *ngIf="subs.requests.penaltyPayments.success"
+        [displayColumns]="displayColumns"
+        [state]="subs"
+        (penaltyTableOnUpdate)="onPenaltyUpdate($event)"
+        (penaltyTableOnDelete)="onPenaltyDelete($event)"
+        >
+        </app-penalty-table>
+        
+      </mat-card-content>
+      <mat-card-actions>
+        <app-paginator
+        [pageSizeOptions]="pageSizeOptions"
+        [length]="subs.table.totalCount"
+        [request]="subs.requests.penaltyPayments"
+        (paginatorOnUpdate)="onPaginatorUpdate($event)"
+         >
+        </app-paginator>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  
+  
+  

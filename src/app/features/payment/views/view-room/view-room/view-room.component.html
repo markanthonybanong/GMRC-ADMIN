@@ -1,1 +1,13 @@
-<p>view-room works!</p>
+<app-container-room
+[state$]="store.state$"
+[requestResponse]="dataStoreService.requestResponse"
+[displayColumns]="dataRoomPaymentService.roomPaymentDisplayColumns"
+[pageSizeOptions]="dataStoreService.pageSizeOptions"
+[roomPayment]="dataRoomPaymentService.roomPayment"
+(containerRoomOnSearch)="store.onSearch()"
+(containerRoomOnDisplayAllRoomPayments)="store.onDisplayAllRoomPayments()"
+(containerRoomOnAddRoomPayment)="store.onAddRoomPayment()"
+(containerRoomOnUpdateRoomPayment)="store.onRoomPaymentUpdate($event)"
+(containerRoomOnPaginatorUpdate)="store.onPaginatorUpdate($event)"
+>
+</app-container-room>

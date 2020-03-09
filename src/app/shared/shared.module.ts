@@ -7,6 +7,7 @@ import { ConfirmationComponent } from './modals/confirmation/confirmation.compon
 import { SetParentElHeightDirective } from './directives/set-parent-el-height.directive';
 import { PaginatorComponent } from './components/paginator/paginator.component';
 import { InProgressErrorComponent } from './components/in-progress-error/in-progress-error.component';
+import { PaymentColorStatusDirective } from './directives/payment-color-status.directive';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { InProgressErrorComponent } from './components/in-progress-error/in-prog
     ConfirmationComponent,
     SetParentElHeightDirective,
     PaginatorComponent,
-    InProgressErrorComponent
+    InProgressErrorComponent,
+    PaymentColorStatusDirective
   ],
   imports: [
     CommonModule,
@@ -27,6 +29,7 @@ import { InProgressErrorComponent } from './components/in-progress-error/in-prog
     ActionResponseComponent,
     PaginatorComponent,
     InProgressErrorComponent,
+    PaymentColorStatusDirective
   ],
   entryComponents: [
     ActionResponseComponent

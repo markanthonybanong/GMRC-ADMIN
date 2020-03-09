@@ -1,0 +1,29 @@
+<div *ngIf="state$ | async as subs" class="form-container">
+    <mat-card class="form-inprogress-error" *ngIf="subs.requests.penaltyPayments.inProgress || subs.requests.penaltyPayments.error">
+      <mat-card-content >
+          <app-in-progress-error
+          [request]="subs.requests.penaltyPayments"
+          [requestResponse]="requestResponse"
+        >
+        </app-in-progress-error>
+      </mat-card-content>
+    </mat-card>
+    <div *ngIf="subs.requests.penaltyPayments.success" class="full-width">
+      <app-penalty-form
+       class="center-content"
+       [penaltyForm]="penaltyForm"
+       [state]="subs"
+       [roomNumbers]="roomNumbers"
+       [tenants]="tenants"
+       [roomViolations]="roomViolations"
+       [paymentStatuses]="paymentStatuses"
+       (penaltyFormOnBack)="onBack()"
+       (penaltyFormOnSubmit)="onSubmit()"
+       (penaltyFormOnSearchTenant)="onSearchTenant($event)"
+       (penaltyFormOnSetTenantObjectId)="onSetTenantObjectId($event)"
+       (penaltyFormOnPaymentStatusSelect)="onPaymentStatusSelect($event)"
+      >
+      </app-penalty-form>
+    </div>
+  </div>
+  

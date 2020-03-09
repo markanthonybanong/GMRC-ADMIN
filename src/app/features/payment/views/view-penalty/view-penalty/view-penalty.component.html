@@ -1,1 +1,15 @@
-<p>view-penalty works!</p>
+<app-container-penalty
+[state$]="store.state$" 
+[requestResponse]="dataStoreService.requestResponse"
+[penalty]="dataPenaltyService.penalty"
+[displayColumns]="dataPenaltyService.penaltyTableDisplayColumns"
+[pageSizeOptions]="dataStoreService.pageSizeOptions"
+(containerPenaltyOnSearch)="store.onSearch()"
+(containerPenaltyOnDisplayPenalties)="store.onDisplayAllPenalties()"
+(containerPenaltyOnAddPenalty)="store.onAddPenalty()"
+(containerPenaltyOnUpdate)="store.onUpdatePenalty($event)"
+(containerPenaltyOnDelete)="store.onDeletePenalty($event)"
+(containerPenaltyOnPaginatorUpdate)="store.onPaginatorUpdate($event)"
+>
+
+</app-container-penalty>

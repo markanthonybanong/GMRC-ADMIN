@@ -1,0 +1,41 @@
+<div appSetParentElHeight class="app-routed-table-grand-parent-container">
+    <mat-card class="app-routed-table-container push-paginator-bottom" *ngIf="state$ | async as subs">
+      <mat-card-content>
+        <app-in-progress-error
+         *ngIf="subs.requests.unsettleBillPayments.inProgress || subs.requests.unsettleBillPayments.error"
+         [request]="subs.requests.unsettleBillPayments"
+         [requestResponse]="requestResponse"
+        >
+        </app-in-progress-error>
+        <app-payment-table-header
+         class="app-routed-table-header-container"
+         *ngIf="subs.requests.unsettleBillPayments.success"
+         [payment]="unSettleBill"
+         (paymentTableHeaderOnSearch)="onSearch()"
+         (paymentTableHeaderOnDisplayAll)="onDisplayAllUnsettleBills()"
+         (paymentTableHeaderOnAdd)="onAddUnsettleBill()"
+        >
+        </app-payment-table-header>
+        <app-un-settle-bill-table
+        *ngIf="subs.requests.unsettleBillPayments.success"
+        [displayColumns]="displayColumns"
+        [state]="subs"
+        (unSettleBillTableOnUpdateUnSettleBill)="onUpdteUnsettleBill($event)"
+        (unSettleBillTableOnDeleteUnSettleBill)="onDeleteUnsettleBill($event)"
+        >
+        </app-un-settle-bill-table>
+      </mat-card-content>
+      <mat-card-actions>
+        <app-paginator
+        [pageSizeOptions]="pageSizeOptions"
+        [length]="subs.table.totalCount"
+        [request]="subs.requests.unsettleBillPayments"
+        (paginatorOnUpdate)="onPaginatorUpdate($event)"
+         >
+        </app-paginator>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  
+  
+  

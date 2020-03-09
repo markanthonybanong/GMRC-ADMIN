@@ -1,0 +1,8 @@
+ <app-room-tenants-table
+  [displayedColumns]="dataRoomPaymentService.roomTenantsTableDisplayedColumns"
+  [dataSource]="dataSource"
+  [roomType]="roomType"
+  (roomTenantsTableOnUpdateTenantPayment)="onUpdateTenantPayment($event)"
+ >
+
+ </app-room-tenants-table>

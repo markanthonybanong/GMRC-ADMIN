@@ -1,0 +1,67 @@
+<mat-card>
+    <mat-card-title class="center-content">
+        {{state.isUpdate ? 'UPDATE PENALTY' : 'ADD PENALTY'}}
+    </mat-card-title>
+    <mat-card-content [formGroup]="penaltyForm" class="form">
+        <div id="form-column-2">
+            <mat-form-field>
+                <mat-select placeholder="Room number"  formControlName="roomNumber">
+                  <mat-option *ngFor="let number of roomNumbers;" [value]="number">
+                    {{number}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput [matDatepicker]="date" placeholder="Date" formControlName="date">
+                <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                <mat-datepicker #date></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div id="form-column-2">
+            <mat-form-field>
+                <input matInput type="text" placeholder="Tenant" formControlName="tenant" (input)="onSearchTenant(penaltyForm.get('tenant').value)" [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let tenant of tenants" (click)="onSetTenantObjectId(tenant._id)" [value]="tenant.firstname+' '+tenant.middlename+' '+tenant.lastname">
+                      {{ tenant.firstname+" "+tenant.middlename+" "+tenant.lastname }}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="number" placeholder="Fine"  formControlName="fine">
+            </mat-form-field>
+        </div>
+        <div id="form-column-2">
+          <mat-form-field>
+              <mat-select placeholder="Violation" formControlName="violation">
+                <mat-option *ngFor="let violation of roomViolations;" [value]="violation">
+                  {{violation}}
+                </mat-option>
+              </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-select placeholder="Payment status" formControlName="paymentStatus" (selectionChange)="onPaymentStatusSelect($event)">
+              <mat-option *ngFor="let status of paymentStatuses;" [value]="status">
+                {{status}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div formArrayName="paymentBalance" *ngFor="let property of penaltyForm.get('paymentBalance').controls; let i = index;">
+          <div [formGroupName]="i">
+            <mat-form-field>
+              <input placeholder="Payment balance" matInput type="number" formControlName="balance">
+            </mat-form-field>
+          </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions>
+        <div class="action-buttons-container">
+          <button mat-raised-button  color="primary" (click)='onBack()'>
+            <span>Back</span>
+          </button>
+          <button mat-raised-button color="primary" (click)='onSubmit()' [disabled]='penaltyForm.invalid || state.requests.submit.inProgress'>
+            <span>{{state.isUpdate ? 'Update' : 'Add'}}</span>
+          </button>
+        </div>
+    </mat-card-actions>
+</mat-card>

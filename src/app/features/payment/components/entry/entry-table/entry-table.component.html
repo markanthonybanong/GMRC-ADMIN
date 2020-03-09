@@ -1,0 +1,38 @@
+<table mat-table [dataSource]="state.table.dataSource">
+    <ng-container matColumnDef="roomNumber">
+        <th mat-header-cell *matHeaderCellDef>Room number</th>
+        <td mat-cell *matCellDef="let element">{{element.roomNumber}}</td>
+      </ng-container>
+      <ng-container matColumnDef="tenant">
+        <th mat-header-cell *matHeaderCellDef>Tenant</th>
+        <td mat-cell *matCellDef="let element">
+          {{element.tenant[0].firstname+' '+element.tenant[0].middlename+' '+element.tenant[0].lastname}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="monthlyRent">
+        <th mat-header-cell *matHeaderCellDef>Monthy rent</th>
+        <td mat-cell *matCellDef="let element">{{element.monthlyRent}}</td>
+      </ng-container>
+      <ng-container matColumnDef="oneMonthDeposit">
+        <th mat-header-cell *matHeaderCellDef>One month deposit</th>
+        <td mat-cell *matCellDef="let element" appPaymentColorStatus>{{element.oneMonthDeposit}}</td>
+      </ng-container>
+      <ng-container matColumnDef="oneMonthAdvance">
+        <th mat-header-cell *matHeaderCellDef>One month advance</th>
+        <td mat-cell *matCellDef="let element" appPaymentColorStatus>{{element.oneMonthAdvance}}</td>
+      </ng-container>
+      <ng-container matColumnDef="dateEntry">
+        <th mat-header-cell *matHeaderCellDef>Date Entry</th>
+        <td mat-cell *matCellDef="let element">{{element.dateEntry}}</td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element">
+            <mat-icon id="label-text-primary" (click)="onEntryUpdate(element._id)">edit</mat-icon>
+        </td>
+      </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+  </table>
+  
+  

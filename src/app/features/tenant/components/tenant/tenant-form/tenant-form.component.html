@@ -1,5 +1,5 @@
-<mat-card class="form-horizontal">
-  <div class="form-horizontal-header">
+<mat-card class="tenant-form">
+  <div class="tenant-form-header">
     <div class="header-content">
       <div class="tenant-image-container">
         <div class="tenant-image" (mouseenter)="onTenantImgMouseEnter()"  (mouseleave)="onTenantImgMouseLeave()">
@@ -16,7 +16,7 @@
       <mat-card-title class="center-text">{{state.isUpdate ? 'UPDATE TENANT' : 'ADD TENANT'}}</mat-card-title>
     </div>
   </div>
-  <div class="form-horizontal-content">
+  <div class="form">
     <mat-card-content [formGroup]="form">
     <div id="form-column-2">
       <mat-form-field>

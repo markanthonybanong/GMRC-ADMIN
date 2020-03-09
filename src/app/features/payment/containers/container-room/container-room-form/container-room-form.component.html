@@ -1,0 +1,54 @@
+<div *ngIf="state$ | async as subs" class="form-container">
+    <mat-card class="form-inprogress-error" *ngIf="subs.requests.roomPayments.inProgress || subs.requests.roomPayments.error">
+      <mat-card-content >
+          <app-in-progress-error
+          [request]="subs.requests.roomPayments"
+          [requestResponse]="requestResponse"
+        >
+        </app-in-progress-error>
+      </mat-card-content>
+    </mat-card>
+    <div *ngIf="subs.requests.roomPayments.success" class="full-width">
+      <mat-card *ngIf="subs.roomTenants.length" class="room-tenants-table">
+        <mat-card-content>
+          <app-view-room-tenants-table
+           [dataSource]="subs.roomTenantsDataSource"
+           [roomType]="roomType"
+           (roomTenantsTableOnUpdateTenantPayment)="onUpdateTenantPayment($event)"
+          >
+          </app-view-room-tenants-table>
+        </mat-card-content>
+        <mat-card-actions>
+          <app-paginator
+          [pageSizeOptions]="pageSizeOptions"
+          [length]="subs.roomTenants.length"
+          [request]="subs.requests.roomPayments"
+          (paginatorOnUpdate)="onPaginatorUpdate($event)"
+           >
+          </app-paginator>
+        </mat-card-actions>
+      </mat-card>
+      <app-room-payment-form
+        class="center-content"
+        [state]="subs"
+        [roomPaymentForm]="roomPaymentForm"
+        [roomNumbers]="roomNumbers"
+        [paymentStatuses]="paymentStatuses"
+        [electricBillPlaceHolder]="electricBillPlaceHolder"
+        [waterBillPlaceHolder]="waterBillPlaceHolder"
+        [isDisableTenantsButton]="isDisableTenantsButton"
+        (roomPaymentFormOnChoosenMonthHandler)="onChoosenMonthHandler($event)"
+        (roomPaymentFormOnShowTenants)="onShowTenants()"
+        (roomPaymentFormOnCalculateTotalKWUsed)="onCalculateTotalKWUsed()"
+        (roomPaymentFormOnRoomNumberSelect)="onRoomNumberSelect($event)"
+        (roomPaymentFormOnCalculateTotalAmountElectricBill)="onCalculateTotalAmountElectricBill()"
+        (roomPaymentFormOnElectricBillStatusSelect)="onElectricBillStatusSelect($event)"
+        (roomPaymentFormOnCalculateWaterBill)="onCalculateWaterBill()"
+        (roomPaymentFormOnWaterBillStatusSelect)="onWaterBillStatusSelect($event)"
+        (roomPaymentFormOnSubmit)="onSubmit()"
+        (roomPaymentFormOnBack)="onBack()"
+        >
+      </app-room-payment-form>
+    </div>
+  </div>
+  

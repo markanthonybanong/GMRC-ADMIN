@@ -1,1 +1,15 @@
-<p>view-unsettle-bill-form works!</p>
+<app-container-unsettle-bill-form
+ [state$]="store.state$"
+ [requestResponse]="dataStoreService.requestResponse"
+ [unsettleBillForm]="store.unsettleBillForm"
+ [roomNumbers]="dataRoomService.roomNumbers"
+ [roomTypes]="dataRoomService.roomTypes"
+ [tenants]="dataTenantService.tenants"
+ (containerUnsettleBillFormOnSetTenantObjectId)="store.onSetTenantObjectId($event)"
+ (containerUnsettleBillFormOnAddTenant)="store.onAddTenant()"
+ (containerUnsettleBillFormOnBack)="store.onBack()"
+ (containerUnsettleBillFormOnSubmit)="store.onSubmit()"
+ (containerUnsettleBillFormOnRemoveTenant)="store.onRemoveTenant($event)"
+ (containerUnsettleBillFormOnSearchTenant)="dataTenantService.onSearchTenant($event)"
+>
+</app-container-unsettle-bill-form>
